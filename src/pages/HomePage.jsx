@@ -1,5 +1,3 @@
-
-
 function HomePage() {
     return (
         <div className="wrapper d-flex flex-column justify-content-around">

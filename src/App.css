@@ -1,3 +1,80 @@
 .App {
   text-align: center;
+  max-width: 100vw;
+  overflow: hidden;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+.nav-link {
+  color: #FFFFFF;
+  margin-left: 50px;
+  margin-right: 40px;
+}
+
+.unselected-link {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  margin-left: 50px;
+  margin-right: 40px;
+}
+
+.pet-type {
+  display: flex;
+  justify-content:safe;
+}
+
+label.form-check-label {
+  text-indent: 20%;
+  justify-content: safe;
+}
+
+input#search-type.form-check-input[type=checkbox] {
+  border-radius: 0;
+  width: 15px;
+}
+
+.advnc-srch {
+  width: 15%;
+}
+
+.links:hover {
+  font-weight: bolder;
+}
+
+.dropdown-menu-dark {
+  --bs-dropdown-link-active-bg: #343A40;
+}
+
+.back-to-search span {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+  .advnc-srch {
+  width: 25%;
+}
+.pet-page h2 {
+  margin: 0 5px;
+}
+.pets-details ul {
+  flex-flow: row wrap;
+  width: 100%;
+}
+.img-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.img-box img {
+  width: 70%;
+  margin-right: 30px;
+}
+.pets-bio {
+  margin-bottom: 10px;
+}
 }

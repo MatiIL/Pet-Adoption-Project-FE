@@ -1,38 +1,59 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Button from 'react-bootstrap/Button';
-import LoginModal from './LoginModal';
-import SignupModal from './SignupModal';
+import Container from "react-bootstrap/Container";
+import { Button, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import LoginModal from "./LoginModal";
+import AdminMenu from "./AdminMenu";
+import { useState, useEffect } from "react";
+import { useAuthContext } from "../context/AuthContext";
 
 function NavBar() {
+  const [isActive, setIsActive] = useState(false);
+  const { auth, setAuth } = useAuthContext();
+  console.log(auth);
+  useEffect(() => {
+    if (window.location.pathname === "/FindPet") {
+      setIsActive(true);
+    } else if (window.location.pathname === "/") {
+      setIsActive(false);
+    }
+  }, []);
 
   return (
     <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
+      <AdminMenu/>
       <Container>
-        <Navbar.Brand href="/">Pet Adoption Center</Navbar.Brand>
+        
+        <Navbar.Brand
+          href="/"
+          className={isActive ? "unselected-link" : "nav-link"}
+        >
+          Pet Adoption Center
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/SearchPet" className='mt-1'>Find Me a Pet</Nav.Link>
-            <NavDropdown title="My Profile" id="collasible-nav-dropdown" className='mt-1 visually-hidden'>
+            <Nav.Link
+              href="/FindPet"
+              id="find-pets"
+              className={isActive ? "nav-link" : "unselected-link"}
+            >
+              Find Me a Pet
+            </Nav.Link>
+            <NavDropdown
+              title="My Profile"
+              id="collasible-nav-dropdown"
+              className="mt-1 visually-hidden"
+            >
               <NavDropdown.Item href="#action/3.1">My Pets</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Profile Settings
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
-          <Nav className='me-2'>
-            <SignupModal/>
-          </Nav>
           <Nav>
-            <LoginModal/>
+          <LoginModal />
+            {/* {{ auth } ? (<Button variant="secondary" className="ms-2">
+              Logout</Button>):()} */}
           </Nav>
-          <Nav className='ms-2'>
-            <Button variant='secondary'>Logout</Button>
-          </Nav>
-         
         </Navbar.Collapse>
       </Container>
     </Navbar>
