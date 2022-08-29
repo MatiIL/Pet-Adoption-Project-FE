@@ -8,24 +8,22 @@ export function usePetsContext() {
 }
 
 export default function PetsContextProvider({ children }) {
-    const serverURL = "http://localhost:8080/pets";
+    const petsRoute = "http://localhost:8080/pets";
     const [petsList, setPetsList] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    
 
-    const fetchPets = async() => {
+    const fetchPets = async (userInput) => {
         try {
-        setIsLoading(true);
-        const res = await axios.get(serverURL);
-        console.log(res);
-        setPetsList(res.data);
+          const res = await axios.get(`${petsRoute}/search`, { params: userInput }, {withCredentials: true});
+          const petSearch = res.data;
+          // console.log(petSearch);
+          setPetsList(petSearch);
+        } catch (error) {
+          console.log(error);
         }
-        catch (error) {
-            console.log(error);
-            setIsLoading(false);
-        }
-    }
+      };
 
-    return <PetsContext.Provider value={{ fetchPets, petsList, isLoading }}>
+    return <PetsContext.Provider value={{ fetchPets, petsList }}>
         {children}
     </PetsContext.Provider>
 }

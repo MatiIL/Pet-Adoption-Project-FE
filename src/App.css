@@ -38,15 +38,25 @@ input#search-type.form-check-input[type=checkbox] {
 }
 
 .advnc-srch {
-  width: 15%;
+  width: 12%;
+}
+
+.height-and-weight {
+  width: 12%;
 }
 
 .links:hover {
-  font-weight: bolder;
+  background-color: #8570702a;
+  border-radius: 35%;
 }
 
 .dropdown-menu-dark {
   --bs-dropdown-link-active-bg: #343A40;
+}
+
+#srch-res {
+  max-width: 95vw;
+  overflow: hidden;
 }
 
 .back-to-search span {
@@ -74,7 +84,26 @@ input#search-type.form-check-input[type=checkbox] {
   width: 70%;
   margin-right: 30px;
 }
-.pets-bio {
-  margin-bottom: 10px;
+.search-details {
+  margin-top: 30px;
 }
+.petform-bio {
+  margin-bottom: 50px;
+  margin-right: 50px;
+  width: 110%;
+}
+.hypo {
+  margin-bottom: 40px;
+}
+.color-breed-hypo {
+  flex-direction: column;
+}
+.pet-form-color {
+  margin-bottom: 100px;
+  margin-right: 20px;
+}
+.breed-color {
+  flex-direction: column;
+}
+
 }

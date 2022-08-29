@@ -1,28 +1,48 @@
+import { usePetsContext } from "../context/PetsContext";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import SearchPetResults from "./SearchPetResults";
-
-import { useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
 
 function SearchForm() {
-  const [petsList, setPetsList] = useState([]);
+  const { fetchPets, petsList } = usePetsContext();
   const [isChecked, setIsChecked] = useState(false);
+  const [type, setType] = useState("");
+  const [status, setStatus] = useState("");
+  const [name, setName] = useState("");
+  const [minHeight, setMinHeight] = useState("");
+  const [maxHeight, setMaxHeight] = useState("");
+  const [minWeight, setMinWeight] = useState("");
+  const [maxWeight, setMaxWeight] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleBtn = () => {
     setIsChecked(!isChecked);
   };
 
-  const fetchPets = async () => {
+  const searchPets = async () => {
+    setIsLoading(true);
+    const searchParams = {
+      type: type,
+      status: status,
+      name: name,
+      minHeight: minHeight,
+      maxHeight: maxHeight,
+      minWeight: minWeight,
+      maxWeight: maxWeight,
+    }
     try {
-      const res = await axios.get("http://localhost:8080/pets");
-      const allPets = res.data;
-
-      setPetsList(allPets);
-    } catch (error) {
+      fetchPets(searchParams);
+    }
+    catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
+
+  useEffect(() => {
+    fetchPets();
+  }, []);
 
   return (
     <div className="wrapper">
@@ -37,37 +57,63 @@ function SearchForm() {
           />
         </div>
         <div className="d-flex justify-content-between mx-auto">
-          <Form.Select aria-label="pet's type" className="me-2">
+          <Form.Select
+            aria-label="pet's type"
+            className="me-2"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          >
             <option>Type</option>
             <option value="1">Cat</option>
             <option value="2">Dog</option>
           </Form.Select>
-          <Button id="search-btn" onClick={fetchPets} className="ms-2">
+          <Button id="search-btn" onClick={searchPets} className="">
             Search
           </Button>
         </div>
         <div className={isChecked ? "d-block" : "d-none"}>
-          <div className="d-flex flex-wrap justify-content-center">
-            <Form.Select aria-label="pet's status" className="advnc-srch m-3">
+          <div className="d-flex flex-wrap justify-content-around">
+            <Form.Select
+              aria-label="pet's status"
+              className="advnc-srch mt-3 mb-3"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+            >
               <option>Status</option>
               <option value="1">Available</option>
               <option value="2">Fostered</option>
               <option value="3">Adopted</option>
             </Form.Select>
             <Form.Control
-              className="advnc-srch m-3"
+              className="advnc-srch mt-3 mb-3"
               type="text"
               placeholder="Name"
+              value={name} onChange={(e) => setName(e.target.value)}
             />
             <Form.Control
-              className="advnc-srch m-3"
+              className="height-and-weight mt-3 mb-3"
               type="text"
-              placeholder="Height"
+              placeholder="Min Height (cm)"
+              value={minHeight} onChange={(e) => setMinHeight(e.target.value)}
+            /> 
+            <Form.Control
+              className="height-and-weight mt-3 mb-3"
+              type="text"
+              placeholder="Max Height (cm)"
+              value={maxHeight} onChange={(e) => setMaxHeight(e.target.value)}
+            /> 
+           
+             <Form.Control
+              className="height-and-weight mt-3 mb-3"
+              type="text"
+              placeholder="Min Weight (kg)" 
+              value={minWeight} onChange={(e) => setMinWeight(e.target.value)}
             />
             <Form.Control
-              className="advnc-srch m-3"
+              className="height-and-weight mt-3 mb-3"
               type="text"
-              placeholder="Weight"
+              placeholder="Max Weight (kg)" 
+              value={maxWeight} onChange={(e) => setMaxWeight(e.target.value)}
             />
           </div>
         </div>

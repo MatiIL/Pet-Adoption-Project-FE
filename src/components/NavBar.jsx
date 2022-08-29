@@ -7,8 +7,8 @@ import { useAuthContext } from "../context/AuthContext";
 
 function NavBar() {
   const [isActive, setIsActive] = useState(false);
-  const { auth, setAuth } = useAuthContext();
-  console.log(auth);
+  const { auth, logout } = useAuthContext();
+  
   useEffect(() => {
     if (window.location.pathname === "/FindPet") {
       setIsActive(true);
@@ -41,18 +41,20 @@ function NavBar() {
             <NavDropdown
               title="My Profile"
               id="collasible-nav-dropdown"
-              className="mt-1 visually-hidden"
+              className={auth? 'visible':'visually-hidden'}
+              // {...isActive ? "nav-link" : "unselected-link"}
             >
-              <NavDropdown.Item href="#action/3.1">My Pets</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
+              <NavDropdown.Item href="/MyPets">My Pets</NavDropdown.Item>
+              <NavDropdown.Item href="/MyProfile">
                 Profile Settings
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
-          <Nav>
-          <LoginModal />
-            {/* {{ auth } ? (<Button variant="secondary" className="ms-2">
-              Logout</Button>):()} */}
+          <Nav className="me-3">
+            { auth  ? (<Button variant="secondary" className="ms-2"
+            onClick={logout}
+            >
+              Logout</Button>): <LoginModal />}
           </Nav>
         </Navbar.Collapse>
       </Container>
