@@ -105,5 +105,8 @@ input#search-type.form-check-input[type=checkbox] {
 .breed-color {
   flex-direction: column;
 }
-
+.pet-actions {
+  display: flex;
+  flex-direction: column;
+}
 }

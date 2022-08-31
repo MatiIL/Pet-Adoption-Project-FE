@@ -16,7 +16,7 @@ function SearchForm() {
   const [maxWeight, setMaxWeight] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const toggleBtn = () => {
+  const toggleCheck = () => {
     setIsChecked(!isChecked);
   };
 
@@ -40,10 +40,6 @@ function SearchForm() {
     setIsLoading(false);
   };
 
-  useEffect(() => {
-    fetchPets();
-  }, []);
-
   return (
     <div className="wrapper">
       <div className="search-bar d-flex flex-column justify-content-center mt-2">
@@ -53,7 +49,7 @@ function SearchForm() {
             className="align-self-start mx-2"
             id="search-type"
             type="checkbox"
-            onChange={toggleBtn}
+            onChange={toggleCheck}
           />
         </div>
         <div className="d-flex justify-content-between mx-auto">
@@ -119,7 +115,7 @@ function SearchForm() {
         </div>
       </div>
 
-      <SearchPetResults petsList={petsList} />
+      <SearchPetResults petsList={petsList} searchPets={searchPets}/>
     </div>
   );
 }

@@ -1,11 +1,10 @@
 import { Container, Row, Col } from "react-bootstrap";
 import PetCard from './PetCard';
-// import { usePetsContext } from '../context/PetsContext';
+import { useEffect } from "react";
 
 function SearchPetResults(props) {
-    // const { fetchPets, petsList } = usePetsContext();
-    const { petsList } = props;
-    
+    const { petsList, searchPets } = props;
+
   return (
     <div id='srch-res'>
     <Container className="mt-5">
