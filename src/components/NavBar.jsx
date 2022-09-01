@@ -51,11 +51,14 @@ function NavBar() {
             </NavDropdown>
           </Nav>
           <Nav className="me-3">
+            <div className="log-button d-flex">
             { auth  ? (<Button variant="secondary" className="ms-2"
             onClick={logout}
             >
               Logout</Button>): <LoginModal />}
+              </div>
           </Nav>
+          
         </Navbar.Collapse>
       </Container>
     </Navbar>

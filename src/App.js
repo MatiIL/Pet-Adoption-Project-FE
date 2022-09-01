@@ -1,4 +1,4 @@
-import AuthContextProvider from "./context/AuthContext";
+import AuthContextProvider, { useAuthContext } from "./context/AuthContext";
 import PetsContextProvider from "./context/PetsContext";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
@@ -8,8 +8,16 @@ import MyPets from "./pages/MyPets";
 import MyProfile from "./pages/MyProfile";
 import NavBar from './components/NavBar';
 import './App.css';
+import { useEffect } from "react";
 
 function App() {
+
+  // const { currentUserAuth, userId } = useAuthContext();
+  // console.log(currentUserAuth);
+
+  // useEffect(() => {
+  //   currentUserAuth(userId);
+  // }, []);
 
   return (
     <PetsContextProvider>

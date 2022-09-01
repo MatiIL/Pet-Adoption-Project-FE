@@ -2,7 +2,7 @@ import { usePetsContext } from "../context/PetsContext";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import SearchPetResults from "./SearchPetResults";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 function SearchForm() {
   const { fetchPets, petsList } = usePetsContext();
@@ -68,10 +68,11 @@ function SearchForm() {
           </Button>
         </div>
         <div className={isChecked ? "d-block" : "d-none"}>
-          <div className="d-flex flex-wrap justify-content-around">
+          <div className="d-flex flex-wrap  align-items-center">
+            <div className="status-name d-flex justify-content-evenly">
             <Form.Select
               aria-label="pet's status"
-              className="advnc-srch mt-3 mb-3"
+              className="advnc-srch ms-3 mt-3 mb-3"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
@@ -81,36 +82,39 @@ function SearchForm() {
               <option value="3">Adopted</option>
             </Form.Select>
             <Form.Control
-              className="advnc-srch mt-3 mb-3"
+              className="advnc-srch m-3"
               type="text"
               placeholder="Name"
               value={name} onChange={(e) => setName(e.target.value)}
             />
+            </div>
+            <div className="h-and-w d-flex flex-wrap justify-content-evenly">
             <Form.Control
-              className="height-and-weight mt-3 mb-3"
+              className="height-and-weight m-2"
               type="text"
               placeholder="Min Height (cm)"
               value={minHeight} onChange={(e) => setMinHeight(e.target.value)}
             /> 
             <Form.Control
-              className="height-and-weight mt-3 mb-3"
+              className="height-and-weight m-2"
               type="text"
               placeholder="Max Height (cm)"
               value={maxHeight} onChange={(e) => setMaxHeight(e.target.value)}
             /> 
            
              <Form.Control
-              className="height-and-weight mt-3 mb-3"
+              className="height-and-weight m-2"
               type="text"
               placeholder="Min Weight (kg)" 
               value={minWeight} onChange={(e) => setMinWeight(e.target.value)}
             />
             <Form.Control
-              className="height-and-weight mt-3 mb-3"
+              className="height-and-weight m-2"
               type="text"
               placeholder="Max Weight (kg)" 
               value={maxWeight} onChange={(e) => setMaxWeight(e.target.value)}
             />
+            </div>
           </div>
         </div>
       </div>

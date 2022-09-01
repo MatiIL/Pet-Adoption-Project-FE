@@ -25,7 +25,7 @@ function PetCard({ pet }) {
        </Card.Body>
        <Card.Footer className='d-flex justify-content-around'>
          <small className="text-muted border border-dark rounded-pill p-2">{petStatus}</small>
-         <Link to={`/PetPage/${pet.petId}`}
+         <Link to={`/PetPage/${pet.petId}`} id="see-more"
          className='links mt-2 link-dark text-decoration-none'
          >SEE MORE</Link>
        </Card.Footer>

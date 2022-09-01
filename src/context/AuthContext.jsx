@@ -1,6 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import axios from 'axios';
-
 
 export const AuthContext = createContext(true);
 
@@ -10,25 +9,27 @@ export function useAuthContext() {
 
 export default function AuthContextProvider({ children }) {
     const usersRoute = "http://localhost:8080/users";
-    const [auth, setAuth] = useState(false);
+    // const [auth, setAuth] = useState(false);
     const [loggedUser, setLoggedUser] = useState({});
-    const [cookieToken, setCookieToken] = useState();
+    const [userId, setUserId] = useState(null);
+    const [auth, setAuth] = useState(false);
 
-    const authNewUser = async(newUser) => {
+    const authNewUser = async (newUser) => {
         try {
           const res = await axios.post(`${usersRoute}/signup`, newUser);
           if (res.data) {
-          setAuth(true);
+          
           }
         } catch (err) {
           console.log(err);
         }
       };
 
-    const authLogin = async(logAttempt) => {
+    const loginUser = async (logAttempt) => {
       try {
-        const res = await axios.post(`${usersRoute}/login`, logAttempt, {withCredentials: true  });
+        const res = await axios.post(`${usersRoute}/login`, logAttempt, { withCredentials: true  });
         if (res.data) {
+          // setUserId(res.data.user.userId)
           setLoggedUser(res.data.user);
           setAuth(true);
         }
@@ -37,14 +38,27 @@ export default function AuthContextProvider({ children }) {
       }
     }
 
-    const logout = async() => {
+    // const currentUserAuth = async (userId) => {
+    //   try {
+    //     const res = await axios.get(`${usersRoute}/${userId}`, { withCredentials: true });
+    //     if (res.data) {
+    //       setLoggedUser(res.data.user);
+    //       setAuth(true);
+    //     }
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
+
+
+    const logout = async () => {
       try {
-      const res = await axios.get(`${usersRoute}/logout`, {withCredentials: true});
-      if (res.data) setAuth(false);
+      const res = await axios.get(`${usersRoute}/logout`, { withCredentials: true });
+      if (res.data) setLoggedUser({});
     } catch (err) {
       console.log(err);
     }
   }
 
-    return <AuthContext.Provider value={{ auth, setAuth, authNewUser, authLogin, loggedUser, logout }}>{children}</AuthContext.Provider>
+    return <AuthContext.Provider value={{ authNewUser, loginUser, loggedUser, logout, userId, auth, setAuth }}>{children}</AuthContext.Provider>
 }

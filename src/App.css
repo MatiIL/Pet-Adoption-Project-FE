@@ -10,7 +10,7 @@ body {
 }
 
 .nav-link {
-  color: #FFFFFF;
+  color: #ffffff;
   margin-left: 50px;
   margin-right: 40px;
 }
@@ -24,7 +24,7 @@ body {
 
 .pet-type {
   display: flex;
-  justify-content:safe;
+  justify-content: safe;
 }
 
 label.form-check-label {
@@ -32,26 +32,26 @@ label.form-check-label {
   justify-content: safe;
 }
 
-input#search-type.form-check-input[type=checkbox] {
+input#search-type.form-check-input[type="checkbox"] {
   border-radius: 0;
   width: 15px;
 }
 
 .advnc-srch {
-  width: 12%;
+  width: 40%;
 }
 
 .height-and-weight {
-  width: 12%;
+  width: 20%;
 }
 
-.links:hover {
+#see-more:hover {
   background-color: #8570702a;
   border-radius: 35%;
 }
 
 .dropdown-menu-dark {
-  --bs-dropdown-link-active-bg: #343A40;
+  --bs-dropdown-link-active-bg: #343a40;
 }
 
 #srch-res {
@@ -63,50 +63,76 @@ input#search-type.form-check-input[type=checkbox] {
   cursor: pointer;
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 992px) {
+  #find-pets {
+   
+  }
+
+}
+
+@media screen and (max-width: 875px) {
+  .log-button {
+   
+  }
+
+}
+
+@media screen and (max-width: 802px) {
   .advnc-srch {
-  width: 25%;
+    width: 55%;
+  }
+  .pet-page h2 {
+    margin: 0 5px;
+  }
+  .pets-details ul {
+    flex-flow: row wrap;
+    width: 100%;
+  }
+  .img-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .img-box img {
+    width: 70%;
+    margin-right: 30px;
+  }
+  .search-details {
+    margin-top: 30px;
+  }
+  .petform-bio {
+    margin-bottom: 50px;
+    margin-right: 50px;
+    width: 110%;
+  }
+  .hypo {
+    margin-bottom: 40px;
+  }
+  .color-breed-hypo {
+    flex-direction: column;
+  }
+  .pet-form-color {
+    margin-bottom: 100px;
+    margin-right: 20px;
+  }
+  .breed-color {
+    flex-direction: column;
+  }
+  .pet-actions {
+    display: flex;
+    flex-direction: column;
+  }
 }
-.pet-page h2 {
-  margin: 0 5px;
-}
-.pets-details ul {
-  flex-flow: row wrap;
-  width: 100%;
-}
-.img-box {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-.img-box img {
-  width: 70%;
-  margin-right: 30px;
-}
-.search-details {
-  margin-top: 30px;
-}
-.petform-bio {
-  margin-bottom: 50px;
-  margin-right: 50px;
-  width: 110%;
-}
-.hypo {
-  margin-bottom: 40px;
-}
-.color-breed-hypo {
-  flex-direction: column;
-}
-.pet-form-color {
-  margin-bottom: 100px;
-  margin-right: 20px;
-}
-.breed-color {
-  flex-direction: column;
-}
-.pet-actions {
-  display: flex;
-  flex-direction: column;
-}
-}
+
+@media screen and (max-width: 730px) {
+  .height-and-weight {
+    width: 40%;
+  }
+  }
+
+@media screen and (max-width: 375px) {
+    .height-and-weight {
+      width: 60%;
+    }
+    }

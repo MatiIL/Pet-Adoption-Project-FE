@@ -6,21 +6,43 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Form from "react-bootstrap/Form";
 
 function PetPage() {
-  const { getPet, pet, updateUserList } = usePetsContext();
+  const { getPet, pet, savePet, removePet, adoptOrFoster, returnPet } = usePetsContext();
   let navigate = useNavigate();
   const param = useParams();
   const petId = param.petId;
   const [isChecked, setIsChecked] = useState(false);
+  const [canAdopt, setCanAdopt] = useState(true);
+  const [canFoster, setCanFoster] = useState(true);
+  const [canReturn, setCanReturn] = useState(false);
 
   const toggleCheck = () => {
-    setIsChecked(!isChecked);
-    const saveOrUnsave = isChecked? 0:1;
-    const userInput = {
-        petId: petId,
-        action: saveOrUnsave,
-    }
-    updateUserList(userInput);
+    setIsChecked(prev => !prev);
+    if (isChecked) {
+      removePet(petId);
+    } else savePet(petId); 
   };
+
+  const handleClick = (e) => {
+    const userPetAction = {
+      petId: petId,
+      action: e.target.innerText
+    }
+    if (e.target.innerText === "Return") {
+      returnPet(petId);
+      setCanReturn(false);
+      setCanAdopt(true);
+      setCanFoster(true);
+    } else {
+    adoptOrFoster(userPetAction);
+    } if (e.target.innerText === "Adopt") {
+      setCanReturn(true);
+      setCanFoster(false);
+      setCanAdopt(false);
+    } else {
+      setCanReturn(true);
+      setCanAdopt(true);
+    }
+  }
 
   useEffect(() => {
     getPet(petId);
@@ -40,7 +62,7 @@ function PetPage() {
     default:
       petStatus = "TBD";
   }
-
+  
   return (
     <div className="pet-page">
       <h2 className="mt-4">
@@ -70,11 +92,15 @@ function PetPage() {
           <li className="list-group-item text-start">Height: {pet.height}</li>
           <li className="list-group-item text-start">Weight: {pet.weight}</li>
           <ButtonGroup className="pet-actions mt-2 ms-2">
-            <Button variant="outline-secondary">Foster</Button>
-            <Button variant="outline-secondary">Adopt</Button>
-            <Button variant="outline-secondary" disabled>
-              Return
-            </Button>
+            <Button variant="outline-secondary" disabled={canFoster? false:true}
+            onClick={handleClick}
+            >Foster</Button>
+            <Button variant="outline-secondary" disabled={canAdopt? false:true}
+            onClick={handleClick}
+            >Adopt</Button>
+            <Button variant="outline-secondary" disabled={canReturn? false:true}
+            onClick={handleClick}
+            >Return</Button>
           </ButtonGroup>
           <div className="save d-flex flex-row-reverse justify-content-end m-2">
           <label className="ms-2">Save to List</label>
