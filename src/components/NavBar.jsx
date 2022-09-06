@@ -3,11 +3,11 @@ import { Button, Nav, Navbar, NavDropdown } from "react-bootstrap";
 import LoginModal from "./LoginModal";
 import AdminMenu from "./AdminMenu";
 import { useState, useEffect } from "react";
-import { useAuthContext } from "../context/AuthContext";
+import { useAuthContext } from "../context/AuthContext"
 
 function NavBar() {
   const [isActive, setIsActive] = useState(false);
-  const { auth, logout } = useAuthContext();
+  const { logout, token } = useAuthContext();
   
   useEffect(() => {
     if (window.location.pathname === "/FindPet") {
@@ -41,10 +41,11 @@ function NavBar() {
             <NavDropdown
               title="My Profile"
               id="collasible-nav-dropdown"
-              className={auth? 'visible':'visually-hidden'}
+              className={token? 'visible':'visually-hidden'}
               // {...isActive ? "nav-link" : "unselected-link"}
             >
-              <NavDropdown.Item href="/MyPets">My Pets</NavDropdown.Item>
+              <NavDropdown.Item href="/MyPets"
+              >My Pets</NavDropdown.Item>
               <NavDropdown.Item href="/MyProfile">
                 Profile Settings
               </NavDropdown.Item>
@@ -52,7 +53,7 @@ function NavBar() {
           </Nav>
           <Nav className="me-3">
             <div className="log-button d-flex">
-            { auth  ? (<Button variant="secondary" className="ms-2"
+            { token  ? (<Button variant="secondary" className="ms-2"
             onClick={logout}
             >
               Logout</Button>): <LoginModal />}

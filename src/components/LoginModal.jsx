@@ -6,22 +6,25 @@ import SignupModal from "./SignupModal";
 import { useAuthContext } from "../context/AuthContext";
 
 function LoginModal() {
-  const { auth, loginUser } = useAuthContext();
+  const { loggedUser, loginUser } = useAuthContext();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const logAttempt = {
       email: email,
       password: pass,
     };
     try {
-      loginUser(logAttempt);
-      if (auth) handleClose();
+      await loginUser(logAttempt);
+      if (loggedUser) {
+        handleClose();
+        window.location.reload();
+      }
     } catch (err) {
       console.error(err);
     }
@@ -74,7 +77,7 @@ function LoginModal() {
               Login
             </Button>
           </div>
-          <SignupModal />
+          <SignupModal handleClose={handleClose}/>
         </Modal.Footer>
       </Modal>
     </>

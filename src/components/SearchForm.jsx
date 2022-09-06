@@ -1,6 +1,7 @@
 import { usePetsContext } from "../context/PetsContext";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
 import SearchPetResults from "./SearchPetResults";
 import { useState } from "react";
 
@@ -10,10 +11,10 @@ function SearchForm() {
   const [type, setType] = useState("");
   const [status, setStatus] = useState("");
   const [name, setName] = useState("");
-  const [minHeight, setMinHeight] = useState("");
-  const [maxHeight, setMaxHeight] = useState("");
-  const [minWeight, setMinWeight] = useState("");
-  const [maxWeight, setMaxWeight] = useState("");
+  const [minHeight, setMinHeight] = useState(0);
+  const [maxHeight, setMaxHeight] = useState(0);
+  const [minWeight, setMinWeight] = useState(0);
+  const [maxWeight, setMaxWeight] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const toggleCheck = () => {
@@ -68,7 +69,7 @@ function SearchForm() {
           </Button>
         </div>
         <div className={isChecked ? "d-block" : "d-none"}>
-          <div className="d-flex flex-wrap  align-items-center">
+          <div className="d-flex flex-wrap  align-items-center mt-2">
             <div className="status-name d-flex justify-content-evenly">
             <Form.Select
               aria-label="pet's status"
@@ -89,31 +90,46 @@ function SearchForm() {
             />
             </div>
             <div className="h-and-w d-flex flex-wrap justify-content-evenly">
+            <FloatingLabel
+                controlId="floatingInput"
+                label="Min Height (cm)"
+              >
             <Form.Control
               className="height-and-weight m-2"
-              type="text"
-              placeholder="Min Height (cm)"
+              type="numbe"
               value={minHeight} onChange={(e) => setMinHeight(e.target.value)}
             /> 
+            </FloatingLabel>
+            <FloatingLabel
+                controlId="floatingInput"
+                label="Max Height (cm)"
+              >
             <Form.Control
               className="height-and-weight m-2"
-              type="text"
-              placeholder="Max Height (cm)"
+              type="number"
               value={maxHeight} onChange={(e) => setMaxHeight(e.target.value)}
             /> 
-           
+            </FloatingLabel>
+            <FloatingLabel
+                controlId="floatingInput"
+                label="Min Weight (kg)"
+              >
              <Form.Control
               className="height-and-weight m-2"
-              type="text"
-              placeholder="Min Weight (kg)" 
+              type="number"
               value={minWeight} onChange={(e) => setMinWeight(e.target.value)}
             />
+            </FloatingLabel>
+            <FloatingLabel
+                controlId="floatingInput"
+                label="Max Weight (kg)" 
+              >
             <Form.Control
               className="height-and-weight m-2"
-              type="text"
-              placeholder="Max Weight (kg)" 
+              type="number"
               value={maxWeight} onChange={(e) => setMaxWeight(e.target.value)}
             />
+            </FloatingLabel>
             </div>
           </div>
         </div>

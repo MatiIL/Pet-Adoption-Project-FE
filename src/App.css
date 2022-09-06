@@ -42,7 +42,7 @@ input#search-type.form-check-input[type="checkbox"] {
 }
 
 .height-and-weight {
-  width: 20%;
+  width: 50%;
 }
 
 #see-more:hover {
@@ -63,19 +63,24 @@ input#search-type.form-check-input[type="checkbox"] {
   cursor: pointer;
 }
 
-@media screen and (max-width: 992px) {
+/* .users-list {
+  
+  max-height: 100vh;
+} */
+
+/* @media screen and (max-width: 992px) {
   #find-pets {
    
   }
 
-}
+} */
 
-@media screen and (max-width: 875px) {
+/* @media screen and (max-width: 875px) {
   .log-button {
    
   }
 
-}
+} */
 
 @media screen and (max-width: 802px) {
   .advnc-srch {
@@ -124,15 +129,3 @@ input#search-type.form-check-input[type="checkbox"] {
     flex-direction: column;
   }
 }
-
-@media screen and (max-width: 730px) {
-  .height-and-weight {
-    width: 40%;
-  }
-  }
-
-@media screen and (max-width: 375px) {
-    .height-and-weight {
-      width: 60%;
-    }
-    }

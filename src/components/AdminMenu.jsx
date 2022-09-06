@@ -1,6 +1,6 @@
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import Dropdown from 'react-bootstrap/Dropdown';
-import PetModal from './PetModal';
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import Dropdown from 'react-bootstrap/Dropdown'
+import PetModal from './PetModal'
 
 function AdminMenu() {
 
@@ -13,11 +13,11 @@ function AdminMenu() {
         title="Admin Tools"
         className="ms-3 p-2"
       >
-        <Dropdown.Item href="#/action-1" className="ms-3">
+        <Dropdown.Item href="/UsersPage" className="ms-3" >
         See All Users
         </Dropdown.Item>
-        <Dropdown.Item href="#/action-2" className="ms-3">See All Pets</Dropdown.Item>
-        <Dropdown.Item href="#/action-3" id="add-pet">
+        <Dropdown.Item href="/ManagePets" className="ms-3">See All Pets</Dropdown.Item>
+        <Dropdown.Item href="#addpet" id="add-pet">
             <PetModal />
         </Dropdown.Item>
       </DropdownButton>

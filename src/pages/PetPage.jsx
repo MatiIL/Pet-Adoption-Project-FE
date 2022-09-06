@@ -1,19 +1,22 @@
 import { usePetsContext } from "../context/PetsContext";
+import { useAuthContext } from "../context/AuthContext";
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Form from "react-bootstrap/Form";
 
 function PetPage() {
+  
   const { getPet, pet, savePet, removePet, adoptOrFoster, returnPet } = usePetsContext();
+  const { token, loggedUser } = useAuthContext();
+  const currentStatus = pet.adoptionStatus;
+  const userId = loggedUser.userId;
+  const petOwner = pet.ownerId;
   let navigate = useNavigate();
   const param = useParams();
   const petId = param.petId;
   const [isChecked, setIsChecked] = useState(false);
-  const [canAdopt, setCanAdopt] = useState(true);
-  const [canFoster, setCanFoster] = useState(true);
-  const [canReturn, setCanReturn] = useState(false);
 
   const toggleCheck = () => {
     setIsChecked(prev => !prev);
@@ -29,19 +32,11 @@ function PetPage() {
     }
     if (e.target.innerText === "Return") {
       returnPet(petId);
-      setCanReturn(false);
-      setCanAdopt(true);
-      setCanFoster(true);
+      window.location.reload();
     } else {
-    adoptOrFoster(userPetAction);
-    } if (e.target.innerText === "Adopt") {
-      setCanReturn(true);
-      setCanFoster(false);
-      setCanAdopt(false);
-    } else {
-      setCanReturn(true);
-      setCanAdopt(true);
-    }
+      adoptOrFoster(userPetAction);
+      window.location.reload();
+     }
   }
 
   useEffect(() => {
@@ -75,7 +70,7 @@ function PetPage() {
         <div className="back-to-search position-absolute top-25 start-0 d-flex ms-2">
           <span
             className="material-symbols-outlined"
-            onClick={() => navigate("/FindPet")}
+            onClick={() => navigate(-1)}
           >
             arrow_back_ios_new
           </span>
@@ -92,28 +87,28 @@ function PetPage() {
           <li className="list-group-item text-start">Height: {pet.height}</li>
           <li className="list-group-item text-start">Weight: {pet.weight}</li>
           <ButtonGroup className="pet-actions mt-2 ms-2">
-            <Button variant="outline-secondary" disabled={canFoster? false:true}
+            <Button variant="outline-secondary"
+            className={token && currentStatus === "1"? "visible":"d-none"} 
             onClick={handleClick}
             >Foster</Button>
-            <Button variant="outline-secondary" disabled={canAdopt? false:true}
+            <Button variant="outline-secondary" 
+            className={token && (currentStatus === "1" || currentStatus === "2")? "visible":"d-none"} 
             onClick={handleClick}
             >Adopt</Button>
-            <Button variant="outline-secondary" disabled={canReturn? false:true}
+            <Button variant="outline-secondary" 
+            className={token && petOwner === userId? "visible":"d-none"} 
             onClick={handleClick}
             >Return</Button>
           </ButtonGroup>
           <div className="save d-flex flex-row-reverse justify-content-end m-2">
-          <label className="ms-2">Save to List</label>
+          <label className={token? "visible ms-2":"visually-hidden"}>Save to List</label>
           <Form.Check
-            className=""
+            className={token? "visible":"visually-hidden"}
             type="checkbox"
             onChange={toggleCheck}
           />
           </div>
         </ul>
-        {/* <div className="buttons">
-          
-        </div> */}
         <div className="img-box text-center">
           <img
             src={pet.picture}
