@@ -1,7 +1,7 @@
-import Modal from "react-bootstrap/Modal";
-import SignupForm from "./SignupForm";
-import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal"
+import SignupForm from "./SignupForm"
+import React, { useState } from "react"
+import Button from "react-bootstrap/Button"
 
 function SignupModal(props) {
   const { handleClose } = props;
@@ -12,12 +12,16 @@ function SignupModal(props) {
   const handleSubmit = (num) => {
     if(num === 1) setShow(false);
   }
+
+  const cursorPoint = () => {
+    const style = "cursor:'pointer'";
+  }
+
   
   return (
     <>
-      <a href="/#" className='links mt-2 link-dark text-decoration-none' onClick={handleShow}>
-        Need an account? <u>SIGN UP</u>
-      </a>
+      <a href='#' className='links mt-2 link-dark text-decoration-none' onClick={handleShow}>
+        Need an account? <u className="clickable-singup">SIGN UP</u></a>
       <Modal
         id="sign-modal"
         show={show}

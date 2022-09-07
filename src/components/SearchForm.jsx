@@ -64,7 +64,7 @@ function SearchForm() {
             <option value="1">Cat</option>
             <option value="2">Dog</option>
           </Form.Select>
-          <Button id="search-btn" onClick={searchPets} className="">
+          <Button variant="success" id="search-btn" onClick={searchPets} className="">
             Search
           </Button>
         </div>

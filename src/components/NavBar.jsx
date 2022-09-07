@@ -7,7 +7,7 @@ import { useAuthContext } from "../context/AuthContext"
 
 function NavBar() {
   const [isActive, setIsActive] = useState(false);
-  const { logout, token } = useAuthContext();
+  const { logout, token, isAdmin } = useAuthContext();
   
   useEffect(() => {
     if (window.location.pathname === "/FindPet") {
@@ -18,8 +18,8 @@ function NavBar() {
   }, []);
 
   return (
-    <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark">
-      <AdminMenu/>
+    <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark" className="navbar">
+      {isAdmin? <AdminMenu/> : ""}
       <Container>
         
         <Navbar.Brand
@@ -51,9 +51,9 @@ function NavBar() {
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
-          <Nav className="me-3">
+          <Nav className="">
             <div className="log-button d-flex">
-            { token  ? (<Button variant="secondary" className="ms-2"
+            { token  ? (<Button variant="secondary" className="me-5"
             onClick={logout}
             >
               Logout</Button>): <LoginModal />}

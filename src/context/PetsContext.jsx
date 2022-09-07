@@ -113,9 +113,9 @@ export default function PetsContextProvider({ children }) {
     }
   };
 
-  const updatePet = async (petId, petData) => {
+  const updatePet = async (userId, petId, petData) => {
     try {
-      const res = await axios.put(`${petsRoute}/${petId}`, petData, {
+      const res = await axios.put(`${petsRoute}/${userId}/${petId}`, petData, {
         withCredentials: true,
       });
       if (res.data) {

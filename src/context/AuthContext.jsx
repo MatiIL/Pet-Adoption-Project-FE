@@ -16,7 +16,7 @@ export default function AuthContextProvider({ children }) {
     const [emailTaken, setEmailTaken] = useState(false);
     const [isTakenMessage, setIsTakenMessage] = useState("");
     const [allUsers, setAllUsers] = useState([]);
-    const [isAdmin, setIsAdmin] = useState(true); //change default to false
+    const [isAdmin, setIsAdmin] = useState(false); 
     const [fullUserInfo, setFullUserInfo] = useState([]);
 
     const authNewUser = async (newUser) => {
@@ -34,7 +34,8 @@ export default function AuthContextProvider({ children }) {
       try {
         const res = await axios.post(`${usersRoute}/login`, logAttempt, { withCredentials: true  });
         if (res.data) {
-          setLoggedUser(res.data.user);
+          const userObj = res.data.user;
+          setLoggedUser(userObj);
         }
       } catch (err) {
         console.log(err);
@@ -47,11 +48,17 @@ export default function AuthContextProvider({ children }) {
         if (res.data) {
           setLoggedUser(res.data);
           setToken(true);
+          if (res.data.isAdmin) 
+          setIsAdmin(true);
         }
       } catch (err) {
         console.log(err);
       }
     }
+
+    useEffect(() => {
+      currentUserAuth();
+     }, []);
 
     const logout = async () => {
       try {
@@ -82,10 +89,6 @@ export default function AuthContextProvider({ children }) {
       console.log(err);
     }
   }
-
-  useEffect(() => {
-    currentUserAuth();
-   }, []);
 
    const getAllUsers = async () => {
     try {

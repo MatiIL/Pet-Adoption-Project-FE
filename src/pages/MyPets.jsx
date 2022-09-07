@@ -16,12 +16,12 @@ function MyPets() {
   }, []);
 
   return (
-    <div className="d-flex flex-column justify-content-around mt-3">
+    <div className="d-flex flex-column justify-content-center mt-3">
       {token ? "" : <h1>You currently do not own or foster any pets</h1>}
-      <div className="all-pets d-flex justify-content-evenly">
-        <Container className="mt-2 ms-4">
+      <div className="all-pets d-flex justify-content-center">
+        <Container className="mt-2">
           {token ? <h2>Pets You Own</h2> : ""}
-          <Row className="mt-3">
+          <Row className="mt-3 w-50">
             {ownedPets &&
               ownedPets.map((pet) => (
                 <Col key={pet.petId} md={10}>
@@ -31,7 +31,7 @@ function MyPets() {
           </Row>
         </Container>
 
-        <Container className="mt-2">
+        <Container className="mt-2 w-75">
           {token ? <h2>Your Saved Pets List</h2> : ""}
           <Row className="mt-3">
             {savedPets &&

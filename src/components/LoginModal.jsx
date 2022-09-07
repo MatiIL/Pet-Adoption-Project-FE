@@ -73,11 +73,11 @@ function LoginModal() {
             <Button variant="secondary" className="me-2" onClick={handleClose}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleLogin}>
+            <Button variant="success" onClick={handleLogin}>
               Login
             </Button>
           </div>
-          <SignupModal handleClose={handleClose}/>
+          <SignupModal handleClose={handleClose} handleShow={handleShow}/>
         </Modal.Footer>
       </Modal>
     </>

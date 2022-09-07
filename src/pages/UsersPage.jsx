@@ -6,6 +6,7 @@ import SignupForm from '../components/SignupForm'
 function UsersPage() {
   const { getAllUsers, allUsers, getUserInfo, isAdmin } = useAuthContext();
   const [lgShow, setLgShow] = useState(false);
+  const [wasUserClicked, setWasUserClicked] = useState(false);
 
   const handleClose = () => {
     setLgShow(false);
@@ -18,6 +19,7 @@ function UsersPage() {
   const handleClick = async (e) => {
       if (isAdmin) {
         await getUserInfo(e.target.innerText);
+        setWasUserClicked(true);
         setLgShow(true);
     }
   }
@@ -27,8 +29,8 @@ function UsersPage() {
       <div className="users-list d-flex flex-column w-25">
         <h3>All Users</h3>
 
-        <Container fluid>
-          <Row className="d-flex flex-wrap">
+        <Container fluid className="d-flex flex-wrap ms-3">
+          <Row >
             {allUsers.map((user) => (
               <Stack
                 key={user.userId}
@@ -61,7 +63,7 @@ function UsersPage() {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <SignupForm />
+            <SignupForm wasUserClicked={wasUserClicked}/>
         </Modal.Body>
         </Modal>
     </div>

@@ -6,8 +6,8 @@ import { useAuthContext } from "../context/AuthContext";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 function SignupForm(props) {
-  const { handleSubmit, closeSignup } = props;
-  const { authNewUser, registeredUser, token, loggedUser, updateUserDetails, updatedUser, emailTaken, isTakenMessage, fullUserInfo, isAdmin } = useAuthContext();
+  const { handleSubmit, closeSignup, wasUserClicked } = props;
+  const { authNewUser, registeredUser, token, loggedUser, updateUserDetails, updatedUser, emailTaken, isTakenMessage, fullUserInfo, isAdmin, handleShow } = useAuthContext();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [repeatPass, setRepeatPass] = useState("");
@@ -29,8 +29,7 @@ function SignupForm(props) {
       }
     }, [token, loggedUser]);
 
-  const signupUser = (e) => {
-    e.preventDefault();
+  const signupUser = () => {
     const newUser = {
       email: email,
       password: pass,
@@ -42,8 +41,9 @@ function SignupForm(props) {
     try {
       authNewUser(newUser);
       if (registeredUser) {
-        handleSubmit();
         closeSignup();
+        handleSubmit();
+        handleShow();
       }
     } catch (err) {
       console.error(err);
@@ -80,14 +80,14 @@ function SignupForm(props) {
         <Form.Group className="mb-2" controlId="formBasicEmail">
           <Form.Label>Email Address</Form.Label>
           <Form.Control
-            value={isAdmin? clickedUser.email : email}
+            value={isAdmin && wasUserClicked? clickedUser.email : email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="name@example.com"
             autoFocus
           />
         </Form.Group>
-        {isAdmin? <div className="d-flex flex-column justify-content-evenly mt-2">
+        {isAdmin && wasUserClicked? <div className="d-flex flex-column justify-content-evenly mt-2">
           <u>User Pets</u>
           {clickedUserPets.map((pet) => (
             <ul key={pet.petId} className="mt-2">
@@ -123,7 +123,7 @@ function SignupForm(props) {
             className="mt-3"
           >
             <Form.Control
-              value={isAdmin? clickedUser.bio : bio}
+              value={isAdmin && wasUserClicked? clickedUser.bio : bio}
               onChange={(e) => setBio(e.target.value)}
               // as="textarea"
               placeholder="User's Bio"
@@ -136,7 +136,7 @@ function SignupForm(props) {
         <Form.Group className="mb-2" controlId="formBasicFirstName">
           <Form.Label>First Name</Form.Label>
           <Form.Control
-            value={isAdmin? clickedUser.firstName : firstName}
+            value={isAdmin && wasUserClicked? clickedUser.firstName : firstName}
             onChange={(e) => setFirstName(e.target.value)}
             type="text"
           />
@@ -144,7 +144,7 @@ function SignupForm(props) {
         <Form.Group className="mb-2" controlId="formBasicLastName">
           <Form.Label>Last Name</Form.Label>
           <Form.Control
-            value={isAdmin? clickedUser.lastName : lastName}
+            value={isAdmin && wasUserClicked? clickedUser.lastName : lastName}
             onChange={(e) => setLastName(e.target.value)}
             type="text"
           />
@@ -152,15 +152,15 @@ function SignupForm(props) {
         <Form.Group className="mb-2" controlId="formBasicPhone">
           <Form.Label>Phone Number</Form.Label>
           <Form.Control
-            value={isAdmin? clickedUser.phone : phone}
+            value={isAdmin && wasUserClicked? clickedUser.phone : phone}
             onChange={(e) => setPhone(e.target.value)}
             type="number"
           />
         </Form.Group>
-        {isAdmin? "":
+        {isAdmin && wasUserClicked? "":
         (<Button
           type="submit"
-          variant="primary"
+          variant="success"
           onClick={token? saveUserDetails : signupUser}
           className={token? "w-50 mt-5 mx-auto align-self-end":"w-50 mt-2 align-self-end"}
         >

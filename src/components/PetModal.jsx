@@ -5,18 +5,18 @@ import PetForm from "./PetForm";
 import { usePetsContext } from "../context/PetsContext";
 import { useAuthContext } from "../context/AuthContext";
 
-function PetModal({ pet }) {
+function PetModal() {
   const { isAdmin } = useAuthContext();
   const [editPet, setEditPet] = useState(false);
   const [lgShow, setLgShow] = useState(false);
-  const [petId, setPetId] = useState()
+  const [petId, setPetId] = useState(0)
 
   useEffect(() => {
     const endOfPath = window.location.pathname.slice(-1);
     if (!isNaN(endOfPath)) {
-      const firstStep = window.location.pathname.match(/\d+/g);
-      const secondStep = parseInt(firstStep[0]);
-      setPetId(secondStep);
+      const exctractId = window.location.pathname.match(/\d+/g);
+      const petIdNumber = parseInt(exctractId[0]);
+      setPetId(petIdNumber);
       setEditPet(true);
     }
   }, []);
@@ -26,8 +26,7 @@ function PetModal({ pet }) {
   };
 
   const handleClick = () => {
-    // setClickedPetValues(true);
-    setLgShow(true);
+    if (isAdmin) setLgShow(true);
   };
 
   return (
@@ -40,6 +39,7 @@ function PetModal({ pet }) {
         show={lgShow}
         onHide={handleClose}
         aria-labelledby="example-modal-sizes-title-lg"
+        backdrop="static"
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-lg">
