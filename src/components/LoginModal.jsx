@@ -77,7 +77,7 @@ function LoginModal() {
               Login
             </Button>
           </div>
-          <SignupModal handleClose={handleClose} handleShow={handleShow}/>
+          <SignupModal handleClose={handleClose}/>
         </Modal.Footer>
       </Modal>
     </>

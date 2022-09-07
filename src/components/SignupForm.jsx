@@ -7,7 +7,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 function SignupForm(props) {
   const { handleSubmit, closeSignup, wasUserClicked } = props;
-  const { authNewUser, registeredUser, token, loggedUser, updateUserDetails, updatedUser, emailTaken, isTakenMessage, fullUserInfo, isAdmin, handleShow } = useAuthContext();
+  const { authNewUser, registeredUser, token, loggedUser, updateUserDetails, updatedUser, emailTaken, isTakenMessage, fullUserInfo, isAdmin } = useAuthContext();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [repeatPass, setRepeatPass] = useState("");
@@ -29,7 +29,8 @@ function SignupForm(props) {
       }
     }, [token, loggedUser]);
 
-  const signupUser = () => {
+  const signupUser = async (e) => {
+    e.preventDefault();
     const newUser = {
       email: email,
       password: pass,
@@ -39,11 +40,10 @@ function SignupForm(props) {
       phone: phone,
     };
     try {
-      authNewUser(newUser);
+      await authNewUser(newUser);
       if (registeredUser) {
         closeSignup();
         handleSubmit();
-        handleShow();
       }
     } catch (err) {
       console.error(err);
