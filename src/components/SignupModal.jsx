@@ -13,11 +13,6 @@ function SignupModal(props) {
     if(num === 1) setShow(false);
   }
 
-  const cursorPoint = () => {
-    const style = "cursor:'pointer'";
-  }
-
-  
   return (
     <>
       <a href='#' className='links mt-2 link-dark text-decoration-none' onClick={handleShow}>

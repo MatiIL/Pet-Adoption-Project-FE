@@ -1,14 +1,11 @@
-import { usePetsContext } from "../context/PetsContext";
-import { useAuthContext } from "../context/AuthContext";
-import { useEffect, useState } from "react";
+import { usePetsContext } from "../context/PetsContext"
+import { useAuthContext } from "../context/AuthContext"
+import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import Form from "react-bootstrap/Form";
+import { Button, ButtonGroup, Form }from "react-bootstrap"
 
 function PetPage() {
-  
-  const { getPet, pet, savePet, removePet, adoptOrFoster, returnPet } = usePetsContext();
+  const { getPet, pet, savePet, removePet, adoptOrFoster, returnPet, getUserPets, userPetsList } = usePetsContext();
   const { token, loggedUser } = useAuthContext();
   const currentStatus = pet.adoptionStatus;
   const userId = loggedUser.userId;
@@ -60,11 +57,9 @@ function PetPage() {
   
   return (
     <div className="pet-page">
-      <h2 className="mt-4">
+      <h2 className="pt-3 fw-semibold">
         Hello! my name is {pet.name} and I'm a {pet.breed}{" "}
-        {pet.type === "1" ? "Cat" : "Dog"}.
       </h2>
-      
       <div className="pets-details d-flex justify-content-center">
         
         <div className="back-to-search position-absolute top-25 start-0 d-flex ms-2">
@@ -75,7 +70,8 @@ function PetPage() {
             arrow_back_ios_new
           </span>
         </div>
-        <ul className="list-group list-group-flush w-50 mt-5 me-2 d-flex">
+        <div className="details-and-actions d-flex ">
+        <ul className="list-group list-group-flush w-75 mt-5 me-2 d-flex fw-semibold">
           <li className="list-group-item text-start">Status: {petStatus}</li>
           <li className="list-group-item text-start">
             Hypoallergenic? {pet.hypoallergnic ? "yes" : "no"}
@@ -86,21 +82,9 @@ function PetPage() {
           <li className="list-group-item text-start">Color: {pet.color}</li>
           <li className="list-group-item text-start">Height: {pet.height}</li>
           <li className="list-group-item text-start">Weight: {pet.weight}</li>
-          <ButtonGroup className="pet-actions mt-2 ms-2">
-            <Button variant="outline-secondary"
-            className={token && currentStatus === "1"? "visible":"d-none"} 
-            onClick={handleClick}
-            >Foster</Button>
-            <Button variant="outline-secondary" 
-            className={token && (currentStatus === "1" || currentStatus === "2")? "visible":"d-none"} 
-            onClick={handleClick}
-            >Adopt</Button>
-            <Button variant="outline-secondary" 
-            className={token && petOwner === userId? "visible":"d-none"} 
-            onClick={handleClick}
-            >Return</Button>
-          </ButtonGroup>
-          <div className="save d-flex flex-row-reverse justify-content-end m-2">
+          </ul>
+          <div className="btns-and-checkbox mt-5 fw-semibold">
+          <div className="save d-flex flex-row-reverse justify-content-end m-2 w-100">
           <label className={token? "visible ms-2":"visually-hidden"}>Save to List</label>
           <Form.Check
             className={token? "visible":"visually-hidden"}
@@ -108,7 +92,23 @@ function PetPage() {
             onChange={toggleCheck}
           />
           </div>
-        </ul>
+          <ButtonGroup className="pet-actions mt-2 ms-2">
+            <Button variant="outline-secondary"
+            className={token && currentStatus === "1"? "visible":"d-none"} 
+            onClick={handleClick}
+            >Foster</Button>
+            <Button variant="outline-secondary" 
+            className={token && (currentStatus === "1" || currentStatus === "2")? "visible ms-2":"d-none"} 
+            onClick={handleClick}
+            >Adopt</Button>
+            <Button variant="outline-secondary" 
+            className={token && petOwner === userId? "visible ms-2":"d-none"} 
+            onClick={handleClick}
+            >Return</Button>
+          </ButtonGroup>
+          
+          </div>
+          </div>
         <div className="img-box text-center">
           <img
             src={pet.picture}
@@ -116,7 +116,7 @@ function PetPage() {
             className="img-fluid mt-4 border border-2 rounded-pill"
             style={{ height: "280px", objectFit: "cover" }}
           />
-          <div className="pets-bio mt-3 w-75 mx-auto">{pet.bio}</div>
+          <div className="pets-bio mt-3 w-75 mx-auto fw-semibold p-2 rounded bg-white">{pet.bio}</div>
         </div>
       </div>
     </div>

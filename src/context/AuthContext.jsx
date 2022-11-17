@@ -3,8 +3,8 @@ import axios from 'axios';
 
 export const AuthContext = createContext(true);
 
-export function useAuthContext() {
-    return useContext(AuthContext);
+export const useAuthContext = () => {
+  return useContext(AuthContext);
 }
 
 export default function AuthContextProvider({ children }) {
@@ -36,21 +36,24 @@ export default function AuthContextProvider({ children }) {
         if (res.data) {
           const userObj = res.data.user;
           setLoggedUser(userObj);
-        }
+          setToken(true);
+          }
       } catch (err) {
         console.log(err);
       }
     }
 
-    async function currentUserAuth() {
+    function currentUserAuth() {
       try {
-        const res = await axios.get('http://localhost:8080/users/', { withCredentials: true });
+        return axios.get('http://localhost:8080/users/', { withCredentials: true }).then( (res) => {
         if (res.data) {
-          setLoggedUser(res.data);
-          setToken(true);
-          if (res.data.isAdmin) 
-          setIsAdmin(true);
-        }
+            setLoggedUser(res.data);
+            setToken(true);
+            if (res.data.isAdmin) {
+              setIsAdmin(true);
+            }
+          }
+        });
       } catch (err) {
         console.log(err);
       }
@@ -58,7 +61,7 @@ export default function AuthContextProvider({ children }) {
 
     useEffect(() => {
       currentUserAuth();
-     }, []);
+    }, []);
 
     const logout = async () => {
       try {
@@ -111,5 +114,5 @@ export default function AuthContextProvider({ children }) {
    }
 
   
-    return <AuthContext.Provider value={{ authNewUser, registeredUser, loginUser, loggedUser, setLoggedUser, logout, token, setToken, currentUserAuth, updateUserDetails, updatedUser, emailTaken, isTakenMessage, getAllUsers, allUsers, getUserInfo, fullUserInfo, isAdmin }}>{children}</AuthContext.Provider>
+    return <AuthContext.Provider value={{ authNewUser, registeredUser, loginUser, loggedUser, setLoggedUser, logout, token, setToken, updateUserDetails, updatedUser, emailTaken, isTakenMessage, getAllUsers, allUsers, getUserInfo, fullUserInfo, isAdmin }}>{children}</AuthContext.Provider>
 }

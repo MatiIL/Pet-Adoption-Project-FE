@@ -1,9 +1,6 @@
-import { useAuthContext } from "./context/AuthContext"
 import PetsContextProvider from "./context/PetsContext"
+import AuthContextProvider from "./context/AuthContext"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import UserRoutes from "./routes/UserRoutes"
-import AdminRoutes from "./routes/AdminRoutes"
-import { useEffect } from "react"
 import HomePage from "./pages/HomePage"
 import FindPet from "./pages/FindPet"
 import PetPage from "./pages/PetPage"
@@ -15,14 +12,10 @@ import UsersPage from "./pages/UsersPage"
 import ManagePets from "./pages/ManagePets"
 
 function App() {
-  // const { currentUserAuth, isAdmin } = useAuthContext();
-
-  // useEffect(() => {
-  //   currentUserAuth();
-  //  }, []);
 
   return (
     <PetsContextProvider>
+      <AuthContextProvider>
       <div className="App">
         <BrowserRouter>
           <NavBar fixed="top" />
@@ -30,20 +23,12 @@ function App() {
             <Route
               exact
               path="/UsersPage"
-              element={
-                <AdminRoutes >
-                  <UsersPage/>
-                 </AdminRoutes>
-              }
+              element={<UsersPage/>}
             />
             <Route
               exact
               path="ManagePets"
-              element={
-                <AdminRoutes>
-                  <ManagePets />
-                </AdminRoutes>
-              }
+              element={<ManagePets />}
             />
             <Route exact path="/" element={<HomePage />} />
             <Route exact path="/FindPet" element={<FindPet />} />
@@ -51,24 +36,17 @@ function App() {
             <Route
               exact
               path="/MyPets"
-              element={
-                <UserRoutes>
-                  <MyPets />
-                </UserRoutes>
-              }
+              element={<MyPets />}
             />
             <Route
               exact
               path="/MyProfile"
-              element={
-                <UserRoutes>
-                  <MyProfile />
-                </UserRoutes>
-              }
+              element={<MyProfile />}
             />
           </Routes>
         </BrowserRouter>
       </div>
+      </AuthContextProvider>
     </PetsContextProvider>
   );
 }

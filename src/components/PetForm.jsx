@@ -242,6 +242,7 @@ function PetForm(props) {
           />
         </FloatingLabel>
         <Button
+        variant="success"
           className="position-absolute bottom-0 end-0 me-2 mb-2"
           onClick={isAdmin && petId ? handleUpdate : handleSubmit}
         >

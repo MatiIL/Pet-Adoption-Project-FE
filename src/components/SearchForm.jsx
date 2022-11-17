@@ -1,9 +1,9 @@
-import { usePetsContext } from "../context/PetsContext";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
-import SearchPetResults from "./SearchPetResults";
-import { useState } from "react";
+import { usePetsContext } from "../context/PetsContext"
+import Form from "react-bootstrap/Form"
+import Button from "react-bootstrap/Button"
+import FloatingLabel from "react-bootstrap/FloatingLabel"
+import SearchPetResults from "./SearchPetResults"
+import { useState, useEffect } from "react"
 
 function SearchForm() {
   const { fetchPets, petsList } = usePetsContext();
@@ -16,22 +16,18 @@ function SearchForm() {
   const [minWeight, setMinWeight] = useState(0);
   const [maxWeight, setMaxWeight] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-
-  const toggleCheck = () => {
-    setIsChecked(!isChecked);
-  };
+  const searchParams = {
+    type: type,
+    status: status,
+    name: name,
+    minHeight: minHeight,
+    maxHeight: maxHeight,
+    minWeight: minWeight,
+    maxWeight: maxWeight,
+  }
 
   const searchPets = async () => {
     setIsLoading(true);
-    const searchParams = {
-      type: type,
-      status: status,
-      name: name,
-      minHeight: minHeight,
-      maxHeight: maxHeight,
-      minWeight: minWeight,
-      maxWeight: maxWeight,
-    }
     try {
       fetchPets(searchParams);
     }
@@ -41,8 +37,22 @@ function SearchForm() {
     setIsLoading(false);
   };
 
+  useEffect(() => {
+    searchPets();
+  }, []);
+
+  const toggleCheck = () => {
+    setIsChecked(!isChecked);
+    setStatus("");
+    setName("");
+    setMinHeight(0);
+    setMaxHeight(0);
+    setMinWeight(0);
+    setMaxWeight(0);
+  };
+
   return (
-    <div className="wrapper">
+    <div className="wrapper bg-light">
       <div className="search-bar d-flex flex-column justify-content-center mt-2">
         <div className="d-flex flex-row-reverse mt-2 mb-2 mx-auto">
           <label className="">Advanced Search</label>
@@ -53,7 +63,7 @@ function SearchForm() {
             onChange={toggleCheck}
           />
         </div>
-        <div className="d-flex justify-content-between mx-auto">
+        <div className="d-flex justify-content-evenly mx-auto">
           <Form.Select
             aria-label="pet's type"
             className="me-2"
@@ -64,16 +74,16 @@ function SearchForm() {
             <option value="1">Cat</option>
             <option value="2">Dog</option>
           </Form.Select>
-          <Button variant="success" id="search-btn" onClick={searchPets} className="">
+          <Button variant="outline-secondary" id="search-btn" onClick={searchPets} className="">
             Search
           </Button>
         </div>
         <div className={isChecked ? "d-block" : "d-none"}>
-          <div className="d-flex flex-wrap  align-items-center mt-2">
+          <div className="d-flex flex-wrap align-items-center mt-2">
             <div className="status-name d-flex justify-content-evenly">
             <Form.Select
               aria-label="pet's status"
-              className="advnc-srch ms-3 mt-3 mb-3"
+              className="advnc-srch  mt-3 mb-3"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
@@ -83,20 +93,20 @@ function SearchForm() {
               <option value="3">Adopted</option>
             </Form.Select>
             <Form.Control
-              className="advnc-srch m-3"
+              className="advnc-srch mt-3 mb-3"
               type="text"
               placeholder="Name"
               value={name} onChange={(e) => setName(e.target.value)}
             />
             </div>
-            <div className="h-and-w d-flex flex-wrap justify-content-evenly">
+            <div className="h-and-w d-flex flex-wrap">
             <FloatingLabel
                 controlId="floatingInput"
                 label="Min Height (cm)"
               >
             <Form.Control
               className="height-and-weight m-2"
-              type="numbe"
+              type="number"
               value={minHeight} onChange={(e) => setMinHeight(e.target.value)}
             /> 
             </FloatingLabel>

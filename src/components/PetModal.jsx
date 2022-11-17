@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import PetForm from "./PetForm";
-import { usePetsContext } from "../context/PetsContext";
-import { useAuthContext } from "../context/AuthContext";
+import React, { useState, useEffect } from "react"
+import Button from "react-bootstrap/Button"
+import Modal from "react-bootstrap/Modal"
+import PetForm from "./PetForm"
+import { useAuthContext } from "../context/AuthContext"
 
 function PetModal() {
   const { isAdmin } = useAuthContext();

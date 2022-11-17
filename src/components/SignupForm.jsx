@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import { useAuthContext } from "../context/AuthContext";
-// import { useNavigate } from "react-router-dom";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
+import React, { useEffect, useState } from "react"
+import Button from "react-bootstrap/Button"
+import Form from "react-bootstrap/Form"
+import { useAuthContext } from "../context/AuthContext"
+import FloatingLabel from "react-bootstrap/FloatingLabel"
 
 function SignupForm(props) {
   const { handleSubmit, closeSignup, wasUserClicked } = props;
@@ -78,7 +77,7 @@ function SignupForm(props) {
     <Form className="d-flex justify-content-evenly">
       <div className="left-col d-flex flex-column">
         <Form.Group className="mb-2" controlId="formBasicEmail">
-          <Form.Label>Email Address</Form.Label>
+          <Form.Label className="user-form-label">Email Address</Form.Label>
           <Form.Control
             value={isAdmin && wasUserClicked? clickedUser.email : email}
             onChange={(e) => setEmail(e.target.value)}
@@ -101,7 +100,7 @@ function SignupForm(props) {
         </div> : 
         
         (<div className="set-password"><Form.Group className="mb-2" controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label className="user-form-label">Password</Form.Label>
           <Form.Control
             value={pass}
             onChange={(e) => setPass(e.target.value)}
@@ -109,7 +108,7 @@ function SignupForm(props) {
           />
         </Form.Group>
         <Form.Group className="mb-2" controlId="formBasicPasswordRepeated">
-          <Form.Label>Retype Password</Form.Label>
+          <Form.Label className="user-form-label">Retype Password</Form.Label>
           <Form.Control
             value={repeatPass}
             onChange={(e) => setRepeatPass(e.target.value)}
@@ -134,7 +133,7 @@ function SignupForm(props) {
       </div>
       <div className="right-col d-flex flex-column">
         <Form.Group className="mb-2" controlId="formBasicFirstName">
-          <Form.Label>First Name</Form.Label>
+          <Form.Label className="user-form-label">First Name</Form.Label>
           <Form.Control
             value={isAdmin && wasUserClicked? clickedUser.firstName : firstName}
             onChange={(e) => setFirstName(e.target.value)}
@@ -142,7 +141,7 @@ function SignupForm(props) {
           />
         </Form.Group>
         <Form.Group className="mb-2" controlId="formBasicLastName">
-          <Form.Label>Last Name</Form.Label>
+          <Form.Label className="user-form-label">Last Name</Form.Label>
           <Form.Control
             value={isAdmin && wasUserClicked? clickedUser.lastName : lastName}
             onChange={(e) => setLastName(e.target.value)}
@@ -150,7 +149,7 @@ function SignupForm(props) {
           />
         </Form.Group>
         <Form.Group className="mb-2" controlId="formBasicPhone">
-          <Form.Label>Phone Number</Form.Label>
+          <Form.Label className="user-form-label">Phone Number</Form.Label>
           <Form.Control
             value={isAdmin && wasUserClicked? clickedUser.phone : phone}
             onChange={(e) => setPhone(e.target.value)}
@@ -160,7 +159,7 @@ function SignupForm(props) {
         {isAdmin && wasUserClicked? "":
         (<Button
           type="submit"
-          variant="success"
+          variant="secondary"
           onClick={token? saveUserDetails : signupUser}
           className={token? "w-50 mt-5 mx-auto align-self-end":"w-50 mt-2 align-self-end"}
         >

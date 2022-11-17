@@ -33,9 +33,9 @@ function HomePage() {
   return (
     <div className="wrapper d-flex flex-column justify-content-around">
       <div className="mt-4">
-        <h1>{token ? `Welcome ${userName}!` : "Welcome To The Site!"}</h1>
+        <h1>{token ? `Welcome ${userName}!` : "Welcome To The Pet Adoption Center!"}</h1>
       </div>
-      <div className="mt-3 w-50 text-center align-self-center">
+      <div className="mt-3 w-50 text-center align-self-center fs-5">
         {welcomeMsg}
       </div>
     </div>

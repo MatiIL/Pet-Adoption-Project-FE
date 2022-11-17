@@ -1,10 +1,7 @@
-import { useAuthContext } from "../context/AuthContext"
-import PetModal from "./PetModal"
 import { Card } from "react-bootstrap"
 import { Link } from "react-router-dom"
 
 function PetCard({ pet }) {
-  const { isAdmin } = useAuthContext();
 
   let petStatus = "";
   switch (pet.adoptionStatus) {
@@ -34,7 +31,6 @@ function PetCard({ pet }) {
         <small className="text-muted border border-dark rounded-pill p-2">
           {petStatus}
         </small>
-        {/* {isAdmin ? <PetModal pet={pet} /> : ""} */}
         <Link
           to={`/PetPage/${pet.petId}`}
           id="see-more"

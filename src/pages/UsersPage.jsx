@@ -29,7 +29,7 @@ function UsersPage() {
       <div className="users-list d-flex flex-column w-25">
         <h3>All Users</h3>
 
-        <Container fluid className="d-flex flex-wrap ms-3">
+        <Container fluid className="d-flex flex-wrap ms-3 bg-light">
           <Row >
             {allUsers.map((user) => (
               <Stack

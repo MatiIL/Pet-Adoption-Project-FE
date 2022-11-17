@@ -23,7 +23,7 @@ function LoginModal() {
       await loginUser(logAttempt);
       if (loggedUser) {
         handleClose();
-        window.location.reload();
+        // window.location.reload();
       }
     } catch (err) {
       console.error(err);
@@ -32,7 +32,7 @@ function LoginModal() {
 
   return (
     <>
-      <Button variant="secondary" onClick={handleShow}>
+      <Button variant="outline-secondary" onClick={handleShow}>
         Login/Signup
       </Button>
 

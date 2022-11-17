@@ -1,5 +1,5 @@
-import { Container, Row, Col } from "react-bootstrap";
-import PetCard from "./PetCard";
+import { Container, Row, Col } from "react-bootstrap"
+import PetCard from "./PetCard"
 
 function SearchPetResults(props) {
   const { petsList } = props;

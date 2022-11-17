@@ -1,8 +1,7 @@
 import { useAuthContext } from "../context/AuthContext"
 import { usePetsContext } from "../context/PetsContext"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import SearchPetResults from "../components/SearchPetResults"
-// import { Stack, Container, Row, Col, Button, Modal } from "react-bootstrap"
 
 function ManagePets() {
     const { petsList, getAllPets } = usePetsContext();
@@ -14,9 +13,9 @@ function ManagePets() {
       }, [isAdmin]);
 
       return (
-        <div className="pets-wrapper d-flex justify-content-center mt-4">
+        <div className="pets-wrapper d-flex justify-content-center bg-light">
             <div className="pets-list d-flex flex-column justify-content-center">
-        <h3>All Pets</h3>
+        <h3 className="mt-3">Review All Pets</h3>
         <SearchPetResults petsList={petsList}/>
       </div>
         </div>

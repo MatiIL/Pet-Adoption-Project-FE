@@ -18,7 +18,7 @@ function NavBar() {
   }, []);
 
   return (
-    <Navbar collapseOnSelect expand="sm" bg="dark" variant="dark" className="navbar">
+    <Navbar collapseOnSelect expand="sm"  variant="light" className="navbar">
       {isAdmin? <AdminMenu/> : ""}
       <Container>
         
@@ -53,7 +53,7 @@ function NavBar() {
           </Nav>
           <Nav className="">
             <div className="log-button d-flex">
-            { token  ? (<Button variant="secondary" className="me-5"
+            { token  ? (<Button variant="outline-secondary" className="me-5"
             onClick={logout}
             >
               Logout</Button>): <LoginModal />}

@@ -2,7 +2,7 @@ import { usePetsContext } from "../context/PetsContext";
 import { useAuthContext } from "../context/AuthContext";
 import { useEffect } from "react";
 import PetCard from "../components/PetCard";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 
 function MyPets() {
   const { token, loggedUser } = useAuthContext();
