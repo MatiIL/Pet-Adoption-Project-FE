@@ -26,12 +26,12 @@ function UsersPage() {
 
   return (
     <div className="users-wrapper d-flex mt-4">
-      <div className="users-list d-flex flex-column w-25">
-        <h3>All Users</h3>
+      <div className="users-list d-flex flex-column w-50">
+        <h3 className="users-header">All Users</h3>
 
         <Container fluid className="d-flex flex-wrap ms-3 bg-light">
           <Row >
-            {allUsers.map((user) => (
+            {allUsers && allUsers.map((user) => (
               <Stack
                 key={user.userId}
                 direction="horizontal"

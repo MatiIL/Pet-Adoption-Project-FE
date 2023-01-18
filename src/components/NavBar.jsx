@@ -32,7 +32,14 @@ function NavBar() {
     <Navbar collapseOnSelect expand="sm"  variant="light" className="navbar">
       {adminMenu? <AdminMenu/> : ""}
       <Container>
-        
+      <Nav className="">
+            <div className="log-buttons d-flex">
+            { token  ? (<Button variant="outline-secondary" className="logout-btn" 
+            onClick={logout}
+            >
+              Logout</Button>): <LoginModal />}
+              </div>
+          </Nav>
         <Navbar.Brand
           href="/"
           className={isActive ? "unselected-link" : "nav-link"}
@@ -42,12 +49,14 @@ function NavBar() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
+            
             <Nav.Link
               href="/FindPet"
-              id="find-pets"
               className={isActive ? "nav-link" : "unselected-link"}
             >
+              <div id="find-pets">
               Find Me a Pet
+              </div>
             </Nav.Link>
             <NavDropdown
               title="My Profile"
@@ -62,14 +71,7 @@ function NavBar() {
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
-          <Nav className="">
-            <div className="log-button d-flex">
-            { token  ? (<Button variant="outline-secondary" className="me-5"
-            onClick={logout}
-            >
-              Logout</Button>): <LoginModal />}
-              </div>
-          </Nav>
+          
           
         </Navbar.Collapse>
       </Container>

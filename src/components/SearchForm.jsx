@@ -83,7 +83,7 @@ function SearchForm() {
             <div className="status-name d-flex justify-content-evenly">
             <Form.Select
               aria-label="pet's status"
-              className="advnc-srch  mt-3 mb-3"
+              className="advnc-srch pet-status mt-3 mb-3"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
             >
@@ -93,13 +93,14 @@ function SearchForm() {
               <option value="3">Adopted</option>
             </Form.Select>
             <Form.Control
-              className="advnc-srch mt-3 mb-3"
+              className="advnc-srch pet-name mt-3 mb-3"
               type="text"
               placeholder="Name"
               value={name} onChange={(e) => setName(e.target.value)}
             />
             </div>
             <div className="h-and-w d-flex flex-wrap">
+              <div className="heights d-flex">
             <FloatingLabel
                 controlId="floatingInput"
                 label="Min Height (cm)"
@@ -120,6 +121,8 @@ function SearchForm() {
               value={maxHeight} onChange={(e) => setMaxHeight(e.target.value)}
             /> 
             </FloatingLabel>
+            </div>
+            <div className="weights d-flex">
             <FloatingLabel
                 controlId="floatingInput"
                 label="Min Weight (kg)"
@@ -140,6 +143,7 @@ function SearchForm() {
               value={maxWeight} onChange={(e) => setMaxWeight(e.target.value)}
             />
             </FloatingLabel>
+            </div>
             </div>
           </div>
         </div>

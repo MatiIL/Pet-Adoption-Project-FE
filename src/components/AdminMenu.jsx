@@ -11,13 +11,13 @@ function AdminMenu() {
         variant="secondary"
         menuVariant="dark"
         title="Admin Tools"
-        className="ms-3 p-2"
+        className=" p-2"
       >
         <Dropdown.Item href="/UsersPage" className="ms-3" >
         See All Users
         </Dropdown.Item>
         <Dropdown.Item href="/ManagePets" className="ms-3">See All Pets</Dropdown.Item>
-        <Dropdown.Item href="#addpet" id="add-pet">
+        <Dropdown.Item href="#">
             <PetModal />
         </Dropdown.Item>
       </DropdownButton>

@@ -16,29 +16,6 @@ import { useEffect, useState } from "react";
 import instance from "../src/context/AxiosContext";
 
 function App() {
-  // const [loggedUser, setLoggedUser] = useState({});
-  // const [token, setToken] = useState(false);
-  // const [isAdmin, setIsAdmin] = useState(false);
-
-  // async function currentUserAuth() {
-  //   try {
-  //     const res = await instance.get("http://localhost:8080/users/");
-  //     if (res.data) {
-  //       setLoggedUser(res.data);
-  //       setToken(true);
-  //       if (res.data.isAdmin) {
-  //         setIsAdmin(true);
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   currentUserAuth();
-  // }, []);
-
   return (
     <AuthContextProvider>
       <PetsContextProvider>

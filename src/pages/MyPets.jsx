@@ -17,31 +17,47 @@ function MyPets() {
 
   return (
     <div className="d-flex flex-column justify-content-center mt-3">
-      {token ? "" : <h1>You currently do not own or foster any pets</h1>}
-      <div className="all-pets d-flex justify-content-center">
-        <Container className="mt-2">
-          {token ? <h2>Pets You Own</h2> : ""}
-          <Row className="mt-3 w-50">
-            {ownedPets &&
-              ownedPets.map((pet) => (
-                <Col key={pet.petId} md={10}>
-                  <PetCard pet={pet} />
-                </Col>
-              ))}
-          </Row>
-        </Container>
+      {ownedPets && ownedPets.length > 0 ? (
+        ""
+      ) : (
+        <h1>You currently do not own or foster any pets</h1>
+      )}
+      <div className="all-pets d-flex justify-content-evenly">
+        {ownedPets && ownedPets.length > 0 ? (
+          <div className="d-flex">
+            <Container className="owned-pets-container mt-2 w-50">
+              <h2 className="bg-light bg-opacity-75 w-50 ms-4">Pets You Own</h2>
+              <Row className="owned-pets ms-3 mt-3">
+                {ownedPets &&
+                  ownedPets.map((pet) => (
+                    <Col key={pet.petId} md={6}>
+                      <PetCard pet={pet} />
+                    </Col>
+                  ))}
+              </Row>
+            </Container>
 
-        <Container className="mt-2 w-75">
-          {token ? <h2>Your Saved Pets List</h2> : ""}
-          <Row className="mt-3">
-            {savedPets &&
-              savedPets.map((pet) => (
-                <Col key={pet.petId} md={5}>
-                  <PetCard pet={pet} />
-                </Col>
-              ))}
-          </Row>
-        </Container>
+            <Container className="saved-pets mt-2 w-50">
+              {token ? (
+                <h2 className="bg-light bg-opacity-75 w-75">
+                  Your Saved Pets List
+                </h2>
+              ) : (
+                ""
+              )}
+              <Row className=" mt-3">
+                {savedPets &&
+                  savedPets.map((pet) => (
+                    <Col key={pet.petId} md={5}>
+                      <PetCard pet={pet} />
+                    </Col>
+                  ))}
+              </Row>
+            </Container>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

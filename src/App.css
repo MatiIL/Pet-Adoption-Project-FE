@@ -35,6 +35,16 @@ body {
   margin-right: 40px;
 }
 
+#find-pets {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+#hmpg-txt {
+  width: 50%;
+  text-align: left;
+}
+
 .pet-type {
   display: flex;
   justify-content: safe;
@@ -55,7 +65,7 @@ input#search-type.form-check-input[type="checkbox"] {
 }
 
 .height-and-weight {
-  width: 75%;
+  width: 55%;
 }
 
 #see-more:hover {
@@ -72,7 +82,7 @@ input#search-type.form-check-input[type="checkbox"] {
   overflow: hidden;
 }
 
-.back-to-search span {
+.back-to-search {
   cursor: pointer;
 }
 
@@ -82,16 +92,48 @@ input#search-type.form-check-input[type="checkbox"] {
 
 }
 
+@media (min-width: 994px) {
+.navbar-expand-sm .navbar-nav .nav-link {
+  width: 80%;
+}
+}
+
 @media screen and (max-width: 802px) {
+  
+  #hmpg-txt {
+    width: 100%;
+  }
   .advnc-srch {
-    width: 55%;
+    width: 50%;
+  }
+  .status-name {
+    margin: 0 auto;
+  }
+  .pet-status {
+    margin-right: 4px;
+    margin-left: 2px;
+  }
+  .pet-name {
+    margin-left: 4px;
+    margin-right: 2px;
+  }
+  .h-and-w {
+    justify-content: center;
+    margin-left: 22px;
+  }
+  .height-and-weight {
+    width: 75%; 
   }
   .pet-page h2 {
     margin: 0 5px;
   }
+  .pet-content {
+    flex-direction: column-reverse;
+    justify-content:space-around;
+  }
   .pets-details ul {
     flex-flow: row wrap;
-    width: 100%;
+    height: 25%;
   }
   .img-box {
     display: flex;
@@ -127,5 +169,29 @@ input#search-type.form-check-input[type="checkbox"] {
   .pet-actions {
     display: flex;
     flex-direction: column;
+  }
+  .left-col {
+    width: 55%;
+  }
+  .right-col {
+    width: 35%;
+  }
+  .owned-pets-container {
+    width: 60%;
+  }
+  .saved-pets {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .log-buttons {
+    margin-bottom: 5px;
+  }
+}
+
+@media screen and (max-width: 455px) {
+  .log-buttons {
+    margin-bottom: 5px;
   }
 }
