@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import axios from 'axios';
+import instance from "./AxiosContext";
 
 export const AuthContext = createContext(true);
 
@@ -21,7 +21,7 @@ export default function AuthContextProvider({ children }) {
 
     const authNewUser = async (newUser) => {
         try {
-          const res = await axios.post(`${usersRoute}/signup`, newUser);
+          const res = await instance.post(`${usersRoute}/signup`, newUser);
           if (res.data) {
             setRegisteredUser(true);
           }
@@ -32,28 +32,31 @@ export default function AuthContextProvider({ children }) {
 
     const loginUser = async (logAttempt) => {
       try {
-        const res = await axios.post(`${usersRoute}/login`, logAttempt, { withCredentials: true  });
+        const res = await instance.post(`${usersRoute}/login`, logAttempt);
         if (res.data) {
           const userObj = res.data.user;
           setLoggedUser(userObj);
           setToken(true);
+          if (res.data.user.isAdmin) {
+            setIsAdmin(true);
+          }
           }
       } catch (err) {
         console.log(err);
       }
     }
 
-    function currentUserAuth() {
+    async function currentUserAuth() {
       try {
-        return axios.get('http://localhost:8080/users/', { withCredentials: true }).then( (res) => {
+        const res = await instance.get('http://localhost:8080/users/');
         if (res.data) {
+          
             setLoggedUser(res.data);
             setToken(true);
             if (res.data.isAdmin) {
               setIsAdmin(true);
             }
           }
-        });
       } catch (err) {
         console.log(err);
       }
@@ -65,7 +68,7 @@ export default function AuthContextProvider({ children }) {
 
     const logout = async () => {
       try {
-      const res = await axios.get(`${usersRoute}/logout`, { withCredentials: true });
+      const res = await instance.get(`${usersRoute}/logout`);
       if (res.data) setLoggedUser({});
       setToken(false);
       window.location.reload();
@@ -76,7 +79,7 @@ export default function AuthContextProvider({ children }) {
 
   const updateUserDetails = async (newDetails) => {
     try {
-      const res = await axios.put(`${usersRoute}/:userId`, newDetails, { withCredentials: true  });
+      const res = await instance.put(`${usersRoute}/:userId`, newDetails);
       if (res.data) {
         switch(typeof(res.data)) {
           case "object":
@@ -95,7 +98,7 @@ export default function AuthContextProvider({ children }) {
 
    const getAllUsers = async () => {
     try {
-      const res = await axios.get(`${usersRoute}/all-users`, { withCredentials: true  });
+      const res = await instance.get(`${usersRoute}/all-users`);
       if (res.data) setAllUsers(res.data);
     } catch (err) {
       console.log(err);
@@ -104,7 +107,7 @@ export default function AuthContextProvider({ children }) {
 
    const getUserInfo = async (userId) => {
     try {
-      const res = await axios.get(`${usersRoute}/${userId}/full`, { withCredentials: true  });
+      const res = await instance.get(`${usersRoute}/${userId}/full`);
       if (res.data) {
         setFullUserInfo(res.data);
       }
@@ -114,5 +117,5 @@ export default function AuthContextProvider({ children }) {
    }
 
   
-    return <AuthContext.Provider value={{ authNewUser, registeredUser, loginUser, loggedUser, setLoggedUser, logout, token, setToken, updateUserDetails, updatedUser, emailTaken, isTakenMessage, getAllUsers, allUsers, getUserInfo, fullUserInfo, isAdmin }}>{children}</AuthContext.Provider>
+    return <AuthContext.Provider value={{ authNewUser, registeredUser, loginUser, loggedUser, setLoggedUser, logout, token, setToken, updateUserDetails, updatedUser, emailTaken, isTakenMessage, getAllUsers, allUsers, getUserInfo, fullUserInfo, isAdmin, setIsAdmin }}>{children}</AuthContext.Provider>
 }

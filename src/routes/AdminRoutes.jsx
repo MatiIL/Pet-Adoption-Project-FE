@@ -1,10 +1,11 @@
-import React from "react"
-import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../context/AuthContext"
 
 const AdminRoutes = ({ children }) => {
-  const auth = useAuthContext();
-  return auth.isAdmin ? children : <Navigate to="/" />;
+  const { isAdmin } = useAuthContext();
+  const navigate = useNavigate();
+  console.log(isAdmin);
+  return isAdmin ? children : navigate("/");
 };
 
 export default AdminRoutes;

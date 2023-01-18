@@ -6,7 +6,7 @@ import SignupModal from "./SignupModal";
 import { useAuthContext } from "../context/AuthContext";
 
 function LoginModal() {
-  const { loggedUser, loginUser } = useAuthContext();
+  const { loginUser } = useAuthContext();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [show, setShow] = useState(false);
@@ -20,11 +20,7 @@ function LoginModal() {
       password: pass,
     };
     try {
-      await loginUser(logAttempt);
-      if (loggedUser) {
-        handleClose();
-        // window.location.reload();
-      }
+      loginUser(logAttempt);
     } catch (err) {
       console.error(err);
     }

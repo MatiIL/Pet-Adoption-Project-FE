@@ -1,10 +1,11 @@
-import React from "react"
-import { Navigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../context/AuthContext"
 
 const UserRoutes = ({ children }) => {
-  const auth = useAuthContext();
-  return auth.token ? children : <Navigate to="/" />;
+  const { token } = useAuthContext();
+  const navigate = useNavigate();
+  console.log("allow access: " , token);
+  return token ? children : navigate("/");
 };
 
 export default UserRoutes;

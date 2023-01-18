@@ -7,7 +7,18 @@ import { useAuthContext } from "../context/AuthContext"
 
 function NavBar() {
   const [isActive, setIsActive] = useState(false);
+  const [adminMenu, setAdminMenu] = useState(false);
   const { logout, token, isAdmin } = useAuthContext();
+
+  const renderAdminMenu = () => {
+    if (isAdmin) {
+      setAdminMenu(true);
+    }
+  }
+
+  useEffect(() => {
+    renderAdminMenu();
+  }, [isAdmin])
   
   useEffect(() => {
     if (window.location.pathname === "/FindPet") {
@@ -19,7 +30,7 @@ function NavBar() {
 
   return (
     <Navbar collapseOnSelect expand="sm"  variant="light" className="navbar">
-      {isAdmin? <AdminMenu/> : ""}
+      {adminMenu? <AdminMenu/> : ""}
       <Container>
         
         <Navbar.Brand
