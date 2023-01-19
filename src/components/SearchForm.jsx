@@ -1,12 +1,10 @@
-import { usePetsContext } from "../context/PetsContext"
-import Form from "react-bootstrap/Form"
-import Button from "react-bootstrap/Button"
-import FloatingLabel from "react-bootstrap/FloatingLabel"
-import SearchPetResults from "./SearchPetResults"
-import { useState, useEffect } from "react"
+import { usePetsContext } from "../context/PetsContext";
+import { Form, Button, FloatingLabel, Spinner } from "react-bootstrap";
+import SearchPetResults from "./SearchPetResults";
+import { useState, useEffect } from "react";
 
 function SearchForm() {
-  const { fetchPets, petsList } = usePetsContext();
+  const { fetchPets, petsList, showSpinner } = usePetsContext();
   const [isChecked, setIsChecked] = useState(false);
   const [type, setType] = useState("");
   const [status, setStatus] = useState("");
@@ -24,14 +22,13 @@ function SearchForm() {
     maxHeight: maxHeight,
     minWeight: minWeight,
     maxWeight: maxWeight,
-  }
+  };
 
   const searchPets = async () => {
     setIsLoading(true);
     try {
       fetchPets(searchParams);
-    }
-    catch (error) {
+    } catch (error) {
       console.log(error);
     }
     setIsLoading(false);
@@ -63,7 +60,7 @@ function SearchForm() {
             onChange={toggleCheck}
           />
         </div>
-        <div className="d-flex justify-content-evenly mx-auto">
+        <div className="d-flex justify-content-between mx-auto">
           <Form.Select
             aria-label="pet's type"
             className="me-2"
@@ -74,82 +71,105 @@ function SearchForm() {
             <option value="1">Cat</option>
             <option value="2">Dog</option>
           </Form.Select>
-          <Button variant="outline-secondary" id="search-btn" onClick={searchPets} className="">
-            Search
+
+          <Button
+            variant="outline-secondary"
+            id="search-btn"
+            onClick={searchPets}
+            className="d-flex"
+          >
+            {showSpinner ? (
+              <Spinner
+                className="mt-1 me-2"
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : (
+              ""
+            )}
+            <span>Search</span>
           </Button>
         </div>
         <div className={isChecked ? "d-block" : "d-none"}>
           <div className="d-flex flex-wrap align-items-center mt-2">
             <div className="status-name d-flex justify-content-evenly">
-            <Form.Select
-              aria-label="pet's status"
-              className="advnc-srch pet-status mt-3 mb-3"
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              <option>Status</option>
-              <option value="1">Available</option>
-              <option value="2">Fostered</option>
-              <option value="3">Adopted</option>
-            </Form.Select>
-            <Form.Control
-              className="advnc-srch pet-name mt-3 mb-3"
-              type="text"
-              placeholder="Name"
-              value={name} onChange={(e) => setName(e.target.value)}
-            />
+              <Form.Select
+                aria-label="pet's status"
+                className="advnc-srch pet-status mt-3 mb-3"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option>Status</option>
+                <option value="1">Available</option>
+                <option value="2">Fostered</option>
+                <option value="3">Adopted</option>
+              </Form.Select>
+              <Form.Control
+                className="advnc-srch pet-name mt-3 mb-3"
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
             <div className="h-and-w d-flex flex-wrap">
               <div className="heights d-flex">
-            <FloatingLabel
-                controlId="floatingInput"
-                label="Min Height (cm)"
-              >
-            <Form.Control
-              className="height-and-weight m-2"
-              type="number"
-              value={minHeight} onChange={(e) => setMinHeight(e.target.value)}
-            /> 
-            </FloatingLabel>
-            <FloatingLabel
-                controlId="floatingInput"
-                label="Max Height (cm)"
-              >
-            <Form.Control
-              className="height-and-weight m-2"
-              type="number"
-              value={maxHeight} onChange={(e) => setMaxHeight(e.target.value)}
-            /> 
-            </FloatingLabel>
-            </div>
-            <div className="weights d-flex">
-            <FloatingLabel
-                controlId="floatingInput"
-                label="Min Weight (kg)"
-              >
-             <Form.Control
-              className="height-and-weight m-2"
-              type="number"
-              value={minWeight} onChange={(e) => setMinWeight(e.target.value)}
-            />
-            </FloatingLabel>
-            <FloatingLabel
-                controlId="floatingInput"
-                label="Max Weight (kg)" 
-              >
-            <Form.Control
-              className="height-and-weight m-2"
-              type="number"
-              value={maxWeight} onChange={(e) => setMaxWeight(e.target.value)}
-            />
-            </FloatingLabel>
-            </div>
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Min Height (cm)"
+                >
+                  <Form.Control
+                    className="height-and-weight m-2"
+                    type="number"
+                    value={minHeight}
+                    onChange={(e) => setMinHeight(e.target.value)}
+                  />
+                </FloatingLabel>
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Max Height (cm)"
+                >
+                  <Form.Control
+                    className="height-and-weight m-2"
+                    type="number"
+                    value={maxHeight}
+                    onChange={(e) => setMaxHeight(e.target.value)}
+                  />
+                </FloatingLabel>
+              </div>
+              <div className="weights d-flex">
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Min Weight (kg)"
+                >
+                  <Form.Control
+                    className="height-and-weight m-2"
+                    type="number"
+                    value={minWeight}
+                    onChange={(e) => setMinWeight(e.target.value)}
+                  />
+                </FloatingLabel>
+                <FloatingLabel
+                  controlId="floatingInput"
+                  label="Max Weight (kg)"
+                >
+                  <Form.Control
+                    className="height-and-weight m-2"
+                    type="number"
+                    value={maxWeight}
+                    onChange={(e) => setMaxWeight(e.target.value)}
+                  />
+                </FloatingLabel>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <SearchPetResults petsList={petsList} searchPets={searchPets}/>
+      <SearchPetResults petsList={petsList} searchPets={searchPets} />
     </div>
   );
 }

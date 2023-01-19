@@ -182,6 +182,9 @@ input#search-type.form-check-input[type="checkbox"] {
   .saved-pets {
     width: 40%;
   }
+  .edit-pet {
+    margin-right: 10px;
+  }
 }
 
 @media screen and (max-width: 576px) {
@@ -193,5 +196,27 @@ input#search-type.form-check-input[type="checkbox"] {
 @media screen and (max-width: 455px) {
   .log-buttons {
     margin-bottom: 5px;
+  }
+  .add-pet-form {
+    font-size: smaller;
+  }
+  .add-pet-details {
+    margin-top: 20px;
+    height: 65%;
+  }
+  .add-pet-type {
+    width: 120%;
+  }
+  .add-pet-name {
+    width: 120%;
+  }
+  .add-pet-status {
+    width: 120%;
+  }
+  .pet-details-right {
+    margin-top: 20px;
+  }
+  .add-pet-pic {
+    width: 110%;
   }
 }

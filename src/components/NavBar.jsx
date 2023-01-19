@@ -1,5 +1,5 @@
 import Container from "react-bootstrap/Container";
-import { Button, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Button, Nav, Navbar, NavDropdown, Spinner } from "react-bootstrap";
 import LoginModal from "./LoginModal";
 import AdminMenu from "./AdminMenu";
 import { useState, useEffect } from "react";
@@ -8,7 +8,7 @@ import { useAuthContext } from "../context/AuthContext"
 function NavBar() {
   const [isActive, setIsActive] = useState(false);
   const [adminMenu, setAdminMenu] = useState(false);
-  const { logout, token, isAdmin } = useAuthContext();
+  const { logout, token, isAdmin, showSpinner } = useAuthContext();
 
   const renderAdminMenu = () => {
     if (isAdmin) {
@@ -40,6 +40,10 @@ function NavBar() {
               Logout</Button>): <LoginModal />}
               </div>
           </Nav>
+          {showSpinner ? 
+          <Spinner className="ms-2" animation="grow" />
+          : ""
+          }
         <Navbar.Brand
           href="/"
           className={isActive ? "unselected-link" : "nav-link"}

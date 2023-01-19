@@ -1,12 +1,23 @@
-import React, { useEffect, useState } from "react"
-import Button from "react-bootstrap/Button"
-import Form from "react-bootstrap/Form"
+import React, { useEffect, useState } from "react";
+import { Button, Form, Spinner } from "react-bootstrap"
 import { useAuthContext } from "../context/AuthContext"
 import FloatingLabel from "react-bootstrap/FloatingLabel"
 
 function SignupForm(props) {
-  const { handleSubmit, closeSignup, wasUserClicked } = props;
-  const { authNewUser, registeredUser, token, loggedUser, updateUserDetails, updatedUser, emailTaken, isTakenMessage, fullUserInfo, isAdmin } = useAuthContext();
+  const { closeSignup, wasUserClicked } = props;
+  const {
+    authNewUser,
+    registeredUser,
+    token,
+    loggedUser,
+    updateUserDetails,
+    updatedUser,
+    emailTaken,
+    isTakenMessage,
+    fullUserInfo,
+    isAdmin,
+    showSpinner,
+  } = useAuthContext();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [repeatPass, setRepeatPass] = useState("");
@@ -18,15 +29,15 @@ function SignupForm(props) {
   const clickedUser = fullUserInfo[0];
   const clickedUserPets = fullUserInfo[1];
 
-    useEffect(() => {
-      if (token) {
-        setEmail(loggedUser.email);
-        setFirstName(loggedUser.firstName);
-        setLastName(loggedUser.lastName);
-        setPhone(loggedUser.phone);
-        setBio((loggedUser.bio != null)? loggedUser.bio : "");
-      }
-    }, [token, loggedUser]);
+  useEffect(() => {
+    if (token) {
+      setEmail(loggedUser.email);
+      setFirstName(loggedUser.firstName);
+      setLastName(loggedUser.lastName);
+      setPhone(loggedUser.phone);
+      setBio(loggedUser.bio != null ? loggedUser.bio : "");
+    }
+  }, [token, loggedUser]);
 
   const signupUser = async (e) => {
     e.preventDefault();
@@ -42,7 +53,6 @@ function SignupForm(props) {
       await authNewUser(newUser);
       if (registeredUser) {
         closeSignup();
-        handleSubmit();
       }
     } catch (err) {
       console.error(err);
@@ -63,7 +73,7 @@ function SignupForm(props) {
     try {
       updateUserDetails(newDetails);
       if (updatedUser) {
-        console.log(updatedUser) //replace with successful update toast
+        console.log(updatedUser); //replace with successful update toast
       }
       if (emailTaken) {
         console.log(isTakenMessage); //replace with error toast
@@ -71,7 +81,7 @@ function SignupForm(props) {
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   return (
     <Form className="d-flex justify-content-evenly">
@@ -79,42 +89,47 @@ function SignupForm(props) {
         <Form.Group className="mb-2" controlId="formBasicEmail">
           <Form.Label className="user-form-label">Email Address</Form.Label>
           <Form.Control
-            value={isAdmin && wasUserClicked? clickedUser.email : email}
+            value={isAdmin && wasUserClicked ? clickedUser.email : email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="name@example.com"
             autoFocus
           />
         </Form.Group>
-        {isAdmin && wasUserClicked? <div className="d-flex flex-column justify-content-evenly mt-2">
-          <u>User Pets</u>
-          {clickedUserPets.map((pet) => (
-            <ul key={pet.petId} className="mt-2">
-              <li className="d-flex justify-content-between">
-              <div>Name: {pet.name}</div>
-                <div>Pet ID: {pet.petId}</div>
-              </li>
-            </ul>
-          )
-          )}
-        </div> : 
-        
-        (<div className="set-password"><Form.Group className="mb-2" controlId="formBasicPassword">
-          <Form.Label className="user-form-label">Password</Form.Label>
-          <Form.Control
-            value={pass}
-            onChange={(e) => setPass(e.target.value)}
-            type="password"
-          />
-        </Form.Group>
-        <Form.Group className="mb-2" controlId="formBasicPasswordRepeated">
-          <Form.Label className="user-form-label">Retype Password</Form.Label>
-          <Form.Control
-            value={repeatPass}
-            onChange={(e) => setRepeatPass(e.target.value)}
-            type="password"
-          />
-        </Form.Group></div>)}
+        {isAdmin && wasUserClicked ? (
+          <div className="d-flex flex-column justify-content-evenly mt-2">
+            <u>User Pets</u>
+            {clickedUserPets.map((pet) => (
+              <ul key={pet.petId} className="mt-2">
+                <li className="d-flex justify-content-between">
+                  <div>Name: {pet.name}</div>
+                  <div>Pet ID: {pet.petId}</div>
+                </li>
+              </ul>
+            ))}
+          </div>
+        ) : (
+          <div className="set-password">
+            <Form.Group className="mb-2" controlId="formBasicPassword">
+              <Form.Label className="user-form-label">Password</Form.Label>
+              <Form.Control
+                value={pass}
+                onChange={(e) => setPass(e.target.value)}
+                type="password"
+              />
+            </Form.Group>
+            <Form.Group className="mb-2" controlId="formBasicPasswordRepeated">
+              <Form.Label className="user-form-label">
+                Retype Password
+              </Form.Label>
+              <Form.Control
+                value={repeatPass}
+                onChange={(e) => setRepeatPass(e.target.value)}
+                type="password"
+              />
+            </Form.Group>
+          </div>
+        )}
         {token ? (
           <FloatingLabel
             controlId="floatingTextarea2"
@@ -122,20 +137,24 @@ function SignupForm(props) {
             className="mt-3"
           >
             <Form.Control
-              value={isAdmin && wasUserClicked? clickedUser.bio : bio}
+              value={isAdmin && wasUserClicked ? clickedUser.bio : bio}
               onChange={(e) => setBio(e.target.value)}
               // as="textarea"
               placeholder="User's Bio"
               style={{ height: "110px" }}
             />
           </FloatingLabel>
-        ) : ("")}
+        ) : (
+          ""
+        )}
       </div>
       <div className="right-col d-flex flex-column">
         <Form.Group className="mb-2" controlId="formBasicFirstName">
           <Form.Label className="user-form-label">First Name</Form.Label>
           <Form.Control
-            value={isAdmin && wasUserClicked? clickedUser.firstName : firstName}
+            value={
+              isAdmin && wasUserClicked ? clickedUser.firstName : firstName
+            }
             onChange={(e) => setFirstName(e.target.value)}
             type="text"
           />
@@ -143,7 +162,7 @@ function SignupForm(props) {
         <Form.Group className="mb-2" controlId="formBasicLastName">
           <Form.Label className="user-form-label">Last Name</Form.Label>
           <Form.Control
-            value={isAdmin && wasUserClicked? clickedUser.lastName : lastName}
+            value={isAdmin && wasUserClicked ? clickedUser.lastName : lastName}
             onChange={(e) => setLastName(e.target.value)}
             type="text"
           />
@@ -151,21 +170,34 @@ function SignupForm(props) {
         <Form.Group className="mb-2" controlId="formBasicPhone">
           <Form.Label className="user-form-label">Phone Number</Form.Label>
           <Form.Control
-            value={isAdmin && wasUserClicked? clickedUser.phone : phone}
+            value={isAdmin && wasUserClicked ? clickedUser.phone : phone}
             onChange={(e) => setPhone(e.target.value)}
             type="number"
           />
         </Form.Group>
-        {isAdmin && wasUserClicked? "":
-        (<Button
-          type="submit"
-          variant="secondary"
-          onClick={token? saveUserDetails : signupUser}
-          className={token? "w-50 mt-5 mx-auto align-self-end":"w-50 mt-2 align-self-end"}
-        >
-          {token ? "Save" : "Signup"}
-        </Button>)
-}
+        <div className="spinner-and-btn d-flex justify-content-evenly">
+          {showSpinner ? 
+          <Spinner className="mt-2 me-3" animation="grow" />
+          : ""
+          }
+          {isAdmin && wasUserClicked ? (
+            ""
+          ) : (
+            <Button
+            id="register-btn"
+              type="submit"
+              variant="success"
+              onClick={token ? saveUserDetails : signupUser}
+              className={
+                token
+                  ? "w-75 mt-5 mx-auto align-self-end"
+                  : "w-75 mt-2 align-self-end"
+              }
+            >
+              {token ? "Save" : "Signup"}
+            </Button>
+          )}
+        </div>
       </div>
     </Form>
   );

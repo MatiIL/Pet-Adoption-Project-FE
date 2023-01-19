@@ -1,7 +1,7 @@
-import { usePetsContext } from "../context/PetsContext"
-import { useAuthContext } from "../context/AuthContext"
-import { useState, useEffect, useRef } from "react"
-import { Form, FloatingLabel, Button } from "react-bootstrap"
+import { usePetsContext } from "../context/PetsContext";
+import { useAuthContext } from "../context/AuthContext";
+import { useState, useEffect, useRef } from "react";
+import { Form, FloatingLabel, Button } from "react-bootstrap";
 
 function PetForm(props) {
   const { petId, handleClose } = props;
@@ -23,19 +23,18 @@ function PetForm(props) {
   useEffect(() => {
     getPet(petId);
     if (pet) {
-        setType(pet.type);
-        setPetName(pet.name);
-        setStatus(pet.adoptionStatus);
-        setHeight(pet.height);
-        setWeight(pet.weight);
-        setDiet(pet.dietary);
-        setBreed(pet.breed);
-        setColor(pet.color);
-        setIsHypo(pet.hypoallergenic);
-        setPetBio(pet.bio);
-      }
-
-  }, [petId])
+      setType(pet.type);
+      setPetName(pet.name);
+      setStatus(pet.adoptionStatus);
+      setHeight(pet.height);
+      setWeight(pet.weight);
+      setDiet(pet.dietary);
+      setBreed(pet.breed);
+      setColor(pet.color);
+      setIsHypo(pet.hypoallergenic);
+      setPetBio(pet.bio);
+    }
+  }, [petId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -83,7 +82,7 @@ function PetForm(props) {
       petData.append(key, editedPet[key]);
     }
     petData.append("picture", petImage);
-    
+
     try {
       updatePet(userId, petId, petData);
       handleClose();
@@ -93,11 +92,11 @@ function PetForm(props) {
   };
 
   return (
-    <Form className="d-flex justify-content-around">
-      <div className="search-details d-flex flex-column w-25">
+    <Form className="add-pet-form d-flex justify-content-around">
+      <div className="add-pet-details d-flex flex-column w-25">
         <Form.Select
           aria-label="pet's type"
-          className="me-2 mb-3"
+          className="add-pet-type me-2 mb-3"
           value={type || ""}
           onChange={(e) => setType(e.target.value)}
         >
@@ -112,7 +111,7 @@ function PetForm(props) {
           className=""
         >
           <Form.Control
-            className=""
+            className="add-pet-name"
             type="text"
             placeholder="Name"
             style={{ height: "80px" }}
@@ -123,7 +122,7 @@ function PetForm(props) {
 
         <Form.Select
           aria-label="pet's status"
-          className="mt-3 mb-3"
+          className="add-pet-status mt-3 mb-3"
           value={status || ""}
           onChange={(e) => setStatus(e.target.value)}
         >
@@ -163,6 +162,7 @@ function PetForm(props) {
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>Upload Picture:</Form.Label>
           <Form.Control
+            className="add-pet-pic"
             type="file"
             size="sm"
             onChange={(e) => setPetImage(e.target.files[0])}
@@ -170,11 +170,11 @@ function PetForm(props) {
           />
         </Form.Group>
       </div>
-      <div className="page-details w-50">
+      <div className="pet-details-right w-50">
         <FloatingLabel
           controlId="floatingTextarea"
           label="Dietary Restrictions:"
-          className="mb-3"
+          className="add-pet-diet mb-2"
         >
           <Form.Control
             value={diet || ""}
@@ -188,7 +188,7 @@ function PetForm(props) {
             <FloatingLabel
               controlId="floatingInput"
               label="Breed:"
-              className="mb-3"
+              className="mb-1"
             >
               <Form.Control
                 className=" me-3"
@@ -202,7 +202,7 @@ function PetForm(props) {
             <FloatingLabel
               controlId="floatingInput"
               label="Color:"
-              className="mb-2"
+              className="mb-1"
             >
               <Form.Control
                 className="pet-form-color ms-2"
@@ -214,7 +214,7 @@ function PetForm(props) {
               />
             </FloatingLabel>
           </div>
-          <div className="hypo d-flex flex-column ms-4">
+          <div className="add-pet-hypo d-flex flex-column ms-4">
             <Form.Label>Hypoallergenic?</Form.Label>
             <Form.Select
               aria-label="Hypoallergenic"
@@ -227,13 +227,13 @@ function PetForm(props) {
             </Form.Select>
           </div>
         </div>
-
         <FloatingLabel
           controlId="floatingTextarea2"
           label="Pet's Bio:"
-          className="petform-bio mt-3"
+          className=" mt-3"
         >
           <Form.Control
+          className="petform-bio"
             value={petBio || ""}
             onChange={(e) => setPetBio(e.target.value)}
             as="textarea"
@@ -242,11 +242,11 @@ function PetForm(props) {
           />
         </FloatingLabel>
         <Button
-        variant="success"
-          className="position-absolute bottom-0 end-0 me-2 mb-2"
+          variant="success"
+          className="position-absolute bottom-0 end-0 me-4 mb-3"
           onClick={isAdmin && petId ? handleUpdate : handleSubmit}
         >
-          {isAdmin && petId? "Update Pet" : "Add Pet"}
+          {isAdmin && petId ? "Update Pet" : "Add Pet"}
         </Button>
       </div>
     </Form>

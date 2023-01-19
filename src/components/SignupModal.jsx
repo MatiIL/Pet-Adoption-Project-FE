@@ -9,10 +9,6 @@ function SignupModal(props) {
   const closeSignup = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleSubmit = (num) => {
-    if(num === 1) setShow(false);
-  }
-
   return (
     <>
       <a href='#' className='links mt-2 link-dark text-decoration-none' onClick={handleShow}>
@@ -29,11 +25,13 @@ function SignupModal(props) {
           <Modal.Title>Create a New PAC Account</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <SignupForm handleSubmit={handleSubmit} closeSignup={closeSignup}/>
+          <SignupForm 
+          closeSignup={closeSignup}
+          />
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-end">
           <div className="buttons">
-            <Button variant="secondary" className="me-3" onClick={handleClose}>
+            <Button variant="secondary" className=" me-5" onClick={handleClose}>
               Cancel
             </Button>
           </div>

@@ -35,7 +35,7 @@ function PetModal() {
             Add a New Pet
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="d-flex justify-content-evenly">
           <PetForm handleClose={handleClose} />
         </Modal.Body>
       </Modal>

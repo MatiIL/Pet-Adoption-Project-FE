@@ -5,85 +5,95 @@ export const AuthContext = createContext(true);
 
 export const useAuthContext = () => {
   return useContext(AuthContext);
-}
+};
 
 export default function AuthContextProvider({ children }) {
-    const usersRoute = "http://localhost:8080/users";
-    const [registeredUser, setRegisteredUser] = useState(false);
-    const [loggedUser, setLoggedUser] = useState({});
-    const [token, setToken] = useState(false);
-    const [updatedUser, setUpdatedUser] = useState(false);
-    const [emailTaken, setEmailTaken] = useState(false);
-    const [isTakenMessage, setIsTakenMessage] = useState("");
-    const [allUsers, setAllUsers] = useState([]);
-    const [isAdmin, setIsAdmin] = useState(false); 
-    const [fullUserInfo, setFullUserInfo] = useState([]);
+  const usersRoute = "http://localhost:8080/users";
+  const [registeredUser, setRegisteredUser] = useState(false);
+  const [loggedUser, setLoggedUser] = useState({});
+  const [token, setToken] = useState(false);
+  const [updatedUser, setUpdatedUser] = useState(false);
+  const [emailTaken, setEmailTaken] = useState(false);
+  const [isTakenMessage, setIsTakenMessage] = useState("");
+  const [allUsers, setAllUsers] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [fullUserInfo, setFullUserInfo] = useState([]);
+  const [showSpinner, setShowSpinner] = useState(false);
 
-    const authNewUser = async (newUser) => {
-        try {
-          const res = await instance.post(`${usersRoute}/signup`, newUser);
-          if (res.data) {
-            setRegisteredUser(true);
-          }
-        } catch (err) {
-          console.log(err);
+  const authNewUser = async (newUser) => {
+    try {
+      setShowSpinner(true);
+      const res = await instance.post(`${usersRoute}/signup`, newUser);
+      if (res.data) {
+        setShowSpinner(false);
+        setRegisteredUser(true);
+      }
+    } catch (err) {
+      setShowSpinner(false);
+      console.log(err);
+    }
+  };
+
+  const loginUser = async (logAttempt) => {
+    try {
+      setShowSpinner(true);
+      const res = await instance.post(`${usersRoute}/login`, logAttempt);
+      if (res.data) {
+        setShowSpinner(false);
+        const userObj = res.data.user;
+        setLoggedUser(userObj);
+        setToken(true);
+        if (res.data.user.isAdmin) {
+          setIsAdmin(true);
         }
-      };
-
-    const loginUser = async (logAttempt) => {
-      try {
-        const res = await instance.post(`${usersRoute}/login`, logAttempt);
-        if (res.data) {
-          const userObj = res.data.user;
-          setLoggedUser(userObj);
-          setToken(true);
-          if (res.data.user.isAdmin) {
-            setIsAdmin(true);
-          }
-          }
-      } catch (err) {
-        console.log(err);
       }
+    } catch (err) {
+      setShowSpinner(false);
+      console.log(err);
     }
+  };
 
-    async function currentUserAuth() {
-      try {
-        const res = await instance.get('http://localhost:8080/users/');
-        if (res.data) {
-          
-            setLoggedUser(res.data);
-            setToken(true);
-            if (res.data.isAdmin) {
-              setIsAdmin(true);
-            }
-          }
-      } catch (err) {
-        console.log(err);
+  async function currentUserAuth() {
+    try {
+      const res = await instance.get("http://localhost:8080/users/");
+      if (res.data) {
+        setLoggedUser(res.data);
+        setToken(true);
+        if (res.data.isAdmin) {
+          setIsAdmin(true);
+        }
       }
-    }
-
-    useEffect(() => {
-      currentUserAuth();
-    }, []);
-
-    const logout = async () => {
-      try {
-      const res = await instance.get(`${usersRoute}/logout`);
-      if (res.data) setLoggedUser({});
-      setToken(false);
-      window.location.reload();
     } catch (err) {
       console.log(err);
     }
   }
 
+  useEffect(() => {
+    currentUserAuth();
+  }, []);
+
+  const logout = async () => {
+    try {
+      setShowSpinner(true);
+      const res = await instance.get(`${usersRoute}/logout`);
+      if (res.data) setLoggedUser({});
+      setShowSpinner(false);
+      setToken(false);
+    } catch (err) {
+      setShowSpinner(false);
+      console.log(err);
+    }
+  };
+
   const updateUserDetails = async (newDetails) => {
     try {
+      setShowSpinner(true);
       const res = await instance.put(`${usersRoute}/:userId`, newDetails);
       if (res.data) {
-        switch(typeof(res.data)) {
+        setShowSpinner(false);
+        switch (typeof res.data) {
           case "object":
-            setLoggedUser(res.data)
+            setLoggedUser(res.data);
             setUpdatedUser(true);
           case "string":
             setEmailTaken(true);
@@ -92,30 +102,64 @@ export default function AuthContextProvider({ children }) {
         window.location.reload();
       }
     } catch (err) {
+      setShowSpinner(false);
       console.log(err);
     }
-  }
+  };
 
-   const getAllUsers = async () => {
+  const getAllUsers = async () => {
     try {
+      setShowSpinner(true);
       const res = await instance.get(`${usersRoute}/all-users`);
-      if (res.data) setAllUsers(res.data);
+      if (res.data) {
+        setShowSpinner(false);
+        setAllUsers(res.data);
+      }
     } catch (err) {
+      setShowSpinner(false);
       console.log(err);
     }
-   }
+  };
 
-   const getUserInfo = async (userId) => {
+  const getUserInfo = async (userId) => {
     try {
+      setShowSpinner(true);
       const res = await instance.get(`${usersRoute}/${userId}/full`);
       if (res.data) {
+        setShowSpinner(false);
         setFullUserInfo(res.data);
       }
     } catch (err) {
+      setShowSpinner(false);
       console.log(err);
     }
-   }
+  };
 
-  
-    return <AuthContext.Provider value={{ authNewUser, registeredUser, loginUser, loggedUser, setLoggedUser, logout, token, setToken, updateUserDetails, updatedUser, emailTaken, isTakenMessage, getAllUsers, allUsers, getUserInfo, fullUserInfo, isAdmin, setIsAdmin }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider
+      value={{
+        authNewUser,
+        registeredUser,
+        loginUser,
+        loggedUser,
+        setLoggedUser,
+        logout,
+        token,
+        setToken,
+        updateUserDetails,
+        updatedUser,
+        emailTaken,
+        isTakenMessage,
+        getAllUsers,
+        allUsers,
+        getUserInfo,
+        fullUserInfo,
+        isAdmin,
+        setIsAdmin,
+        showSpinner,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }

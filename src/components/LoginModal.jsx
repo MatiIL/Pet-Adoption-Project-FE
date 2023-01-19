@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Modal from "react-bootstrap/Modal";
-import SignupModal from "./SignupModal";
-import { useAuthContext } from "../context/AuthContext";
+import React, { useState } from "react"
+import { Button, Form, Modal, Spinner } from "react-bootstrap"
+import SignupModal from "./SignupModal"
+import { useAuthContext } from "../context/AuthContext"
 
 function LoginModal() {
-  const { loginUser } = useAuthContext();
+  const { loginUser, showSpinner } = useAuthContext();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [show, setShow] = useState(false);
@@ -72,6 +70,10 @@ function LoginModal() {
             <Button variant="success" onClick={handleLogin}>
               Login
             </Button>
+            {showSpinner ? 
+          <Spinner className="mt-3 ms-3" animation="grow" />
+          : ""
+          }
           </div>
           <SignupModal handleClose={handleClose}/>
         </Modal.Footer>

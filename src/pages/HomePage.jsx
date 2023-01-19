@@ -58,7 +58,7 @@ function HomePage() {
 
         <div
           id="hmpg-txt"
-          className="bg-light bg-opacity-75 align-self-center fs-5 pe-2 pb-2 ps-3 fw-bolder"
+          className="bg-light bg-opacity-75 align-self-center fs-5 pe-2 pb-2 ps-3 fw-bolder rounded"
         >
           {welcomeMsg}
         </div>
