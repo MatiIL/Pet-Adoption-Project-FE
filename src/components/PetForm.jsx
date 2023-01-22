@@ -1,12 +1,12 @@
-import { usePetsContext } from "../context/PetsContext";
-import { useAuthContext } from "../context/AuthContext";
-import { useState, useEffect, useRef } from "react";
-import { Form, FloatingLabel, Button } from "react-bootstrap";
+import { usePetsContext } from "../context/PetsContext"
+import { useAuthContext } from "../context/AuthContext"
+import { useState, useEffect } from "react"
+import { Form, FloatingLabel, Button, Spinner } from "react-bootstrap"
 
 function PetForm(props) {
   const { petId, handleClose } = props;
   const { addNewPet, updatePet, getPet, pet } = usePetsContext();
-  const { isAdmin, loggedUser } = useAuthContext();
+  const { isAdmin, loggedUser, showSpinner } = useAuthContext();
   const { userId } = loggedUser;
   const [type, setType] = useState("");
   const [petName, setPetName] = useState("");
@@ -241,6 +241,13 @@ function PetForm(props) {
             style={{ height: "110px" }}
           />
         </FloatingLabel>
+        {showSpinner ? 
+        (
+          <Spinner 
+          animation="grow" 
+          className="position-absolute bottom-0 end-0 mb-5 me-2" />
+        ) : ""
+        }
         <Button
           variant="success"
           className="position-absolute bottom-0 end-0 me-4 mb-3"

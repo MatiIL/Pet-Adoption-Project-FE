@@ -2,13 +2,13 @@ import { usePetsContext } from "../context/PetsContext";
 import { useAuthContext } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Button, ButtonGroup, Form, Modal } from "react-bootstrap";
+import { Button, ButtonGroup, Form, Modal, Spinner } from "react-bootstrap";
 import PetForm from "../components/PetForm";
 
 function PetPage() {
   const { getPet, pet, savePet, removePet, adoptOrFoster, returnPet } =
     usePetsContext();
-  const { token, loggedUser, isAdmin } = useAuthContext();
+  const { token, loggedUser, isAdmin, showSpinner } = useAuthContext();
   const currentStatus = pet.adoptionStatus;
   const userId = loggedUser.userId;
   const petOwner = pet.ownerId;
@@ -104,7 +104,7 @@ function PetPage() {
             <PetForm petId={petId} handleClose={closeModal} />
           </Modal.Body>
         </Modal>
-
+        {showSpinner ? <Spinner animation="grow" className="mt-3 ms-5" /> : ""}
         <h2 className="mx-auto pt-3 fw-semibold">
           Hello! my name is {pet.name} and I'm a {pet.breed}{" "}
         </h2>
@@ -131,6 +131,11 @@ function PetPage() {
               </li>
             </ul>
             <div className="btns-and-checkbox mt-5 fw-semibold">
+              {showSpinner ? (
+                <Spinner animation="grow" />
+              ) : (
+                ""
+              )}
               <div
                 className={
                   token
@@ -147,6 +152,11 @@ function PetPage() {
                   onChange={toggleCheck}
                 />
               </div>
+              {showSpinner ? (
+                <Spinner animation="grow" />
+              ) : (
+                ""
+              )}
               <ButtonGroup className="pet-actions mt-2 ms-2">
                 <Button
                   variant="outline-secondary"

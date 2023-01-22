@@ -1,11 +1,11 @@
-import { usePetsContext } from "../context/PetsContext";
-import { useAuthContext } from "../context/AuthContext";
-import { useEffect } from "react";
-import PetCard from "../components/PetCard";
-import { Container, Row, Col } from "react-bootstrap";
+import { usePetsContext } from "../context/PetsContext"
+import { useAuthContext } from "../context/AuthContext"
+import { useEffect } from "react"
+import PetCard from "../components/PetCard"
+import { Container, Row, Col, Spinner } from "react-bootstrap"
 
 function MyPets() {
-  const { token, loggedUser } = useAuthContext();
+  const { token, loggedUser, showSpinner } = useAuthContext();
   const { getUserPets, userPetsList } = usePetsContext();
   const userId = loggedUser.userId;
   const ownedPets = userPetsList[0];
@@ -37,6 +37,12 @@ function MyPets() {
               </Row>
             </Container>
 
+            {
+              showSpinner ? (
+                <Spinner animation="grow" className="mt-2 me-2"/>
+              ) : ""
+              }
+              
             <Container className="saved-pets mt-2 w-50">
               {token ? (
                 <h2 className="bg-light bg-opacity-75 w-75">
