@@ -1,19 +1,19 @@
 import { usePetsContext } from "../context/PetsContext"
 import { useAuthContext } from "../context/AuthContext"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Form, FloatingLabel, Button, Spinner } from "react-bootstrap"
 
 function PetForm(props) {
   const { petId, handleClose } = props;
-  const { addNewPet, updatePet, getPet, pet } = usePetsContext();
-  const { isAdmin, loggedUser, showSpinner } = useAuthContext();
+  const { addNewPet, updatePet, getPet, pet, showSpinner } = usePetsContext();
+  const { isAdmin, loggedUser } = useAuthContext();
   const { userId } = loggedUser;
   const [type, setType] = useState("");
   const [petName, setPetName] = useState("");
   const [status, setStatus] = useState("");
   const [height, setHeight] = useState(0);
   const [weight, setWeight] = useState(0);
-  const [petImage, setPetImage] = useState("");
+  const [petImage, setPetImage] = useState();
   const [diet, setDiet] = useState("");
   const [breed, setBreed] = useState("");
   const [color, setColor] = useState("");
@@ -34,7 +34,7 @@ function PetForm(props) {
       setIsHypo(pet.hypoallergenic);
       setPetBio(pet.bio);
     }
-  }, [petId]);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,7 +56,7 @@ function PetForm(props) {
     }
     petData.append("picture", petImage);
     try {
-      addNewPet(petData);
+      await addNewPet(petData);
       handleClose();
     } catch (err) {
       console.log(err);
@@ -84,12 +84,14 @@ function PetForm(props) {
     petData.append("picture", petImage);
 
     try {
-      updatePet(userId, petId, petData);
+      await updatePet(userId, petId, petData);
       handleClose();
     } catch (err) {
       console.log(err);
     }
   };
+
+  
 
   return (
     <Form className="add-pet-form d-flex justify-content-around">
@@ -160,7 +162,12 @@ function PetForm(props) {
           </FloatingLabel>
         </div>
         <Form.Group controlId="formFile" className="mb-3">
-          <Form.Label>Upload Picture:</Form.Label>
+          <Form.Label>
+            <span className="text-danger">*
+              </span> {
+                isAdmin && petId ?
+                "Re-upload Picture:" : "Upload Picture:"
+              }</Form.Label>
           <Form.Control
             className="add-pet-pic"
             type="file"

@@ -1,12 +1,14 @@
-import { usePetsContext } from "../context/PetsContext";
-import { useAuthContext } from "../context/AuthContext";
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Button, ButtonGroup, Form, Modal, Spinner } from "react-bootstrap";
-import PetForm from "../components/PetForm";
+import { usePetsContext } from "../context/PetsContext"
+import { useAuthContext } from "../context/AuthContext"
+import { React, useEffect, useState } from "react"
+import { useParams, useNavigate } from "react-router-dom"
+import { Button, ButtonGroup, Form, Modal, Spinner } from "react-bootstrap"
+import PetForm from "../components/PetForm"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 function PetPage() {
-  const { getPet, pet, savePet, removePet, adoptOrFoster, returnPet } =
+  const { getPet, pet, savePet, removePet, adoptOrFoster, returnPet, updatedPet } =
     usePetsContext();
   const { token, loggedUser, isAdmin, showSpinner } = useAuthContext();
   const currentStatus = pet.adoptionStatus;
@@ -17,13 +19,44 @@ function PetPage() {
   const petId = param.petId;
   const [isChecked, setIsChecked] = useState(false);
   const [lgShow, setLgShow] = useState(false);
+  const [confirmPetReturn, setConfirmPetReturn] = useState(false);
+
+  const petType = pet.type === '1' ? "cat" : "dog";
 
   const toggleCheck = () => {
     setIsChecked((prev) => !prev);
     if (isChecked) {
       removePet(petId);
-    } else savePet(petId);
+      toast.success("Pet removed from your favourites", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+    } else {
+      savePet(petId);
+      toast.success("Pet added to your favourites", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+    }
   };
+
+  const ConfirmOrCancelReturn = ({ closeToast, ownerDecision }) => (
+    <div>
+      Are you sure that you wish to return {pet.name}?
+      <button
+        className="ms-2 me-2"
+        onClick={() => {
+          ownerDecision("yes");
+          closeToast();
+        }}
+      >
+        Yes
+      </button>
+      <button onClick={closeToast} className="ms-2">
+        No
+      </button>
+    </div>
+  );
 
   const handleClick = (e) => {
     const userPetAction = {
@@ -31,11 +64,31 @@ function PetPage() {
       action: e.target.innerText,
     };
     if (e.target.innerText === "Return") {
-      returnPet(petId);
-      window.location.reload();
+      const ownerDecision = (response) => {
+        if (response === "yes") {
+          returnPet(petId);
+          toast.success("Return request will be proccessed within a few days", {
+            position: "top-center",
+            autoClose: 7000,
+            onClose: () => window.location.reload(),
+          });
+        } else return;
+      };
+      toast.warning(<ConfirmOrCancelReturn ownerDecision={ownerDecision} />, {
+        autoClose: false,
+      });
     } else {
       adoptOrFoster(userPetAction);
-      window.location.reload();
+      toast.success(
+        `Congratulations on your choice to ${userPetAction.action.toLowerCase()} ${
+          pet.name
+        }!`,
+        {
+          position: "top-center",
+          autoClose: 7000,
+          onClose: () => window.location.reload(),
+        }
+      );
     }
   };
 
@@ -44,13 +97,20 @@ function PetPage() {
   };
 
   const openModal = () => {
-    console.log(isAdmin);
     if (isAdmin) setLgShow(true);
   };
 
   useEffect(() => {
     getPet(petId);
   }, []);
+
+  useEffect(() => {
+    if (updatedPet) {
+      toast.success("Pet successfuly edited!", {
+        autoClose: 7000,
+      });
+    }
+  }, [updatedPet]);
 
   let petStatus = "";
   switch (pet.adoptionStatus) {
@@ -106,7 +166,10 @@ function PetPage() {
         </Modal>
         {showSpinner ? <Spinner animation="grow" className="mt-3 ms-5" /> : ""}
         <h2 className="mx-auto pt-3 fw-semibold">
-          Hello! my name is {pet.name} and I'm a {pet.breed}{" "}
+          Hello! my name is {pet.name} and I'm a {
+          pet.breed && (pet.breed).includes('mixed') ?
+          `${pet.breed} ${petType}` : pet.breed
+          }{" "}
         </h2>
       </div>
       <div className="pet-content d-flex">
@@ -131,11 +194,7 @@ function PetPage() {
               </li>
             </ul>
             <div className="btns-and-checkbox mt-5 fw-semibold">
-              {showSpinner ? (
-                <Spinner animation="grow" />
-              ) : (
-                ""
-              )}
+              {showSpinner ? <Spinner animation="grow" /> : ""}
               <div
                 className={
                   token
@@ -152,11 +211,7 @@ function PetPage() {
                   onChange={toggleCheck}
                 />
               </div>
-              {showSpinner ? (
-                <Spinner animation="grow" />
-              ) : (
-                ""
-              )}
+              {showSpinner ? <Spinner animation="grow" /> : ""}
               <ButtonGroup className="pet-actions mt-2 ms-2">
                 <Button
                   variant="outline-secondary"
@@ -191,6 +246,7 @@ function PetPage() {
             </div>
           </div>
         </div>
+        <ToastContainer />
         <div className="img-box text-center">
           <img
             src={pet.picture}

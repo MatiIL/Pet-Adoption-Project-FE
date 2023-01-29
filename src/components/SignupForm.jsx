@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Spinner } from "react-bootstrap"
-import { useAuthContext } from "../context/AuthContext"
-import FloatingLabel from "react-bootstrap/FloatingLabel"
+import { Button, Form, Spinner } from "react-bootstrap";
+import { useAuthContext } from "../context/AuthContext";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 function SignupForm(props) {
-  const { closeSignup, wasUserClicked } = props;
+  const { closeSignup, wasUserClicked, signupAttempt, editAttempt } = props;
   const {
     authNewUser,
     registeredUser,
@@ -13,7 +13,7 @@ function SignupForm(props) {
     updateUserDetails,
     updatedUser,
     emailTaken,
-    isTakenMessage,
+    didUserUpdate,
     fullUserInfo,
     isAdmin,
     showSpinner,
@@ -37,7 +37,14 @@ function SignupForm(props) {
       setPhone(loggedUser.phone);
       setBio(loggedUser.bio != null ? loggedUser.bio : "");
     }
-  }, [token, loggedUser]);
+    if (didUserUpdate) {
+      setEmail(updatedUser.email);
+      setFirstName(updatedUser.firstName);
+      setLastName(updatedUser.lastName);
+      setPhone(updatedUser.phone);
+      setBio(updatedUser.bio != null ? updatedUser.bio : "");
+    }
+  }, [token, didUserUpdate]);
 
   const signupUser = async (e) => {
     e.preventDefault();
@@ -53,13 +60,16 @@ function SignupForm(props) {
       await authNewUser(newUser);
       if (registeredUser) {
         closeSignup();
+        signupAttempt(1);
+      } else {
+        signupAttempt(0);
       }
     } catch (err) {
       console.error(err);
     }
   };
 
-  const saveUserDetails = (e) => {
+  const saveUserDetails = async (e) => {
     e.preventDefault();
     const newDetails = {
       email: email,
@@ -71,17 +81,21 @@ function SignupForm(props) {
       bio: bio,
     };
     try {
-      updateUserDetails(newDetails);
-      if (updatedUser) {
-        console.log(updatedUser); //replace with successful update toast
-      }
-      if (emailTaken) {
-        console.log(isTakenMessage); //replace with error toast
-      }
+      await updateUserDetails(newDetails);
     } catch (err) {
+      editAttempt(3);
       console.error(err);
     }
   };
+
+  useEffect(() => {
+    if (didUserUpdate && !emailTaken) {
+      console.log(didUserUpdate, updatedUser, "updated")
+      editAttempt(1);
+    } else if (emailTaken) {
+      editAttempt(2);
+    }
+  }, [didUserUpdate, emailTaken])
 
   return (
     <Form className="d-flex justify-content-evenly">
@@ -139,7 +153,6 @@ function SignupForm(props) {
             <Form.Control
               value={isAdmin && wasUserClicked ? clickedUser.bio : bio}
               onChange={(e) => setBio(e.target.value)}
-              // as="textarea"
               placeholder="User's Bio"
               style={{ height: "110px" }}
             />
@@ -176,15 +189,16 @@ function SignupForm(props) {
           />
         </Form.Group>
         <div className="spinner-and-btn d-flex justify-content-evenly">
-          {showSpinner ? 
-          <Spinner className="mt-2 me-3" animation="grow" />
-          : ""
-          }
+          {showSpinner ? (
+            <Spinner className="mt-2 me-3" animation="grow" />
+          ) : (
+            ""
+          )}
           {isAdmin && wasUserClicked ? (
             ""
           ) : (
             <Button
-            id="register-btn"
+              id="register-btn"
               type="submit"
               variant="success"
               onClick={token ? saveUserDetails : signupUser}

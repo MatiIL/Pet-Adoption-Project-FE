@@ -9,7 +9,8 @@ export function usePetsContext() {
 
 export default function PetsContextProvider({ children }) {
   const petsRoute = "http://localhost:8080/pets";
-  const [response, setResponse] = useState(false);
+  const [addedPet, setAddedPet] = useState(false);
+  const [updatedPet, setUpdatedPet] = useState(false);
   const [petsList, setPetsList] = useState([]);
   const [pet, setPet] = useState({});
   const [userPetsList, setUserPetsList] = useState([]);
@@ -21,7 +22,7 @@ export default function PetsContextProvider({ children }) {
       const res = await instance.post(petsRoute, petData);
       if (res.data) {
         setShowSpinner(false);
-        setResponse(true);
+        setAddedPet(true);
       }
     } catch (error) {
       setShowSpinner(false);
@@ -136,8 +137,9 @@ export default function PetsContextProvider({ children }) {
       setShowSpinner(true);
       const res = await instance.put(`${petsRoute}/${userId}/${petId}`, petData);
       if (res.data) {
-        setShowSpinner(false);
         window.location.reload();
+        setShowSpinner(false);
+        setUpdatedPet(true);
       }
     } catch (err) {
       setShowSpinner(false);
@@ -148,7 +150,7 @@ export default function PetsContextProvider({ children }) {
   return (
     <PetsContext.Provider
       value={{
-        response,
+        addedPet,
         addNewPet,
         fetchPets,
         petsList,
@@ -162,6 +164,7 @@ export default function PetsContextProvider({ children }) {
         userPetsList,
         getAllPets,
         updatePet,
+        updatedPet,
         showSpinner,
       }}
     >

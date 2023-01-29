@@ -11,8 +11,9 @@ export default function AuthContextProvider({ children }) {
   const usersRoute = "http://localhost:8080/users";
   const [registeredUser, setRegisteredUser] = useState(false);
   const [loggedUser, setLoggedUser] = useState({});
+  const [updatedUser, setUpdatedUser] = useState({});
   const [token, setToken] = useState(false);
-  const [updatedUser, setUpdatedUser] = useState(false);
+  const [didUserUpdate, setDidUserUpdate] = useState(false);
   const [emailTaken, setEmailTaken] = useState(false);
   const [isTakenMessage, setIsTakenMessage] = useState("");
   const [allUsers, setAllUsers] = useState([]);
@@ -69,8 +70,10 @@ export default function AuthContextProvider({ children }) {
   }
 
   useEffect(() => {
+    if (loggedUser) {
     currentUserAuth();
-  }, []);
+    }
+  }, [loggedUser]);
 
   const logout = async () => {
     try {
@@ -93,13 +96,14 @@ export default function AuthContextProvider({ children }) {
         setShowSpinner(false);
         switch (typeof res.data) {
           case "object":
-            setLoggedUser(res.data);
-            setUpdatedUser(true);
+            setUpdatedUser(res.data);
+            setDidUserUpdate(true);
+            break;
           case "string":
             setEmailTaken(true);
             setIsTakenMessage(res.data);
+            break;
         }
-        window.location.reload();
       }
     } catch (err) {
       setShowSpinner(false);
@@ -146,6 +150,7 @@ export default function AuthContextProvider({ children }) {
         logout,
         token,
         setToken,
+        didUserUpdate,
         updateUserDetails,
         updatedUser,
         emailTaken,

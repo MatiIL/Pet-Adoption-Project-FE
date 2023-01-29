@@ -2,12 +2,26 @@ import Modal from "react-bootstrap/Modal"
 import SignupForm from "./SignupForm"
 import React, { useState } from "react"
 import Button from "react-bootstrap/Button"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function SignupModal(props) {
   const { handleClose } = props;
   const [show, setShow] = useState(false);
   const closeSignup = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const signupAttempt = (num) => {
+    if (num === 1) {
+      toast.success("Signup confirmed! now login with your registered email & password",
+      {
+        autoClose: 7000,
+      });
+    }
+    if (num === 0) {
+      toast.error("Unsuccessful signup!")
+    }
+  }
 
   return (
     <>
@@ -27,6 +41,7 @@ function SignupModal(props) {
         <Modal.Body>
           <SignupForm 
           closeSignup={closeSignup}
+          signupAttempt={signupAttempt}
           />
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-end">
@@ -37,6 +52,7 @@ function SignupModal(props) {
           </div>
         </Modal.Footer>
       </Modal>
+      <ToastContainer />
     </>
   );
 }
