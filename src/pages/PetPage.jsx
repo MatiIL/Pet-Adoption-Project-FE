@@ -1,13 +1,13 @@
 import { usePetsContext } from "../context/PetsContext"
 import { useAuthContext } from "../context/AuthContext"
 import { React, useEffect, useState } from "react"
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, useLocation } from "react-router-dom"
 import { Button, ButtonGroup, Form, Modal, Spinner } from "react-bootstrap"
 import PetForm from "../components/PetForm"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-function PetPage() {
+function PetPage({ savedPets }) {
   const { getPet, pet, savePet, removePet, adoptOrFoster, returnPet, updatedPet } =
     usePetsContext();
   const { token, loggedUser, isAdmin, showSpinner } = useAuthContext();
@@ -20,6 +20,9 @@ function PetPage() {
   const [isChecked, setIsChecked] = useState(false);
   const [lgShow, setLgShow] = useState(false);
   const [confirmPetReturn, setConfirmPetReturn] = useState(false);
+
+  const location = useLocation();
+  const userPetsList = location.state;
 
   const petType = pet.type === '1' ? "cat" : "dog";
 
@@ -102,6 +105,14 @@ function PetPage() {
 
   useEffect(() => {
     getPet(petId);
+  }, []);
+
+  useEffect(() => {
+    const savedPets = userPetsList.userPetsList[1];
+    const isPetOnUserList = (savedPets.find(item => item.petId == petId));
+    if (isPetOnUserList) {
+      setIsChecked(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -203,11 +214,12 @@ function PetPage() {
                 }
               >
                 <label className={token ? "visible ms-2" : "visually-hidden"}>
-                  Save to List
+                  {isChecked ? "Remove from My Pets" : "Save to My Pets"}
                 </label>
                 <Form.Check
                   className={token ? "visible" : "visually-hidden"}
                   type="checkbox"
+                  checked={isChecked}
                   onChange={toggleCheck}
                 />
               </div>

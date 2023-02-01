@@ -1,7 +1,7 @@
-import { usePetsContext } from "../context/PetsContext";
-import { Form, Button, FloatingLabel, Spinner } from "react-bootstrap";
-import SearchPetResults from "./SearchPetResults";
-import { useState, useEffect } from "react";
+import { usePetsContext } from "../context/PetsContext"
+import { Form, Button, FloatingLabel, Spinner } from "react-bootstrap"
+import SearchPetResults from "./SearchPetResults"
+import { useState, useEffect } from "react"
 
 function SearchForm() {
   const { fetchPets, petsList, showSpinner } = usePetsContext();
@@ -169,7 +169,7 @@ function SearchForm() {
         </div>
       </div>
 
-      <SearchPetResults petsList={petsList} searchPets={searchPets} />
+      <SearchPetResults petsList={petsList} searchPets={searchPets}/>
     </div>
   );
 }

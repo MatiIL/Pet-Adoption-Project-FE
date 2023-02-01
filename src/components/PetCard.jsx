@@ -1,7 +1,8 @@
 import { Card } from "react-bootstrap"
 import { Link } from "react-router-dom"
 
-function PetCard({ pet }) {
+function PetCard(props) {
+  const { pet, userPetsList } = props;
 
   let petStatus = "";
   switch (pet.adoptionStatus) {
@@ -35,6 +36,7 @@ function PetCard({ pet }) {
           to={`/PetPage/${pet.petId}`}
           id="see-more"
           className="links mt-2 link-dark text-decoration-none"
+          state={{ userPetsList }}
         >
           SEE MORE
         </Link>
