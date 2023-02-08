@@ -8,8 +8,15 @@ import 'react-toastify/dist/ReactToastify.css'
 function SignupModal(props) {
   const { handleClose } = props;
   const [show, setShow] = useState(false);
-  const closeSignup = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const closeSignup = () => {
+    setShow(false);
+  }
+  
+  const handleShow = () => {
+    setShow(true);
+  }
 
   const signupAttempt = (num) => {
     if (num === 1) {
@@ -19,7 +26,12 @@ function SignupModal(props) {
       });
     }
     if (num === 0) {
-      toast.error("Unsuccessful signup!")
+      setShowTooltip(true);
+      toast.error("Unsuccessful Signup!",
+      {
+        autoClose: 7000,
+        onClose: () => setShowTooltip(false)
+      });
     }
   }
 
@@ -42,9 +54,11 @@ function SignupModal(props) {
           <SignupForm 
           closeSignup={closeSignup}
           signupAttempt={signupAttempt}
+          showTooltip={showTooltip}
           />
         </Modal.Body>
         <Modal.Footer className="d-flex justify-content-end">
+        
           <div className="buttons">
             <Button variant="secondary" className=" me-5" onClick={handleClose}>
               Cancel
@@ -52,7 +66,7 @@ function SignupModal(props) {
           </div>
         </Modal.Footer>
       </Modal>
-      <ToastContainer />
+      <ToastContainer className="signup-toast"/>
     </>
   );
 }

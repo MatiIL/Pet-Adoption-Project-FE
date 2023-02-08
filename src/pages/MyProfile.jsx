@@ -14,10 +14,10 @@ const editAttempt = (num) => {
         autoClose: 7000,
       });
       break;
-    case 3:
-      toast.error("Sorry, there was a problem updating your profile", {
-        autoClose: 7000,
-      });
+    // case 3:
+    //   toast.error("Sorry, there was a problem updating your profile", {
+    //     autoClose: 7000,
+    //   });
       break;
   }
 };
