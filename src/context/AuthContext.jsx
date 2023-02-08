@@ -10,6 +10,8 @@ export const useAuthContext = () => {
 export default function AuthContextProvider({ children }) {
   const usersRoute = "http://localhost:8080/users";
   const [registeredUser, setRegisteredUser] = useState(false);
+  const [signupError, setSignupError] = useState("");
+  const [passesNoMatch, setPassesNoMatch] = useState(false);
   const [loggedUser, setLoggedUser] = useState({});
   const [updatedUser, setUpdatedUser] = useState({});
   const [token, setToken] = useState(false);
@@ -32,6 +34,9 @@ export default function AuthContextProvider({ children }) {
     } catch (err) {
       setShowSpinner(false);
       console.log(err);
+      const errMsg = err.response.data
+      setSignupError(errMsg);
+      if (errMsg.includes("Passwords")) setPassesNoMatch(true);
     }
   };
 
@@ -107,7 +112,9 @@ export default function AuthContextProvider({ children }) {
       }
     } catch (err) {
       setShowSpinner(false);
-      console.log(err);
+      const errMsg = err.response.data
+      setSignupError(errMsg);
+      if (errMsg.includes("Passwords")) setPassesNoMatch(true);
     }
   };
 
@@ -144,6 +151,9 @@ export default function AuthContextProvider({ children }) {
       value={{
         authNewUser,
         registeredUser,
+        signupError,
+        passesNoMatch,
+        setPassesNoMatch,
         loginUser,
         loggedUser,
         setLoggedUser,
