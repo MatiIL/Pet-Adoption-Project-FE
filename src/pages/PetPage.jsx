@@ -7,10 +7,13 @@ import PetForm from "../components/PetForm"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-function PetPage({ savedPets }) {
+function PetPage() {
   const { getPet, pet, savePet, removePet, adoptOrFoster, returnPet, updatedPet } =
     usePetsContext();
   const { token, loggedUser, isAdmin, showSpinner } = useAuthContext();
+  const userPets = localStorage.getItem("userPets");
+  const petsArray = JSON.parse(userPets);
+  const savedPets = petsArray[1];
   const currentStatus = pet.adoptionStatus;
   const userId = loggedUser.userId;
   const petOwner = pet.ownerId;
@@ -19,12 +22,38 @@ function PetPage({ savedPets }) {
   const petId = param.petId;
   const [isChecked, setIsChecked] = useState(false);
   const [lgShow, setLgShow] = useState(false);
-  const [confirmPetReturn, setConfirmPetReturn] = useState(false);
 
-  const location = useLocation();
-  const userPetsList = location.state;
+  const petType = pet.type === '1' ? "Cat" : "Dog";
 
-  const petType = pet.type === '1' ? "cat" : "dog";
+  let petStatus = "";
+  switch (pet.adoptionStatus) {
+    case "1":
+      petStatus = "Available";
+      break;
+    case "2":
+      petStatus = "Fostered";
+      break;
+    case "3":
+      petStatus = "Adopted";
+      break;
+    default:
+      petStatus = "TBD";
+  };
+
+  const titleForPet = (type) => {
+    let titleString = "";
+    switch (type) {
+      case '1':
+        titleString = (pet.breed).toLowerCase().includes("cat") ?
+        pet.breed : `${pet.breed} ${petType}`;
+        break;
+      case '2':
+        titleString = (pet.breed).toLowerCase().includes("mixed") ?
+        `${pet.breed} ${petType}` : pet.breed;
+        break;
+    }
+    return titleString;
+  }
 
   const toggleCheck = () => {
     setIsChecked((prev) => !prev);
@@ -108,7 +137,6 @@ function PetPage({ savedPets }) {
   }, []);
 
   useEffect(() => {
-    const savedPets = userPetsList.userPetsList[1];
     const isPetOnUserList = (savedPets.find(item => item.petId == petId));
     if (isPetOnUserList) {
       setIsChecked(true);
@@ -122,21 +150,6 @@ function PetPage({ savedPets }) {
       });
     }
   }, [updatedPet]);
-
-  let petStatus = "";
-  switch (pet.adoptionStatus) {
-    case "1":
-      petStatus = "Available";
-      break;
-    case "2":
-      petStatus = "Fostered";
-      break;
-    case "3":
-      petStatus = "Adopted";
-      break;
-    default:
-      petStatus = "TBD";
-  }
 
   return (
     <div className="pet-page">
@@ -177,16 +190,13 @@ function PetPage({ savedPets }) {
         </Modal>
         {showSpinner ? <Spinner animation="grow" className="mt-3 ms-5" /> : ""}
         <h2 className="mx-auto pt-3 fw-semibold">
-          Hello! my name is {pet.name} and I'm a {
-          pet.breed && (pet.breed).includes('mixed') ?
-          `${pet.breed} ${petType}` : pet.breed
-          }{" "}
+          Hello! my name is {pet.name} and I'm a {titleForPet(pet.type)}
         </h2>
       </div>
       <div className="pet-content d-flex">
         <div className="pets-details d-flex justify-content-center">
           <div className="details-and-actions d-flex sticky-sm-bottom">
-            <ul className="list-group list-group-flush w-75 mt-5 me-2 d-flex fw-semibold">
+            <ul className="list-group list-group-flush  mt-5 me-2 d-flex fw-semibold">
               <li className="list-group-item text-start">
                 Status: {petStatus}
               </li>

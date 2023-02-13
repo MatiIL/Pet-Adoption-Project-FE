@@ -92,6 +92,15 @@ input#search-type.form-check-input[type="checkbox"] {
 
 }
 
+@media screen and (max-width: 992px) {
+  .hypo {
+    width: 140%;
+  }
+  .add-pet-pic {
+    width: 90%;
+  }
+}
+
 @media (min-width: 994px) {
 .navbar-expand-sm .navbar-nav .nav-link {
   width: 80%;
@@ -197,9 +206,21 @@ input#search-type.form-check-input[type="checkbox"] {
   .log-buttons {
     margin-bottom: 5px;
   }
+  .hypo {
+    width: 160%;
+  }
 }
 
 @media screen and (max-width: 455px) {
+  .hypo {
+    width: 200%;
+  }
+  .petform-bio {
+    margin-top: 40px;
+  }
+  .add-pet-pic {
+    margin-bottom: 60px;
+  }
   .log-buttons {
     margin-bottom: 5px;
   }

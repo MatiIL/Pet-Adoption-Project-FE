@@ -14,6 +14,7 @@ function SearchForm() {
   const [minWeight, setMinWeight] = useState(0);
   const [maxWeight, setMaxWeight] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  
   const searchParams = {
     type: type,
     status: status,

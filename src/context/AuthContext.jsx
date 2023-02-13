@@ -15,6 +15,9 @@ export default function AuthContextProvider({ children }) {
   const [loggedUser, setLoggedUser] = useState({});
   const [updatedUser, setUpdatedUser] = useState({});
   const [token, setToken] = useState(false);
+  const [loginError, setLoginError] = useState("");
+  const [wrongPass, setWrongPass] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
   const [didUserUpdate, setDidUserUpdate] = useState(false);
   const [emailTaken, setEmailTaken] = useState(false);
   const [isTakenMessage, setIsTakenMessage] = useState("");
@@ -34,7 +37,7 @@ export default function AuthContextProvider({ children }) {
     } catch (err) {
       setShowSpinner(false);
       console.log(err);
-      const errMsg = err.response.data
+      const errMsg = err.response.data;
       setSignupError(errMsg);
       if (errMsg.includes("Passwords")) setPassesNoMatch(true);
     }
@@ -55,6 +58,11 @@ export default function AuthContextProvider({ children }) {
       }
     } catch (err) {
       setShowSpinner(false);
+      const errMsg = err.response.data;
+      setLoginError(errMsg);
+      if (errMsg.includes("Password")) {
+        setWrongPass(true);
+      } else setShowTooltip(true);
       console.log(err);
     }
   };
@@ -67,6 +75,10 @@ export default function AuthContextProvider({ children }) {
         setToken(true);
         if (res.data.isAdmin) {
           setIsAdmin(true);
+        }
+        if (res.data.userPets) {
+          const userPets = res.data.userPets;
+          localStorage.setItem("userPets", JSON.stringify(userPets));
         }
       }
     } catch (err) {
@@ -87,6 +99,7 @@ export default function AuthContextProvider({ children }) {
       if (res.data) setLoggedUser({});
       setShowSpinner(false);
       setToken(false);
+      if (isAdmin) setIsAdmin(false);
     } catch (err) {
       setShowSpinner(false);
       console.log(err);
@@ -157,6 +170,11 @@ export default function AuthContextProvider({ children }) {
         loginUser,
         loggedUser,
         setLoggedUser,
+        loginError,
+        wrongPass,
+        setWrongPass,
+        showTooltip,
+        setShowTooltip,
         logout,
         token,
         setToken,

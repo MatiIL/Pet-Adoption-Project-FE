@@ -13,7 +13,8 @@ function NavBar() {
   const renderAdminMenu = () => {
     if (isAdmin) {
       setAdminMenu(true);
-    }
+    } 
+    if (!isAdmin) setAdminMenu(false);
   }
 
   useEffect(() => {
@@ -28,6 +29,17 @@ function NavBar() {
     }
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      if (!token) {
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Navbar collapseOnSelect expand="sm"  variant="light" className="navbar">
       {adminMenu? <AdminMenu/> : ""}
@@ -35,7 +47,7 @@ function NavBar() {
       <Nav className="">
             <div className="log-buttons d-flex">
             { token  ? (<Button variant="outline-secondary" className="logout-btn" 
-            onClick={logout}
+            onClick={handleLogout}
             >
               Logout</Button>): <LoginModal />}
               </div>
@@ -66,7 +78,6 @@ function NavBar() {
               title="My Profile"
               id="collasible-nav-dropdown"
               className={token? 'visible':'visually-hidden'}
-              // {...isActive ? "nav-link" : "unselected-link"}
             >
               <NavDropdown.Item href="/MyPets"
               >My Pets</NavDropdown.Item>

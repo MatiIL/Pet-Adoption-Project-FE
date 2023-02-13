@@ -13,7 +13,6 @@ export default function PetsContextProvider({ children }) {
   const [updatedPet, setUpdatedPet] = useState(false);
   const [petsList, setPetsList] = useState([]);
   const [pet, setPet] = useState({});
-  const [userPetsList, setUserPetsList] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
 
   const addNewPet = async (petData) => {
@@ -104,20 +103,6 @@ export default function PetsContextProvider({ children }) {
     }
   };
 
-  const getUserPets = async (userId) => {
-    try {
-      setShowSpinner(true);
-      const res = await instance.get(`${petsRoute}/mypets/${userId}`);
-      if (res.data) {
-        setShowSpinner(false);
-        setUserPetsList(res.data);
-      } 
-    } catch (err) {
-      setShowSpinner(false);
-      console.log(err);
-    }
-  };
-
   const getAllPets = async () => {
     try {
       setShowSpinner(true);
@@ -137,9 +122,11 @@ export default function PetsContextProvider({ children }) {
       setShowSpinner(true);
       const res = await instance.put(`${petsRoute}/${userId}/${petId}`, petData);
       if (res.data) {
-        window.location.reload();
         setShowSpinner(false);
         setUpdatedPet(true);
+        setTimeout(()=> {
+          window.location.reload();
+         }, 3000);
       }
     } catch (err) {
       setShowSpinner(false);
@@ -160,8 +147,6 @@ export default function PetsContextProvider({ children }) {
         removePet,
         adoptOrFoster,
         returnPet,
-        getUserPets,
-        userPetsList,
         getAllPets,
         updatePet,
         updatedPet,

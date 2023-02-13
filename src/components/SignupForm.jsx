@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Button, Form, Spinner } from "react-bootstrap";
-import { useAuthContext } from "../context/AuthContext";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
-import { Tooltip } from "react-tooltip";
+import React, { useEffect, useState } from "react"
+import { Button, Form, Spinner } from "react-bootstrap"
+import { useAuthContext } from "../context/AuthContext"
+import { capFirstLetters  } from "../Utils"
+import FloatingLabel from "react-bootstrap/FloatingLabel"
+import { Tooltip } from "react-tooltip"
 
 function SignupForm(props) {
   const {
@@ -124,7 +125,8 @@ function SignupForm(props) {
         }
         break;
       case "first-name":
-        setFirstName(e.target.value);
+        const styledFirstName = capFirstLetters(e.target.value)
+        setFirstName(styledFirstName);
         if (e.target.value.length > 1) {
           setInvalidinputs({ ...invalidInputs, invalidFirstName: false });
           setValidInputs({ ...validInputs, validFirstName: true });
@@ -134,7 +136,8 @@ function SignupForm(props) {
         }
         break;
       case "last-name":
-        setLastName(e.target.value);
+        const styledLastName = capFirstLetters(e.target.value);
+        setLastName(styledLastName);
         if (e.target.value.length > 1) {
           setInvalidinputs({ ...invalidInputs, invalidLastName: false });
           setValidInputs({ ...validInputs, validLastName: true });
@@ -157,17 +160,18 @@ function SignupForm(props) {
   };
 
   const handleUndefined = () => {
-    if (email === "")
-      setInvalidinputs({ ...invalidInputs, invalidEmail: true });
-    if (pass === "") setInvalidinputs({ ...invalidInputs, invalidPass: true });
-    if (repeatPass === "")
-      setInvalidinputs({ ...invalidInputs, invalidRepeat: true });
-    if (firstName === "")
-      setInvalidinputs({ ...invalidInputs, invalidFirstName: true });
-    if (lastName === "")
-      setInvalidinputs({ ...invalidInputs, invalidLastName: true });
     if (phone === "")
       setInvalidinputs({ ...invalidInputs, invalidPhone: true });
+    if (lastName === "")
+      setInvalidinputs({ ...invalidInputs, invalidLastName: true });
+    if (firstName === "")
+    setInvalidinputs({ ...invalidInputs, invalidFirstName: true });
+    if (repeatPass === "")
+    setInvalidinputs({ ...invalidInputs, invalidRepeat: true });
+    if (pass === "") 
+    setInvalidinputs({ ...invalidInputs, invalidPass: true });
+    if (email === "")
+    setInvalidinputs({ ...invalidInputs, invalidEmail: true });
   };
 
   const signupUser = async (e) => {

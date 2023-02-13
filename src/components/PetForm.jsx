@@ -1,7 +1,9 @@
-import { usePetsContext } from "../context/PetsContext";
-import { useAuthContext } from "../context/AuthContext";
-import React, { useState, useEffect } from "react";
-import { Form, FloatingLabel, Button, Spinner } from "react-bootstrap";
+import { usePetsContext } from "../context/PetsContext"
+import { useAuthContext } from "../context/AuthContext"
+import { capFirstLetters } from "../Utils"
+import React, { useState, useEffect } from "react"
+import { Form, FloatingLabel, Button, Spinner } from "react-bootstrap"
+import { Tooltip } from "react-tooltip"
 
 function PetForm(props) {
   const { petId, handleClose } = props;
@@ -61,7 +63,8 @@ function PetForm(props) {
         }
         break;
       case "pet-name":
-        setPetName(e.target.value);
+        const styledName = capFirstLetters(e.target.value);
+        setPetName(styledName);
         if (e.target.value.length > 1) {
           setInvalidInputs({...invalidInputs, invalidName: false});
           setValidInputs({...validInputs, validName: true});
@@ -116,7 +119,8 @@ function PetForm(props) {
           }
           break;
         case "pet-breed":
-          setBreed(e.target.value);
+          const styledBreed = capFirstLetters(e.target.value)
+          setBreed(styledBreed);
           if (e.target.value.length > 3) {
             setInvalidInputs({...invalidInputs, invalidBreed: false});
             setValidInputs({...validInputs, validBreed: true});
@@ -175,18 +179,18 @@ function PetForm(props) {
   }, []);
 
   const handleUndefined = () => {
-    if (type === undefined) setInvalidInputs({...invalidInputs, invalidType: true});
-    if (petName === undefined) setInvalidInputs({...invalidInputs, invalidName: true});
-    if (status === undefined) setInvalidInputs({...invalidInputs, invalidStatus: true});
-    if (height === undefined) setInvalidInputs({...invalidInputs, invalidHeight: true});
-    if (weight === undefined) setInvalidInputs({...invalidInputs, invalidWeight: true});
     if (petImage === undefined) setInvalidInputs({...invalidInputs, invalidImage: true});
-    if (diet === undefined) setInvalidInputs({...invalidInputs, invalidDiet: true});
-    if (breed === undefined) setInvalidInputs({...invalidInputs, invalidBreed: true});
-    if (color === undefined) setInvalidInputs({...invalidInputs, invalidColor: true});
-    if (isHypo === undefined) setInvalidInputs({...invalidInputs, invalidIsHypo: true});
     if (petBio === undefined) setInvalidInputs({...invalidInputs, invalidBio: true});
-  }
+    if (color === undefined) setInvalidInputs({...invalidInputs, invalidColor: true});
+    if (breed === undefined) setInvalidInputs({...invalidInputs, invalidBreed: true});
+    if (diet === undefined) setInvalidInputs({...invalidInputs, invalidDiet: true});
+    if (isHypo === undefined) setInvalidInputs({...invalidInputs, invalidIsHypo: true});
+    if (weight === undefined) setInvalidInputs({...invalidInputs, invalidWeight: true});
+    if (height === undefined) setInvalidInputs({...invalidInputs, invalidHeight: true});
+    if (status === undefined) setInvalidInputs({...invalidInputs, invalidStatus: true});
+    if (petName === undefined) setInvalidInputs({...invalidInputs, invalidName: true});
+    if (type === undefined) setInvalidInputs({...invalidInputs, invalidType: true});
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -427,7 +431,15 @@ function PetForm(props) {
           />
         </FloatingLabel>
         <Form.Group controlId="formFile" className="mt-2 mb-3 w-75">
-          <Form.Label>
+          <Form.Label
+          id="pic-anchor"
+          data-tooltip-content="Sorry for the inconvenience, but you must upload a pet's picture on each form submission"
+          data-tooltip-place="top"
+          >
+            <Tooltip
+            anchorId="pic-anchor"
+            isOpen={invalidInputs.invalidImage? true : false}
+            />
             <span className="text-danger">*</span>{" "}
             {isAdmin && petId ? "Re-upload Picture:" : "Upload Picture:"}
           </Form.Label>

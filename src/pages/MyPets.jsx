@@ -1,19 +1,13 @@
-import { usePetsContext } from "../context/PetsContext"
 import { useAuthContext } from "../context/AuthContext"
-import { useEffect } from "react"
 import PetCard from "../components/PetCard"
-import { Container, Row, Col, Spinner } from "react-bootstrap"
+import { Container, Row, Col } from "react-bootstrap"
 
 function MyPets() {
-  const { token, loggedUser, showSpinner } = useAuthContext();
-  const { getUserPets, userPetsList } = usePetsContext();
-  const userId = loggedUser.userId;
-  const ownedPets = userPetsList[0];
-  const savedPets = userPetsList[1];
-
-  useEffect(() => {
-    getUserPets(userId);
-  }, []);
+  const { token } = useAuthContext();
+  const userPets = localStorage.getItem("userPets");
+  const petsArray = JSON.parse(userPets);
+  const ownedPets = petsArray[0];
+  const savedPets = petsArray[1];
 
   return (
     <div className="d-flex flex-column justify-content-center mt-3">
@@ -24,7 +18,6 @@ function MyPets() {
       )}
       <div className="all-pets d-flex justify-content-evenly">
         {ownedPets && ownedPets.length > 0 ? (
-          <div className="d-flex">
             <Container className="owned-pets-container mt-2 w-50">
               <h2 className="bg-light bg-opacity-75 w-50 ms-4">Pets You Own</h2>
               <Row className="owned-pets ms-3 mt-3">
@@ -36,14 +29,10 @@ function MyPets() {
                   ))}
               </Row>
             </Container>
-
-            {
-              showSpinner ? (
-                <Spinner animation="grow" className="mt-2 me-2"/>
-              ) : ""
-              }
-              
-            <Container className="saved-pets mt-2 w-50">
+            ) : ""
+        }
+            {savedPets && savedPets.length > 0 ? (
+              <Container className="saved-pets mt-2 w-50">
               {token ? (
                 <h2 className="bg-light bg-opacity-75 w-75">
                   Your Saved Pets List
@@ -52,7 +41,7 @@ function MyPets() {
                 ""
               )}
               <Row className=" mt-3">
-                {savedPets &&
+                {savedPets.length &&
                   savedPets.map((pet) => (
                     <Col key={pet.petId} md={5}>
                       <PetCard pet={pet} />
@@ -60,10 +49,9 @@ function MyPets() {
                   ))}
               </Row>
             </Container>
-          </div>
-        ) : (
-          ""
-        )}
+
+            ) : ""
+          }  
       </div>
     </div>
   );
