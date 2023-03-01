@@ -41,7 +41,7 @@ function NavBar() {
   };
 
   return (
-    <Navbar collapseOnSelect expand="sm"  variant="light" className="navbar">
+    <Navbar collapseOnSelect expand="md" variant="light" className="navbar">
       {adminMenu? <AdminMenu/> : ""}
       <Container>
       <Nav className="">
