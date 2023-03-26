@@ -56,7 +56,9 @@ function SignupForm(props) {
   });
 
   const clickedUser = fullUserInfo[0];
-  const clickedUserPets = fullUserInfo[1];
+  const clickedUserPets = fullUserInfo.ownedPets;
+
+  console.log(fullUserInfo)
 
   useEffect(() => {
     if (token) {
@@ -259,7 +261,7 @@ function SignupForm(props) {
           <Form.Control
             name="email"
             size="sm"
-            value={isAdmin && wasUserClicked ? clickedUser.email : email}
+            value={isAdmin && wasUserClicked ? fullUserInfo.email : email}
             onChange={(e) => handleFormChange(e)}
             type="email"
             placeholder="name@example.com"
@@ -324,7 +326,7 @@ function SignupForm(props) {
             className="mt-3"
           >
             <Form.Control
-              value={isAdmin && wasUserClicked ? clickedUser.bio : bio}
+              value={isAdmin && wasUserClicked ? fullUserInfo.bio : bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder="User's Bio"
               style={{ height: "110px" }}
@@ -341,7 +343,7 @@ function SignupForm(props) {
             name="first-name"
             size="sm"
             value={
-              isAdmin && wasUserClicked ? clickedUser.firstName : firstName
+              isAdmin && wasUserClicked ? fullUserInfo.firstName : firstName
             }
             onChange={(e) => handleFormChange(e)}
             type="text"
@@ -354,7 +356,7 @@ function SignupForm(props) {
           <Form.Control
             name="last-name"
             size="sm"
-            value={isAdmin && wasUserClicked ? clickedUser.lastName : lastName}
+            value={isAdmin && wasUserClicked ? fullUserInfo.lastName : lastName}
             onChange={(e) => handleFormChange(e)}
             type="text"
             isValid={validInputs.validLastName}
@@ -366,7 +368,7 @@ function SignupForm(props) {
           <Form.Control
             name="phone"
             size="sm"
-            value={isAdmin && wasUserClicked ? clickedUser.phone : phone}
+            value={isAdmin && wasUserClicked ? fullUserInfo.phone : phone}
             onChange={(e) => handleFormChange(e)}
             type="number"
             isValid={validInputs.validPhone}

@@ -4,10 +4,10 @@ import { Container, Row, Col } from "react-bootstrap"
 
 function MyPets() {
   const { token } = useAuthContext();
-  const userPets = localStorage.getItem("userPets");
-  const petsArray = JSON.parse(userPets);
-  const ownedPets = petsArray[0];
-  const savedPets = petsArray[1];
+  const savedPets = localStorage.getItem("savedPets") !== "undefined" ? 
+  JSON.parse(localStorage.getItem("savedPets")) : [];
+  const ownedPets = localStorage.getItem("fosteredPets") !== "undefined" ?
+  JSON.parse(localStorage.getItem("fosteredPets")) : [];
 
   return (
     <div className="d-flex flex-column justify-content-center mt-3">

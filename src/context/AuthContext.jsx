@@ -48,11 +48,12 @@ export default function AuthContextProvider({ children }) {
       setShowSpinner(true);
       const res = await instance.post(`${usersRoute}/login`, logAttempt);
       if (res.data) {
+        console.log(res.data);
         setShowSpinner(false);
-        const userObj = res.data.user;
+        const userObj = res.data.user._doc;
         setLoggedUser(userObj);
         setToken(true);
-        if (res.data.user.isAdmin) {
+        if (res.data.user._doc.isAdmin) {
           setIsAdmin(true);
         }
       }
@@ -73,12 +74,12 @@ export default function AuthContextProvider({ children }) {
       if (res.data) {
         setLoggedUser(res.data);
         setToken(true);
+        const savedPets = res.data.savedPets;
+        localStorage.setItem("savedPets", JSON.stringify(savedPets));
+        const ownedPets = res.data.ownedPets;
+        localStorage.setItem("ownedPets", JSON.stringify(ownedPets));
         if (res.data.isAdmin) {
           setIsAdmin(true);
-        }
-        if (res.data.userPets) {
-          const userPets = res.data.userPets;
-          localStorage.setItem("userPets", JSON.stringify(userPets));
         }
       }
     } catch (err) {

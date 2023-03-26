@@ -48,14 +48,14 @@ function UsersPage() {
             {allUsers &&
               allUsers.map((user) => (
                 <Stack
-                  key={user.userId}
+                  key={user._id}
                   direction="horizontal"
                   gap={3}
                   className="d-flex ms-2 mt-3 mb-2 border bg-light"
                 >
                   <Col>
                     <Button onClick={handleClick} variant="outline-secondary">
-                      {user.userId}
+                      {user._id}
                     </Button>
                   </Col>
                   <Col className="">{user.firstName}</Col>
