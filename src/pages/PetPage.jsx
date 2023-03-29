@@ -1,19 +1,26 @@
-import { usePetsContext } from "../context/PetsContext"
-import { useAuthContext } from "../context/AuthContext"
-import { React, useEffect, useState } from "react"
-import { useParams, useNavigate, useLocation } from "react-router-dom"
-import { Button, ButtonGroup, Form, Modal, Spinner } from "react-bootstrap"
-import PetForm from "../components/PetForm"
-import { ToastContainer, toast } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
+import { usePetsContext } from "../context/PetsContext";
+import { useAuthContext } from "../context/AuthContext";
+import { React, useEffect, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { Button, ButtonGroup, Form, Modal, Spinner } from "react-bootstrap";
+import PetForm from "../components/PetForm";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function PetPage() {
-  const { getPet, pet, savePet, removePet, adoptOrFoster, returnPet, updatedPet } =
-    usePetsContext();
-  const { token, loggedUser, isAdmin, showSpinner } = useAuthContext();
-  const userPets = localStorage.getItem("userPets");
-  const petsArray = JSON.parse(userPets);
-  const savedPets = petsArray[1];
+  const {
+    getPet,
+    pet,
+    savePet,
+    savedPet,
+    removePet,
+    removedPet,
+    adoptOrFoster,
+    returnPet,
+    updatedPet,
+  } = usePetsContext();
+  const { token, loggedUser, isAdmin, showSpinner, savedPets } = useAuthContext();
+  
   const currentStatus = pet.adoptionStatus;
   const userId = loggedUser.userId;
   const petOwner = pet.ownerId;
@@ -23,7 +30,7 @@ function PetPage() {
   const [isChecked, setIsChecked] = useState(false);
   const [lgShow, setLgShow] = useState(false);
 
-  const petType = pet.type === '1' ? "Cat" : "Dog";
+  const petType = pet.type === "1" ? "Cat" : "Dog";
 
   let petStatus = "";
   switch (pet.adoptionStatus) {
@@ -38,37 +45,75 @@ function PetPage() {
       break;
     default:
       petStatus = "TBD";
-  };
+  }
 
   const titleForPet = (type) => {
     let titleString = "";
     switch (type) {
-      case '1':
-        titleString = (pet.breed).toLowerCase().includes("cat") ?
-        pet.breed : `${pet.breed} ${petType}`;
+      case "1":
+        titleString = pet.breed.toLowerCase().includes("cat")
+          ? pet.breed
+          : `${pet.breed} ${petType}`;
         break;
-      case '2':
-        titleString = (pet.breed).toLowerCase().includes("mixed") ?
-        `${pet.breed} ${petType}` : pet.breed;
+      case "2":
+        titleString = pet.breed.toLowerCase().includes("mixed")
+          ? `${pet.breed} ${petType}`
+          : pet.breed;
         break;
     }
     return titleString;
-  }
+  };
 
-  const toggleCheck = () => {
-    setIsChecked((prev) => !prev);
-    if (isChecked) {
-      removePet(petId);
+  const toastRemovedPet = (removedPet) => {
+    if (removedPet) {
       toast.success("Pet removed from your favourites", {
         position: "top-center",
         autoClose: 3000,
       });
     } else {
-      savePet(petId);
+      toast.error(
+        "An error occured while trying to remove pet from favourites",
+        {
+          position: "top-center",
+          autoClose: 3000,
+        }
+      );
+    }
+  }
+
+  const toastSavedPet = (savedPet) => {
+    if (savedPet) {
       toast.success("Pet added to your favourites", {
         position: "top-center",
         autoClose: 3000,
       });
+    } else {
+      toast.error(
+        "An error occured while trying to save pet to favourites",
+        {
+          position: "top-center",
+          autoClose: 3000,
+        }
+      );
+    }
+  }
+
+  const toggleCheck = async () => {
+    setIsChecked((prev) => !prev);
+    if (isChecked) {
+      try {
+        await removePet(petId);
+        toastRemovedPet(removedPet);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        await savePet(petId);
+        toastSavedPet(savedPet);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -137,7 +182,7 @@ function PetPage() {
   }, []);
 
   useEffect(() => {
-    const isPetOnUserList = (savedPets.find(item => item.petId == petId));
+    const isPetOnUserList = savedPets.find((item) => item == petId);
     if (isPetOnUserList) {
       setIsChecked(true);
     }
@@ -271,7 +316,7 @@ function PetPage() {
         <ToastContainer />
         <div className="img-box text-center">
           <img
-            src={pet.picture}
+            src={pet.imageUrl}
             alt="pet"
             className="img-fluid mt-4 border border-2 rounded-pill"
             style={{ height: "280px", objectFit: "cover" }}

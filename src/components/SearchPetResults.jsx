@@ -10,7 +10,7 @@ function SearchPetResults(props) {
         <Row className="mt-5">
           {petsList &&
             petsList.map((pet) => (
-              <Col key={pet.petId} md={3}>
+              <Col key={pet._id} md={3}>
                 <PetCard pet={pet} />
               </Col>
             ))}

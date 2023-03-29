@@ -1,14 +1,34 @@
 import { useAuthContext } from "../context/AuthContext"
 import PetCard from "../components/PetCard"
 import { Container, Row, Col } from "react-bootstrap"
+import { useEffect, useState } from "react"
+import { usePetsContext } from "../context/PetsContext"
+import instance from "../context/AxiosContext"
 
 function MyPets() {
-  const { token } = useAuthContext();
-  const savedPets = localStorage.getItem("savedPets") !== "undefined" ? 
-  JSON.parse(localStorage.getItem("savedPets")) : [];
-  const ownedPets = localStorage.getItem("fosteredPets") !== "undefined" ?
-  JSON.parse(localStorage.getItem("fosteredPets")) : [];
+  const { token, ownedPets, savedPets } = useAuthContext();
+  const [savedPetsData, setSavedPetsData] = useState([]);
 
+  const getAllSavedPets = async () => {
+    const res = await instance.get("/users/saved-pets");
+    let savedArray = [];
+    for (let petId of res.data) {
+      const pet = await instance.get(`/pets/${petId}`);
+      savedArray.push(pet.data);
+    }
+    setSavedPetsData(savedArray);
+  };
+  
+  useEffect(() => {
+    try {
+      getAllSavedPets();
+      // getAllOwnedPets();
+      // console.log("ownedPets", ownedPets);
+    } catch (err) {
+      console.log(err.messasge);
+    }
+  }, []);
+  
   return (
     <div className="d-flex flex-column justify-content-center mt-3">
       {ownedPets && ownedPets.length > 0 ? (
@@ -23,7 +43,7 @@ function MyPets() {
               <Row className="owned-pets ms-3 mt-3">
                 {ownedPets &&
                   ownedPets.map((pet) => (
-                    <Col key={pet.petId} md={6}>
+                    <Col key={pet._id} md={6}>
                       <PetCard pet={pet} />
                     </Col>
                   ))}
@@ -41,9 +61,9 @@ function MyPets() {
                 ""
               )}
               <Row className=" mt-3">
-                {savedPets.length &&
-                  savedPets.map((pet) => (
-                    <Col key={pet.petId} md={5}>
+                {savedPetsData.length &&
+                  savedPetsData.map((pet) => (
+                    <Col key={pet._id} md={5}>
                       <PetCard pet={pet} />
                     </Col>
                   ))}

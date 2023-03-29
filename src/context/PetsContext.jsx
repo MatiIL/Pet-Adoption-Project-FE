@@ -9,6 +9,8 @@ export function usePetsContext() {
 
 export default function PetsContextProvider({ children }) {
   const petsRoute = "http://localhost:8080/pets";
+  const [savedPet, setSavedPet] = useState(false);
+  const [removedPet, setRemovedPet] = useState(false);
   const [addedPet, setAddedPet] = useState(false);
   const [updatedPet, setUpdatedPet] = useState(false);
   const [petsList, setPetsList] = useState([]);
@@ -57,12 +59,18 @@ export default function PetsContextProvider({ children }) {
   const savePet = async (petId) => {
     try {
       setShowSpinner(true);
-      const res = await instance.post(`${petsRoute}/${petId}/save`, petId);
-      setShowSpinner(false);
+      const res = await instance.put(`${petsRoute}/${petId}/save`, petId);
+      if (res.data.ok) {
+        setShowSpinner(false);
+        setSavedPet(true);
+      } else {
+        setShowSpinner(false);
+        setSavedPet(false);
+      } 
     } catch (err) {
       setShowSpinner(false);
       console.error(err);
-      console.log("this will be replaced by err message at the UI");
+      setSavedPet(false);
     }
   };
 
@@ -70,9 +78,16 @@ export default function PetsContextProvider({ children }) {
     try {
       setShowSpinner(true);
       const res = await instance.delete(`${petsRoute}/${petId}/remove`);
-      setShowSpinner(false);
+      if (res.data.ok) {
+        setShowSpinner(false);
+        setRemovedPet(true);
+      } else {
+        setShowSpinner(false);
+        setRemovedPet(false);
+      }
     } catch (err) {
       setShowSpinner(false);
+      setRemovedPet(false);
       console.log(err);
     }
   };
@@ -144,7 +159,9 @@ export default function PetsContextProvider({ children }) {
         getPet,
         pet,
         savePet,
+        savedPet,
         removePet,
+        removedPet,
         adoptOrFoster,
         returnPet,
         getAllPets,

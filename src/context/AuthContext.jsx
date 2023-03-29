@@ -13,6 +13,8 @@ export default function AuthContextProvider({ children }) {
   const [signupError, setSignupError] = useState("");
   const [passesNoMatch, setPassesNoMatch] = useState(false);
   const [loggedUser, setLoggedUser] = useState({});
+  const [savedPets, setSavedPets] = useState([]);
+  const [ownedPets, setOwnedPets] = useState([]);
   const [updatedUser, setUpdatedUser] = useState({});
   const [token, setToken] = useState(false);
   const [loginError, setLoginError] = useState("");
@@ -74,10 +76,8 @@ export default function AuthContextProvider({ children }) {
       if (res.data) {
         setLoggedUser(res.data);
         setToken(true);
-        const savedPets = res.data.savedPets;
-        localStorage.setItem("savedPets", JSON.stringify(savedPets));
-        const ownedPets = res.data.ownedPets;
-        localStorage.setItem("ownedPets", JSON.stringify(ownedPets));
+        setSavedPets(loggedUser.savedPets);
+        setOwnedPets(loggedUser.ownedPets);
         if (res.data.isAdmin) {
           setIsAdmin(true);
         }
@@ -171,6 +171,10 @@ export default function AuthContextProvider({ children }) {
         loginUser,
         loggedUser,
         setLoggedUser,
+        savedPets,
+        setSavedPets,
+        ownedPets,
+        setOwnedPets,
         loginError,
         wrongPass,
         setWrongPass,

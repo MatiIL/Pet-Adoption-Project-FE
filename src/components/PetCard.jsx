@@ -21,7 +21,7 @@ function PetCard(props) {
     <Card className="mb-3">
       <Card.Img
         variant="top"
-        src={pet.picture}
+        src={pet.imageUrl}
         className="card-img-top"
         style={{ height: "180px", objectFit: "cover" }}
       />
@@ -33,7 +33,7 @@ function PetCard(props) {
           {petStatus}
         </small>
         <Link
-          to={`/PetPage/${pet.petId}`}
+          to={`/PetPage/${pet._id}`}
           id="see-more"
           className="links mt-2 link-dark text-decoration-none"
           state={{ userPetsList }}

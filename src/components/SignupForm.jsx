@@ -58,8 +58,6 @@ function SignupForm(props) {
   const clickedUser = fullUserInfo[0];
   const clickedUserPets = fullUserInfo.ownedPets;
 
-  console.log(fullUserInfo)
-
   useEffect(() => {
     if (token) {
       setEmail(loggedUser.email);

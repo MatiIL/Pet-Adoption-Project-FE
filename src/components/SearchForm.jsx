@@ -17,7 +17,7 @@ function SearchForm() {
   
   const searchParams = {
     type: type,
-    status: status,
+    adoptionStatus: status,
     name: name,
     minHeight: minHeight,
     maxHeight: maxHeight,
