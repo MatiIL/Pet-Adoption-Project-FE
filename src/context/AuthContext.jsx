@@ -50,7 +50,6 @@ export default function AuthContextProvider({ children }) {
       setShowSpinner(true);
       const res = await instance.post(`${usersRoute}/login`, logAttempt);
       if (res.data) {
-        console.log(res.data);
         setShowSpinner(false);
         const userObj = res.data.user._doc;
         setLoggedUser(userObj);

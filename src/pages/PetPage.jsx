@@ -32,20 +32,20 @@ function PetPage() {
 
   const petType = pet.type === "1" ? "Cat" : "Dog";
 
-  let petStatus = "";
-  switch (pet.adoptionStatus) {
-    case "1":
-      petStatus = "Available";
-      break;
-    case "2":
-      petStatus = "Fostered";
-      break;
-    case "3":
-      petStatus = "Adopted";
-      break;
-    default:
-      petStatus = "TBD";
-  }
+  // let petStatus = "";
+  // switch (pet.adoptionStatus) {
+  //   case "1":
+  //     petStatus = "Available";
+  //     break;
+  //   case "2":
+  //     petStatus = "Fostered";
+  //     break;
+  //   case "3":
+  //     petStatus = "Adopted";
+  //     break;
+  //   default:
+  //     petStatus = "TBD";
+  // }
 
   const titleForPet = (type) => {
     let titleString = "";
@@ -243,7 +243,7 @@ function PetPage() {
           <div className="details-and-actions d-flex sticky-sm-bottom">
             <ul className="list-group list-group-flush  mt-5 me-2 d-flex fw-semibold">
               <li className="list-group-item text-start">
-                Status: {petStatus}
+                Status: {pet.adoptionStatus}
               </li>
               <li className="list-group-item text-start">
                 Hypoallergenic? {pet.hypoallergnic ? "yes" : "no"}
@@ -283,7 +283,7 @@ function PetPage() {
                 <Button
                   variant="outline-secondary"
                   className={
-                    token && currentStatus === "1" ? "visible" : "d-none"
+                    token && currentStatus === "Available" ? "visible" : "d-none"
                   }
                   onClick={handleClick}
                 >
@@ -292,7 +292,7 @@ function PetPage() {
                 <Button
                   variant="outline-secondary"
                   className={
-                    token && (currentStatus === "1" || currentStatus === "2")
+                    token && (currentStatus === "Available" || currentStatus === "Fostered")
                       ? "visible ms-2"
                       : "d-none"
                   }

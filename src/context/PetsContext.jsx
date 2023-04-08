@@ -93,6 +93,7 @@ export default function PetsContextProvider({ children }) {
   };
 
   const adoptOrFoster = async (userPetAction) => {
+    console.log(userPetAction)
     const { petId } = userPetAction;
     try {
       setShowSpinner(true);
