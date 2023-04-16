@@ -4,6 +4,7 @@ import { useAuthContext } from "../context/AuthContext"
 import { capFirstLetters  } from "../Utils"
 import FloatingLabel from "react-bootstrap/FloatingLabel"
 import { Tooltip } from "react-tooltip"
+import instance from "../context/AxiosContext"
 
 function SignupForm(props) {
   const {
@@ -36,6 +37,7 @@ function SignupForm(props) {
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
+  const [ownedPetsData, setOwnedPetsData] = useState([]);
 
   const [validInputs, setValidInputs] = useState({
     validEmail: false,
@@ -57,6 +59,25 @@ function SignupForm(props) {
 
   const clickedUser = fullUserInfo[0];
   const clickedUserPets = fullUserInfo.ownedPets;
+  let ownedArray = [];
+
+  const getAllOwnedPets = async (id) => {
+    try {
+      const pet = await instance.get(`/pets/${id}`);
+      ownedArray.push(pet.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (clickedUserPets) {
+    clickedUserPets.forEach(element => {
+      getAllOwnedPets(element);
+      setOwnedPetsData(ownedArray);
+    });
+    } 
+  }, [clickedUserPets]);
 
   useEffect(() => {
     if (token) {
@@ -271,11 +292,10 @@ function SignupForm(props) {
         {isAdmin && wasUserClicked ? (
           <div className="d-flex flex-column justify-content-evenly mt-2">
             <u>User Pets</u>
-            {clickedUserPets.map((pet) => (
-              <ul key={pet.petId} className="mt-2">
+            {ownedPetsData.map((pet) => (
+              <ul key={pet._id} className="mt-2">
                 <li className="d-flex justify-content-between">
-                  <div>Name: {pet.name}</div>
-                  <div>Pet ID: {pet.petId}</div>
+                  <span><u>Name:</u> {pet.name}  <u>Pet ID:</u> {pet._id}</span>
                 </li>
               </ul>
             ))}

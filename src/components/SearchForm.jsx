@@ -104,9 +104,9 @@ function SearchForm() {
                 onChange={(e) => setStatus(e.target.value)}
               >
                 <option>Status</option>
-                <option value="1">Available</option>
-                <option value="2">Fostered</option>
-                <option value="3">Adopted</option>
+                <option value="Available">Available</option>
+                <option value="Fostered">Fostered</option>
+                <option value="Adopted">Adopted</option>
               </Form.Select>
               <Form.Control
                 className="advnc-srch pet-name mt-3 mb-3"

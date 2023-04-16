@@ -4,18 +4,18 @@ import { Link } from "react-router-dom"
 function PetCard(props) {
   const { pet, userPetsList } = props;
 
-  let petStatus = "";
-  switch (pet.adoptionStatus) {
-    case "1":
-      petStatus = "Available";
-      break;
-    case "2":
-      petStatus = "Fostered";
-      break;
-    case "3":
-      petStatus = "Adopted";
-      break;
-  }
+  // let petStatus = "";
+  // switch (pet.adoptionStatus) {
+  //   case "1":
+  //     petStatus = "Available";
+  //     break;
+  //   case "2":
+  //     petStatus = "Fostered";
+  //     break;
+  //   case "3":
+  //     petStatus = "Adopted";
+  //     break;
+  // }
 
   return (
     <Card className="mb-3">
@@ -30,7 +30,7 @@ function PetCard(props) {
       </Card.Body>
       <Card.Footer className="d-flex justify-content-around">
         <small className="text-muted border border-dark rounded-pill p-2">
-          {petStatus}
+          {pet.adoptionStatus}
         </small>
         <Link
           to={`/PetPage/${pet._id}`}

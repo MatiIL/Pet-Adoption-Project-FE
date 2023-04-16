@@ -6,8 +6,9 @@ const editAttempt = (num) => {
   switch (num) {
     case 1:
       toast.success("Profile updated!", {
-        autoClose: 7000,
+        autoClose: 5000,
       });
+      window.location.reload();
       break;
     case 2:
       toast.error("Sorry, email address is already taken", {

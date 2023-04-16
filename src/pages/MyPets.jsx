@@ -2,12 +2,12 @@ import { useAuthContext } from "../context/AuthContext"
 import PetCard from "../components/PetCard"
 import { Container, Row, Col } from "react-bootstrap"
 import { useEffect, useState } from "react"
-import { usePetsContext } from "../context/PetsContext"
 import instance from "../context/AxiosContext"
 
 function MyPets() {
   const { token, ownedPets, savedPets } = useAuthContext();
   const [savedPetsData, setSavedPetsData] = useState([]);
+  const [ownedPetsData, setOwnedPetsData] = useState([]);
 
   const getAllSavedPets = async () => {
     const res = await instance.get("/users/saved-pets");
@@ -18,12 +18,21 @@ function MyPets() {
     }
     setSavedPetsData(savedArray);
   };
+
+  const getAllOwnedPets = async () => {
+    const res = await instance.get("/users/owned-pets");
+    let ownedArray = [];
+    for (let petId of res.data) {
+      const pet = await instance.get(`/pets/${petId}`);
+      ownedArray.push(pet.data);
+    }
+    setOwnedPetsData(ownedArray);
+  };
   
   useEffect(() => {
     try {
       getAllSavedPets();
-      // getAllOwnedPets();
-      // console.log("ownedPets", ownedPets);
+      getAllOwnedPets();
     } catch (err) {
       console.log(err.messasge);
     }
@@ -41,8 +50,8 @@ function MyPets() {
             <Container className="owned-pets-container mt-2 w-50">
               <h2 className="bg-light bg-opacity-75 w-50 ms-4">Pets You Own</h2>
               <Row className="owned-pets ms-3 mt-3">
-                {ownedPets &&
-                  ownedPets.map((pet) => (
+                {ownedPetsData &&
+                  ownedPetsData.map((pet) => (
                     <Col key={pet._id} md={6}>
                       <PetCard pet={pet} />
                     </Col>

@@ -32,21 +32,6 @@ function PetPage() {
 
   const petType = pet.type === "1" ? "Cat" : "Dog";
 
-  // let petStatus = "";
-  // switch (pet.adoptionStatus) {
-  //   case "1":
-  //     petStatus = "Available";
-  //     break;
-  //   case "2":
-  //     petStatus = "Fostered";
-  //     break;
-  //   case "3":
-  //     petStatus = "Adopted";
-  //     break;
-  //   default:
-  //     petStatus = "TBD";
-  // }
-
   const titleForPet = (type) => {
     let titleString = "";
     switch (type) {

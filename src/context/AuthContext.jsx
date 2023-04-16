@@ -32,7 +32,7 @@ export default function AuthContextProvider({ children }) {
     try {
       setShowSpinner(true);
       const res = await instance.post(`${usersRoute}/signup`, newUser);
-      if (res.data) {
+      if (res.data.ok) {
         setShowSpinner(false);
         setRegisteredUser(true);
       }
