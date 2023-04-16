@@ -71,7 +71,7 @@ export default function AuthContextProvider({ children }) {
 
   async function currentUserAuth() {
     try {
-      const res = await instance.get("http://localhost:8080/users/");
+      const res = await instance.get(`${usersRoute}`);
       if (res.data) {
         setLoggedUser(res.data);
         setToken(true);
