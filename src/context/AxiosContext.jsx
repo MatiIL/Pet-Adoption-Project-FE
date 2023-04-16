@@ -7,7 +7,7 @@ function getServerUrl(){
 
 const instance = axios.create({
   baseURL: getServerUrl(),
-  withCredentials: true ,
+  withCredentials: false ,
 });
 
 export default instance;
