@@ -8,7 +8,7 @@ export function usePetsContext() {
 }
 
 export default function PetsContextProvider({ children }) {
-  const petsRoute = "http://localhost:8080/pets";
+  const petsRoute = `${instance}/pets`;
   const [savedPet, setSavedPet] = useState(false);
   const [removedPet, setRemovedPet] = useState(false);
   const [addedPet, setAddedPet] = useState(false);

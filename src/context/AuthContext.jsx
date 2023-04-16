@@ -8,7 +8,7 @@ export const useAuthContext = () => {
 };
 
 export default function AuthContextProvider({ children }) {
-  const usersRoute = "http://localhost:8080/users";
+  const usersRoute = `${instance}/users`;
   const [registeredUser, setRegisteredUser] = useState(false);
   const [signupError, setSignupError] = useState("");
   const [passesNoMatch, setPassesNoMatch] = useState(false);
