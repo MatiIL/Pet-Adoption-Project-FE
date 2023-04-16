@@ -34,7 +34,7 @@ export default function PetsContextProvider({ children }) {
   const fetchPets = async (userInput) => {
     try {
       setShowSpinner(true);
-      const res = await instance.get(`https://pets-server.onrender.com/pets/search`, { params: userInput });
+      const res = await instance.get(`/search`, { params: userInput });
       const petSearch = res.data;
       setPetsList(petSearch);
       setShowSpinner(false);
