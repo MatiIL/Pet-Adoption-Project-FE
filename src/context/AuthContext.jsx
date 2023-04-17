@@ -8,7 +8,6 @@ export const useAuthContext = () => {
 };
 
 export default function AuthContextProvider({ children }) {
-  const usersRoute = `${instance}/users`;
   const [registeredUser, setRegisteredUser] = useState(false);
   const [signupError, setSignupError] = useState("");
   const [passesNoMatch, setPassesNoMatch] = useState(false);
@@ -31,7 +30,7 @@ export default function AuthContextProvider({ children }) {
   const authNewUser = async (newUser) => {
     try {
       setShowSpinner(true);
-      const res = await instance.post(`${usersRoute}/signup`, newUser);
+      const res = await instance.post(`users/signup`, newUser);
       if (res.data.ok) {
         setShowSpinner(false);
         setRegisteredUser(true);
@@ -48,7 +47,9 @@ export default function AuthContextProvider({ children }) {
   const loginUser = async (logAttempt) => {
     try {
       setShowSpinner(true);
-      const res = await instance.post(`${usersRoute}/login`, logAttempt);
+      
+      const res = await instance.post(`/users/login`, logAttempt);
+      console.log(res)
       if (res.data) {
         setShowSpinner(false);
         const userObj = res.data.user._doc;
@@ -61,6 +62,7 @@ export default function AuthContextProvider({ children }) {
     } catch (err) {
       setShowSpinner(false);
       const errMsg = err.response.data;
+      console.log(err.response)
       setLoginError(errMsg);
       if (errMsg.includes("Password")) {
         setWrongPass(true);
@@ -71,7 +73,7 @@ export default function AuthContextProvider({ children }) {
 
   async function currentUserAuth() {
     try {
-      const res = await instance.get(`${usersRoute}`);
+      const res = await instance.get(`/users`);
       if (res.data) {
         setLoggedUser(res.data);
         setToken(true);
@@ -95,7 +97,7 @@ export default function AuthContextProvider({ children }) {
   const logout = async () => {
     try {
       setShowSpinner(true);
-      const res = await instance.get(`${usersRoute}/logout`);
+      const res = await instance.get(`/users/logout`);
       if (res.data) setLoggedUser({});
       setShowSpinner(false);
       setToken(false);
@@ -109,7 +111,7 @@ export default function AuthContextProvider({ children }) {
   const updateUserDetails = async (newDetails) => {
     try {
       setShowSpinner(true);
-      const res = await instance.put(`${usersRoute}/:userId`, newDetails);
+      const res = await instance.put(`/users/:userId`, newDetails);
       if (res.data) {
         setShowSpinner(false);
         switch (typeof res.data) {
@@ -134,7 +136,7 @@ export default function AuthContextProvider({ children }) {
   const getAllUsers = async () => {
     try {
       setShowSpinner(true);
-      const res = await instance.get(`${usersRoute}/all-users`);
+      const res = await instance.get(`/users/all-users`);
       if (res.data) {
         setShowSpinner(false);
         setAllUsers(res.data);
@@ -148,7 +150,7 @@ export default function AuthContextProvider({ children }) {
   const getUserInfo = async (userId) => {
     try {
       setShowSpinner(true);
-      const res = await instance.get(`${usersRoute}/${userId}/full`);
+      const res = await instance.get(`/users/${userId}/full`);
       if (res.data) {
         setShowSpinner(false);
         setFullUserInfo(res.data);
