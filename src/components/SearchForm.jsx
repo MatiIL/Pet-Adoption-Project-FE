@@ -36,6 +36,7 @@ function SearchForm() {
   };
 
   useEffect(() => {
+    console.log("this is the search form component")
     searchPets();
   }, []);
 
