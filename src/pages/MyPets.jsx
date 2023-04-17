@@ -31,8 +31,9 @@ function MyPets() {
   
   useEffect(() => {
     try {
-      getAllSavedPets();
-      getAllOwnedPets();
+      console.log("this is the my pets page")
+      // getAllSavedPets();
+      // getAllOwnedPets();
     } catch (err) {
       console.log(err.messasge);
     }
