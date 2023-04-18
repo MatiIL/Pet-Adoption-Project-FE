@@ -1,6 +1,7 @@
 import SignupForm from "../components/SignupForm"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { useEffect } from "react";
 
 const editAttempt = (num) => {
   switch (num) {
@@ -18,14 +19,22 @@ const editAttempt = (num) => {
   }
 };
 
+
+
 function MyProfile() {
+  console.log("component renders");
+
+useEffect(() => {
+  console.log("component renders with useEffect")
+}, [])
+
   return (
     <div className="d-flex flex-column justify-content-between">
       <h1 className="mt-3 mb-5">Profile Settings</h1>
-      <SignupForm
+      {/* <SignupForm
         editAttempt={editAttempt}
         className="d-flex justify-content-evenly"
-      />
+      /> */}
       <ToastContainer />
     </div>
   );
