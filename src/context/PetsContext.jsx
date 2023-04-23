@@ -120,7 +120,7 @@ export default function PetsContextProvider({ children }) {
   const getAllPets = async () => {
     try {
       setShowSpinner(true);
-      const res = await instance.get(`/pets`);
+      const res = await instance.get(`/pets/all-pets`);
       if (res.data) {
         setShowSpinner(false);
         setPetsList(res.data);
