@@ -67,7 +67,7 @@ function NavBar() {
           <Nav className="me-auto">
             
             <Nav.Link
-              href="https://pet-adoption-client.onrender.com/FindPet"
+              href="/FindPet"
               className={isActive ? "nav-link" : "unselected-link"}
             >
               <div id="find-pets">
