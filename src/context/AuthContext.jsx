@@ -89,8 +89,8 @@ export default function AuthContextProvider({ children }) {
   }
 
   useEffect(() => {
-    if (loggedUser) {
-    currentUserAuth();
+    if (Object.keys(loggedUser).length !== 0 && loggedUser.constructor === Object) {
+      currentUserAuth();
     }
   }, [loggedUser]);
 
