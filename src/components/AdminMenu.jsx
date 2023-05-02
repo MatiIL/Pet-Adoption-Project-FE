@@ -38,11 +38,11 @@ function AdminMenu() {
         title="Admin Tools"
         className=" p-2"
       >
-        <Dropdown.Item href="/UsersPage" className="ms-3" >
+        <Dropdown.Item to="/UsersPage" className="ms-3" >
         See All Users
         </Dropdown.Item>
-        <Dropdown.Item href="/ManagePets" className="ms-3">See All Pets</Dropdown.Item>
-        <Dropdown.Item href="#" className="ms-3" onClick={openModal }>
+        <Dropdown.Item to="/ManagePets" className="ms-3">See All Pets</Dropdown.Item>
+        <Dropdown.Item to="#" className="ms-3" onClick={openModal }>
           Add Pet
           </Dropdown.Item>
         <Modal

@@ -58,7 +58,7 @@ function NavBar() {
           : ""
           }
         <Navbar.Brand
-          href="/"
+          to="/"
           className={isActive ? "unselected-link" : "nav-link"}
         >
           Pet Adoption Center
@@ -80,9 +80,9 @@ function NavBar() {
               id="collasible-nav-dropdown"
               className={token? 'visible':'visually-hidden'}
             >
-              <NavDropdown.Item href="/MyPets"
+              <NavDropdown.Item to="/MyPets"
               >My Pets</NavDropdown.Item>
-              <NavDropdown.Item href="/MyProfile">
+              <NavDropdown.Item to="/MyProfile">
                 Profile Settings
               </NavDropdown.Item>
             </NavDropdown>
