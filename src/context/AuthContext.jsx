@@ -90,9 +90,8 @@ export default function AuthContextProvider({ children }) {
   }
 
   useEffect(() => {
-    // if (Object.keys(loggedUser).length !== 0 && loggedUser.constructor === Object) 
       currentUserAuth();
-  }, [loggedUser]);
+  }, []);
 
   const logout = async () => {
     try {
