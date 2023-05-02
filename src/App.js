@@ -1,5 +1,4 @@
 import PetsContextProvider from "./context/PetsContext"
-import AuthContextProvider from "./context/AuthContext"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import HomePage from "./pages/HomePage"
 import FindPet from "./pages/FindPet"
@@ -14,8 +13,8 @@ import AdminRoutes from "./routes/AdminRoutes"
 import UserRoutes from "./routes/UserRoutes"
 
 function App() {
+  
   return (
-    <AuthContextProvider>
       <PetsContextProvider>
         <div className="App">
           <BrowserRouter>
@@ -64,7 +63,6 @@ function App() {
           </BrowserRouter>
         </div>
       </PetsContextProvider>
-    </AuthContextProvider>
   );
 }
 

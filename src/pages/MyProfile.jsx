@@ -31,10 +31,10 @@ useEffect(() => {
   return (
     <div className="d-flex flex-column justify-content-between">
       <h1 className="mt-3 mb-5">Profile Settings</h1>
-      {/* <SignupForm
+      <SignupForm
         editAttempt={editAttempt}
         className="d-flex justify-content-evenly"
-      /> */}
+      />
       <ToastContainer />
     </div>
   );

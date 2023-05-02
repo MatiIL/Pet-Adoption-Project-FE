@@ -88,14 +88,14 @@ function PetPage() {
     if (isChecked) {
       try {
         await removePet(petId);
-        toastRemovedPet(removedPet);
+        if (removedPet) toastRemovedPet(removedPet);
       } catch (error) {
         console.log(error);
       }
     } else {
       try {
         await savePet(petId);
-        toastSavedPet(savedPet);
+        if (savedPet) toastSavedPet(savedPet);
       } catch (error) {
         console.log(error);
       }

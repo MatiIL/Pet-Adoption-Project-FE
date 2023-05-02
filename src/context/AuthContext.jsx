@@ -74,13 +74,14 @@ export default function AuthContextProvider({ children }) {
   async function currentUserAuth() {
     try {
       const res = await instance.get(`/users/authentication`);
-      if (res.data) {
-        setLoggedUser(res.data);
-        setToken(true);
-        setSavedPets(loggedUser.savedPets);
-        setOwnedPets(loggedUser.ownedPets);
-        if (res.data.isAdmin) {
-          setIsAdmin(true);
+      if (res) {
+        const { isAdmin } = res.data;
+        if (res.data) {
+          setLoggedUser(res.data);
+          setToken(true);
+          setIsAdmin(isAdmin);
+          setSavedPets(loggedUser.savedPets);
+          setOwnedPets(loggedUser.ownedPets);
         }
       }
     } catch (err) {
@@ -89,9 +90,8 @@ export default function AuthContextProvider({ children }) {
   }
 
   useEffect(() => {
-    if (Object.keys(loggedUser).length !== 0 && loggedUser.constructor === Object) {
+    // if (Object.keys(loggedUser).length !== 0 && loggedUser.constructor === Object) 
       currentUserAuth();
-    }
   }, [loggedUser]);
 
   const logout = async () => {
