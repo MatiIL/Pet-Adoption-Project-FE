@@ -49,7 +49,6 @@ export default function AuthContextProvider({ children }) {
       setShowSpinner(true);
       
       const res = await instance.post(`/users/login`, logAttempt);
-      console.log(res)
       if (res.data) {
         setShowSpinner(false);
         const userObj = res.data.user._doc;
@@ -77,6 +76,7 @@ export default function AuthContextProvider({ children }) {
       if (res) {
         const { isAdmin } = res.data;
         if (res.data) {
+          console.log(res.data)
           setLoggedUser(res.data);
           setToken(true);
           setIsAdmin(isAdmin);
