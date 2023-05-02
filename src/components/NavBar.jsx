@@ -4,6 +4,7 @@ import LoginModal from "./LoginModal";
 import AdminMenu from "./AdminMenu";
 import { useState, useEffect } from "react";
 import { useAuthContext } from "../context/AuthContext"
+import { Link } from "react-router-dom";
 
 function NavBar() {
   const [isActive, setIsActive] = useState(false);
@@ -66,14 +67,14 @@ function NavBar() {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
             
-            <Nav.Link
-              href="/FindPet"
+            <Link
+              to="/FindPet"
               className={isActive ? "nav-link" : "unselected-link"}
             >
               <div id="find-pets">
               Find Me a Pet
               </div>
-            </Nav.Link>
+            </Link>
             <NavDropdown
               title="My Profile"
               id="collasible-nav-dropdown"
