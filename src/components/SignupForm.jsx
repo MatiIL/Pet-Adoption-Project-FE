@@ -4,7 +4,6 @@ import { useAuthContext } from "../context/AuthContext"
 import { capFirstLetters  } from "../Utils"
 import FloatingLabel from "react-bootstrap/FloatingLabel"
 import { Tooltip } from "react-tooltip"
-import instance from "../context/AxiosContext"
 
 function SignupForm(props) {
   const {
@@ -14,6 +13,7 @@ function SignupForm(props) {
     editAttempt,
     showTooltip,
   } = props;
+
   const {
     authNewUser,
     signupError,
@@ -27,9 +27,12 @@ function SignupForm(props) {
     emailTaken,
     didUserUpdate,
     fullUserInfo,
+    getAllOwnedPets,
+    ownedPetsData,
     isAdmin,
     showSpinner,
   } = useAuthContext();
+
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [repeatPass, setRepeatPass] = useState("");
@@ -37,7 +40,6 @@ function SignupForm(props) {
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [bio, setBio] = useState("");
-  const [ownedPetsData, setOwnedPetsData] = useState([]);
 
   const [validInputs, setValidInputs] = useState({
     validEmail: false,
@@ -59,22 +61,11 @@ function SignupForm(props) {
 
   const clickedUser = fullUserInfo[0];
   const clickedUserPets = fullUserInfo.ownedPets;
-  let ownedArray = [];
-
-  const getAllOwnedPets = async (id) => {
-    try {
-      const pet = await instance.get(`/pets/${id}`);
-      ownedArray.push(pet.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   useEffect(() => {
     if (clickedUserPets) {
     clickedUserPets.forEach(element => {
       getAllOwnedPets(element);
-      setOwnedPetsData(ownedArray);
     });
     } 
   }, [clickedUserPets]);
@@ -293,9 +284,10 @@ function SignupForm(props) {
           <div className="d-flex flex-column justify-content-evenly mt-2">
             <u>User Pets</u>
             {ownedPetsData.map((pet) => (
-              <ul key={pet._id} className="mt-2">
+              <ul key={pet._id} className="mt-2 p-1">
                 <li className="d-flex justify-content-between">
-                  <span><u>Name:</u> {pet.name}  <u>Pet ID:</u> {pet._id}</span>
+                  <span><u>Name</u> {pet.name}  </span>
+                  <span><u>Pet ID</u> {(pet._id).slice(21)}</span>
                 </li>
               </ul>
             ))}
@@ -347,7 +339,7 @@ function SignupForm(props) {
               value={isAdmin && wasUserClicked ? fullUserInfo.bio : bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder="User's Bio"
-              style={{ height: "110px" }}
+              style={{ height: "110px"}}
             />
           </FloatingLabel>
         ) : (

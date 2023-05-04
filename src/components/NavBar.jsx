@@ -1,27 +1,29 @@
-import Container from "react-bootstrap/Container";
-import { Button, Nav, Navbar, NavDropdown, Spinner } from "react-bootstrap";
-import LoginModal from "./LoginModal";
-import AdminMenu from "./AdminMenu";
-import { useState, useEffect } from "react";
+import Container from "react-bootstrap/Container"
+import { Button, Nav, Navbar, NavDropdown, Spinner } from "react-bootstrap"
+import LoginModal from "./LoginModal"
+import AdminMenu from "./AdminMenu"
+import { useState, useEffect } from "react"
 import { useAuthContext } from "../context/AuthContext"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"
 
 function NavBar() {
   const [isActive, setIsActive] = useState(false);
   const [adminMenu, setAdminMenu] = useState(false);
-  const { logout, token, isAdmin, showSpinner } = useAuthContext();
+  const { logout, token, isAdmin, showSpinner, getAllOwnedPets, getAllSavedPets, savedPetsData } = useAuthContext();
+
+  const navigate = useNavigate();
 
   const renderAdminMenu = () => {
     if (isAdmin) {
       setAdminMenu(true);
-    } 
+    }
     if (!isAdmin) setAdminMenu(false);
-  }
+  };
 
   useEffect(() => {
     renderAdminMenu();
-  }, [isAdmin])
-  
+  }, [isAdmin]);
+
   useEffect(() => {
     if (window.location.pathname === "/FindPet") {
       setIsActive(true);
@@ -30,7 +32,7 @@ function NavBar() {
     }
   }, []);
 
-  const handleLogout = async () => {
+  const handleLogout = async() => {
     try {
       await logout();
       if (!token) {
@@ -41,24 +43,34 @@ function NavBar() {
     }
   };
 
+  const getMyPets = async() => {
+     await getAllOwnedPets();
+     await getAllSavedPets();
+     navigate("/MyPets")
+  }
+
   return (
     <Navbar collapseOnSelect expand="md" variant="light" className="navbar">
-      {adminMenu? <AdminMenu/> : ""}
+      {adminMenu ? <AdminMenu /> : ""}
       <Container>
-      <Nav className="">
-            <div className="log-buttons d-flex">
-            { token  ? (<Button variant="outline-secondary" className="logout-btn" 
-            onClick={handleLogout}
-            >
-              Logout</Button>): <LoginModal />}
-              </div>
-          </Nav>
-          {showSpinner ? 
-          <Spinner className="ms-2" animation="grow" />
-          : ""
-          }
+        <Nav className="">
+          <div className="log-buttons d-flex">
+            {token ? (
+              <Button
+                variant="outline-secondary"
+                className="logout-btn"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            ) : (
+              <LoginModal />
+            )}
+          </div>
+        </Nav>
+        {showSpinner ? <Spinner className="ms-2" animation="grow" /> : ""}
         <Navbar.Brand
-          to="/"
+          href="/"
           className={isActive ? "unselected-link" : "nav-link"}
         >
           Pet Adoption Center
@@ -66,29 +78,25 @@ function NavBar() {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            
             <Link
               to="/FindPet"
               className={isActive ? "nav-link" : "unselected-link"}
             >
-              <div id="find-pets">
-              Find Me a Pet
-              </div>
+              <div id="find-pets">Find Me a Pet</div>
             </Link>
             <NavDropdown
               title="My Profile"
               id="collasible-nav-dropdown"
-              className={token? 'visible':'visually-hidden'}
+              className={token ? "visible" : "visually-hidden"}
             >
-              <NavDropdown.Item to="/MyPets"
-              >My Pets</NavDropdown.Item>
-              <NavDropdown.Item to="/MyProfile">
+              <NavDropdown.Item onClick={getMyPets}>
+                My Pets
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/MyProfile">
                 Profile Settings
               </NavDropdown.Item>
             </NavDropdown>
           </Nav>
-          
-          
         </Navbar.Collapse>
       </Container>
     </Navbar>

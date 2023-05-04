@@ -1,5 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react"
-import instance from "./AxiosContext"
+import { createContext, useContext, useEffect, useState } from "react";
+import instance from "./AxiosContext";
 
 export const AuthContext = createContext(true);
 
@@ -25,6 +25,8 @@ export default function AuthContextProvider({ children }) {
   const [allUsers, setAllUsers] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [fullUserInfo, setFullUserInfo] = useState([]);
+  const [savedPetsData, setSavedPetsData] = useState([]);
+  const [ownedPetsData, setOwnedPetsData] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
 
   const authNewUser = async (newUser) => {
@@ -47,7 +49,7 @@ export default function AuthContextProvider({ children }) {
   const loginUser = async (logAttempt) => {
     try {
       setShowSpinner(true);
-      
+
       const res = await instance.post(`/users/login`, logAttempt);
       if (res.data) {
         setShowSpinner(false);
@@ -61,7 +63,7 @@ export default function AuthContextProvider({ children }) {
     } catch (err) {
       setShowSpinner(false);
       const errMsg = err.response.data;
-      console.log(err.response)
+      console.log(err.response);
       setLoginError(errMsg);
       if (errMsg.includes("Password")) {
         setWrongPass(true);
@@ -73,16 +75,13 @@ export default function AuthContextProvider({ children }) {
   async function currentUserAuth() {
     try {
       const res = await instance.get(`/users/authentication`);
-      if (res) {
-        const { isAdmin } = res.data;
-        if (res.data) {
-          console.log(res.data)
-          setLoggedUser(res.data);
-          setToken(true);
-          setIsAdmin(isAdmin);
-          setSavedPets(loggedUser.savedPets);
-          setOwnedPets(loggedUser.ownedPets);
-        }
+      if (res.data) {
+        const { isAdmin, savedPets, ownedPets } = res.data;
+        setLoggedUser(res.data);
+        setToken(true);
+        setIsAdmin(isAdmin);
+        setSavedPets(savedPets);
+        setOwnedPets(ownedPets);
       }
     } catch (err) {
       console.log(err);
@@ -90,7 +89,7 @@ export default function AuthContextProvider({ children }) {
   }
 
   useEffect(() => {
-      currentUserAuth();
+    currentUserAuth();
   }, []);
 
   const logout = async () => {
@@ -126,10 +125,30 @@ export default function AuthContextProvider({ children }) {
       }
     } catch (err) {
       setShowSpinner(false);
-      const errMsg = err.response.data
+      const errMsg = err.response.data;
       setSignupError(errMsg);
       if (errMsg.includes("Passwords")) setPassesNoMatch(true);
     }
+  };
+
+  const getAllSavedPets = async () => {
+    const res = await instance.get("/users/saved-pets");
+    let savedArray = [];
+    for (let petId of res.data) {
+      const pet = await instance.get(`/pets/pet/${petId}`);
+      savedArray.push(pet.data);
+    }
+    setSavedPetsData(savedArray);
+  };
+
+  const getAllOwnedPets = async () => {
+    const res = await instance.get("/users/owned-pets");
+    let ownedArray = [];
+    for (let petId of res.data) {
+      const pet = await instance.get(`/pets/pet/${petId}`);
+      ownedArray.push(pet.data);
+    }
+    setOwnedPetsData(ownedArray);
   };
 
   const getAllUsers = async () => {
@@ -163,6 +182,7 @@ export default function AuthContextProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
+        currentUserAuth,
         authNewUser,
         registeredUser,
         signupError,
@@ -188,6 +208,10 @@ export default function AuthContextProvider({ children }) {
         updatedUser,
         emailTaken,
         isTakenMessage,
+        getAllOwnedPets,
+        ownedPetsData,
+        getAllSavedPets,
+        savedPetsData,
         getAllUsers,
         allUsers,
         getUserInfo,

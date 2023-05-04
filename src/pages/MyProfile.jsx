@@ -19,14 +19,7 @@ const editAttempt = (num) => {
   }
 };
 
-
-
 function MyProfile() {
-  console.log("component renders");
-
-useEffect(() => {
-  console.log("component renders with useEffect")
-}, [])
 
   return (
     <div className="d-flex flex-column justify-content-between">

@@ -7,6 +7,7 @@ import { useAuthContext } from "../context/AuthContext"
 import { usePetsContext } from '../context/PetsContext'
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import { Link } from "react-router-dom"
 
 function AdminMenu() {
   const [lgShow, setLgShow] = useState(false);
@@ -38,10 +39,10 @@ function AdminMenu() {
         title="Admin Tools"
         className=" p-2"
       >
-        <Dropdown.Item to="/UsersPage" className="ms-3" >
+        <Dropdown.Item as={Link} to="/UsersPage" className="ms-3" >
         See All Users
         </Dropdown.Item>
-        <Dropdown.Item to="/ManagePets" className="ms-3">See All Pets</Dropdown.Item>
+        <Dropdown.Item as={Link} to="/ManagePets" className="ms-3">See All Pets</Dropdown.Item>
         <Dropdown.Item to="#" className="ms-3" onClick={openModal }>
           Add Pet
           </Dropdown.Item>

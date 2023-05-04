@@ -46,7 +46,7 @@ export default function PetsContextProvider({ children }) {
   const getPet = async (petId) => {
     try {
       setShowSpinner(true);
-      const res = await instance.get(`/pets/${petId}`);
+      const res = await instance.get(`/pets/pet/${petId}`);
       setShowSpinner(false);
       setPet(res.data);
     } catch (err) {
@@ -58,7 +58,7 @@ export default function PetsContextProvider({ children }) {
   const savePet = async (petId) => {
     try {
       setShowSpinner(true);
-      const res = await instance.put(`/pets/${petId}/save`, petId);
+      const res = await instance.put(`/pets/pet/${petId}/save`, petId);
       if (res.data.ok) {
         setShowSpinner(false);
         setSavedPet(true);
@@ -76,7 +76,7 @@ export default function PetsContextProvider({ children }) {
   const removePet = async (petId) => {
     try {
       setShowSpinner(true);
-      const res = await instance.delete(`/pets/${petId}/remove`);
+      const res = await instance.delete(`/pets/pet/${petId}/remove`);
       if (res.data.ok) {
         setShowSpinner(false);
         setRemovedPet(true);
@@ -96,7 +96,7 @@ export default function PetsContextProvider({ children }) {
     try {
       setShowSpinner(true);
       const res = await instance.post(
-        `/pets/adopt/${petId}`,
+        `/pets/pet/adopt/${petId}`,
         userPetAction
       );
       setShowSpinner(false);
@@ -109,7 +109,7 @@ export default function PetsContextProvider({ children }) {
   const returnPet = async (petId) => {
     try {
       setShowSpinner(false);
-      const res = await instance.post(`/pets/return/${petId}`, petId);
+      const res = await instance.post(`/pets/pet/return/${petId}`, petId);
       setShowSpinner(false);
     } catch (err) {
       setShowSpinner(false);
