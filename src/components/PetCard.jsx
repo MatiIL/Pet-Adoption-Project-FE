@@ -4,19 +4,22 @@ import { Link } from "react-router-dom"
 function PetCard(props) {
   const { pet, userPetsList } = props;
 
-  // let petStatus = "";
-  // switch (pet.adoptionStatus) {
-  //   case "1":
-  //     petStatus = "Available";
-  //     break;
-  //   case "2":
-  //     petStatus = "Fostered";
-  //     break;
-  //   case "3":
-  //     petStatus = "Adopted";
-  //     break;
-  // }
-
+  const convertPetStatus = (num) => {
+    let petStatus = "";
+  switch (num) {
+    case "1":
+      petStatus = "Available";
+      break;
+    case "2":
+      petStatus = "Fostered";
+      break;
+    case "3":
+      petStatus = "Adopted";
+      break;
+  }
+  return petStatus;
+  }
+  
   return (
     <Card className="mb-3">
       <Card.Img
@@ -30,7 +33,7 @@ function PetCard(props) {
       </Card.Body>
       <Card.Footer className="d-flex justify-content-around">
         <small className="text-muted border border-dark rounded-pill p-2">
-          {pet.adoptionStatus}
+          {convertPetStatus(pet.adoptionStatus)}
         </small>
         <Link
           to={`/PetPage/${pet._id}`}

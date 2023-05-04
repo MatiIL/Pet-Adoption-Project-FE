@@ -11,3 +11,10 @@ export const capFirstLetters = (str) => {
     }
 }
 
+export const getServerUrl = () => {
+    if (process.env.NODE_ENV === 'production') {
+      return 'https://pets-server.onrender.com'
+    } 
+    return "http://localhost:8080";
+  }
+
