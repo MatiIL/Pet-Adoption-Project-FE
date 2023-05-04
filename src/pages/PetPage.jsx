@@ -19,7 +19,7 @@ function PetPage() {
     returnPet,
     updatedPet,
   } = usePetsContext();
-  const { token, loggedUser, isAdmin, showSpinner, savedPets } = useAuthContext();
+  const { token, loggedUser, isAdmin, showSpinner, savedPets, savedPetsData } = useAuthContext();
   
   const currentStatus = pet.adoptionStatus;
   const userId = loggedUser.userId;
@@ -167,10 +167,10 @@ function PetPage() {
   }, []);
 
   useEffect(() => {
-    const isPetOnUserList = savedPets.find((item) => item == petId);
+    const isPetOnUserList = savedPetsData.find((item) => item._id == petId);
     if (isPetOnUserList) {
       setIsChecked(true);
-    }
+    } 
   }, []);
 
   useEffect(() => {

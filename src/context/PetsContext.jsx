@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react"
+import { useAuthContext  } from "./AuthContext"
 import instance from "./AxiosContext"
 
 export const PetsContext = createContext(true);

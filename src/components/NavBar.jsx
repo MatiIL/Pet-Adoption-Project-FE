@@ -69,8 +69,8 @@ function NavBar() {
           </div>
         </Nav>
         {showSpinner ? <Spinner className="ms-2" animation="grow" /> : ""}
-        <Navbar.Brand
-          href="/"
+        <Navbar.Brand as={Link}
+          to="/"
           className={isActive ? "unselected-link" : "nav-link"}
         >
           Pet Adoption Center
