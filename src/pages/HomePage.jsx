@@ -13,7 +13,9 @@ function HomePage() {
         <div className="mt-3 fs-5">
           Welcome to the Pet Adoption Center, where you can search for your next
           four-legged friend to adopt! Not looking to adopt currently? you can
-          also foster a pet for a limited time.
+          also foster a pet for a limited time.<br/><br/>
+          <small 
+          >This website was built by Mati Breski using MERN stack.</small>
         </div>
       );
       setWelcomeMsg(defaultMessage);
@@ -48,7 +50,7 @@ function HomePage() {
   }, [token, isAdmin]);
 
   return (
-    <div className="wrapper  ">
+    <div className="wrapper" >
       <div className="mt-4 d-flex flex-column">
         <h1 className={token ? "w-75" : ""}>
           {token
@@ -64,6 +66,7 @@ function HomePage() {
         </div>
       </div>
     </div>
+    
   );
 }
 

@@ -1,5 +1,4 @@
 import { createContext, useContext, useState } from "react"
-import { useAuthContext  } from "./AuthContext"
 import instance from "./AxiosContext"
 
 export const PetsContext = createContext(true);
@@ -12,6 +11,7 @@ export default function PetsContextProvider({ children }) {
   const [savedPet, setSavedPet] = useState(false);
   const [removedPet, setRemovedPet] = useState(false);
   const [addedPet, setAddedPet] = useState(false);
+  const [returnedPet, setReturnedPet] = useState(false);
   const [updatedPet, setUpdatedPet] = useState(false);
   const [petsList, setPetsList] = useState([]);
   const [pet, setPet] = useState({});
@@ -20,7 +20,7 @@ export default function PetsContextProvider({ children }) {
   const addNewPet = async (petData) => {
     try {
       setShowSpinner(true);
-      const res = await instance.post('/pets', petData);
+      const res = await instance.post('/pets/add-pet', petData);
       if (res.data) {
         setShowSpinner(false);
         setAddedPet(true);
@@ -93,14 +93,14 @@ export default function PetsContextProvider({ children }) {
   };
 
   const adoptOrFoster = async (userPetAction) => {
-    const { petId } = userPetAction;
+    const { petId, action } = userPetAction;
     try {
       setShowSpinner(true);
-      const res = await instance.post(
+      const res = await instance.put(
         `/pets/pet/adopt/${petId}`,
         userPetAction
       );
-      setShowSpinner(false);
+      if (res.data.ok) setShowSpinner(false);
     } catch (err) {
       setShowSpinner(false);
       console.log(err);
@@ -109,9 +109,12 @@ export default function PetsContextProvider({ children }) {
 
   const returnPet = async (petId) => {
     try {
-      setShowSpinner(false);
-      const res = await instance.post(`/pets/pet/return/${petId}`, petId);
-      setShowSpinner(false);
+      setShowSpinner(true);
+      const res = await instance.put(`/pets/pet/return/${petId}`, petId);
+      if (res.data.ok) {
+        setReturnedPet(true);
+
+      } setShowSpinner(false);
     } catch (err) {
       setShowSpinner(false);
       console.log(err);
@@ -127,7 +130,7 @@ export default function PetsContextProvider({ children }) {
         setPetsList(res.data);
       }
     } catch (err) {
-      setShowSpinner(false);
+      setShowSpinner(false); 
       console.log(err);
     }
   };
@@ -139,9 +142,6 @@ export default function PetsContextProvider({ children }) {
       if (res.data) {
         setShowSpinner(false);
         setUpdatedPet(true);
-        setTimeout(()=> {
-          window.location.reload();
-         }, 3000);
       }
     } catch (err) {
       setShowSpinner(false);
@@ -164,9 +164,11 @@ export default function PetsContextProvider({ children }) {
         removedPet,
         adoptOrFoster,
         returnPet,
+        returnedPet,
         getAllPets,
         updatePet,
         updatedPet,
+        setUpdatedPet,
         showSpinner,
       }}
     >

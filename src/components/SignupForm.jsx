@@ -26,6 +26,7 @@ function SignupForm(props) {
     updatedUser,
     emailTaken,
     didUserUpdate,
+    setDidUserUpdate,
     fullUserInfo,
     getAllOwnedPets,
     ownedPetsData,
@@ -71,6 +72,7 @@ function SignupForm(props) {
   }, [clickedUserPets]);
 
   useEffect(() => {
+    setDidUserUpdate(false);
     if (token) {
       setEmail(loggedUser.email);
       setFirstName(loggedUser.firstName);
@@ -78,14 +80,7 @@ function SignupForm(props) {
       setPhone(loggedUser.phone);
       setBio(loggedUser.bio != null ? loggedUser.bio : "");
     }
-    if (didUserUpdate) {
-      setEmail(updatedUser.email);
-      setFirstName(updatedUser.firstName);
-      setLastName(updatedUser.lastName);
-      setPhone(updatedUser.phone);
-      setBio(updatedUser.bio != null ? updatedUser.bio : "");
-    }
-  }, [token, didUserUpdate]);
+  }, [token]);
 
   const handleFormChange = (e) => {
     switch (e.target.name) {
@@ -232,6 +227,13 @@ function SignupForm(props) {
     newDetails.bio = bio;
     try {
       await updateUserDetails(newDetails);
+      if (didUserUpdate) {
+        setEmail(updatedUser.email);
+        setFirstName(updatedUser.firstName);
+        setLastName(updatedUser.lastName);
+        setPhone(updatedUser.phone);
+        setBio(updatedUser.bio != null ? updatedUser.bio : "");
+      }
     } catch (err) {
       console.error(err);
     }
@@ -240,6 +242,7 @@ function SignupForm(props) {
   useEffect(() => {
     if (didUserUpdate && !emailTaken) {
       editAttempt(1);
+      setDidUserUpdate(false);
     } else if (emailTaken) {
       editAttempt(2);
     } 

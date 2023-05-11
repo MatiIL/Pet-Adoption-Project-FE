@@ -1,23 +1,19 @@
-import { Card } from "react-bootstrap"
-import { Link } from "react-router-dom"
+import { Card, Button } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
+import { useAuthContext } from "../context/AuthContext"
+import {  convertPetStatus } from '../Utils'
 
 function PetCard(props) {
-  const { pet, userPetsList } = props;
+  const { pet } = props;
+  const { token, getAllOwnedPets } = useAuthContext();
 
-  const convertPetStatus = (num) => {
-    let petStatus = "";
-  switch (num) {
-    case "1":
-      petStatus = "Available";
-      break;
-    case "2":
-      petStatus = "Fostered";
-      break;
-    case "3":
-      petStatus = "Adopted";
-      break;
-  }
-  return petStatus;
+  const navigate = useNavigate();
+
+  const seeMore = async () => {
+    if (token) {
+      await getAllOwnedPets();
+      navigate(`/PetPage/${pet._id}`, { state: {pet} });
+    } else navigate(`/PetPage/${pet._id}`, { state: {pet} });
   }
   
   return (
@@ -35,14 +31,13 @@ function PetCard(props) {
         <small className="text-muted border border-dark rounded-pill p-2">
           {convertPetStatus(pet.adoptionStatus)}
         </small>
-        <Link
-          to={`/PetPage/${pet._id}`}
+        <Button
+          onClick={seeMore}
           id="see-more"
-          className="links mt-2 link-dark text-decoration-none"
-          state={{ userPetsList }}
+          className="mt-2 btn-sm btn-light rounded-pill"
         >
           SEE MORE
-        </Link>
+        </Button>
       </Card.Footer>
     </Card>
   );

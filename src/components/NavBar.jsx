@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom"
 function NavBar() {
   const [isActive, setIsActive] = useState(false);
   const [adminMenu, setAdminMenu] = useState(false);
-  const { logout, token, isAdmin, showSpinner, getAllOwnedPets, getAllSavedPets, savedPetsData } = useAuthContext();
+  const { logout, token, isAdmin, showSpinner, getAllOwnedPets, getAllSavedPets } = useAuthContext();
 
   const navigate = useNavigate();
 

@@ -1,7 +1,6 @@
 import SignupForm from "../components/SignupForm"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import { useEffect } from "react";
 
 const editAttempt = (num) => {
   switch (num) {
@@ -9,7 +8,6 @@ const editAttempt = (num) => {
       toast.success("Profile updated!", {
         autoClose: 5000,
       });
-      window.location.reload();
       break;
     case 2:
       toast.error("Sorry, email address is already taken", {

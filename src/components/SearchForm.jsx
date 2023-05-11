@@ -15,9 +15,25 @@ function SearchForm() {
   const [maxWeight, setMaxWeight] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   
+  const numeralStatus = (str) => {
+    let num = "";
+    switch(str) {
+      case "Available":
+        num = "1";
+        break;
+      case "Fostered":
+        num = "2";
+        break;
+      case "Adopted":
+        num = "3";
+        break;
+    }
+    return num;
+  }
+  
   const searchParams = {
     type: type,
-    adoptionStatus: status,
+    adoptionStatus: numeralStatus(status),
     name: name,
     minHeight: minHeight,
     maxHeight: maxHeight,

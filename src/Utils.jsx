@@ -18,3 +18,18 @@ export const getServerUrl = () => {
     return "http://localhost:8080";
   }
 
+  export const convertPetStatus = (num) => {
+    let status = "";
+    switch (num) {
+      case "1":
+        status = "Available";
+        break;
+      case "2":
+        status = "Fostered";
+        break;
+      case "3":
+        status = "Adopted";
+        break;
+    }
+    return status;
+  }

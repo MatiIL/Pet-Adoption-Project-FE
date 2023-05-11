@@ -1,35 +1,36 @@
-import { usePetsContext } from "../context/PetsContext";
-import { useAuthContext } from "../context/AuthContext";
-import { React, useEffect, useState } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { Button, ButtonGroup, Form, Modal, Spinner } from "react-bootstrap";
-import PetForm from "../components/PetForm";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { usePetsContext } from "../context/PetsContext"
+import { useAuthContext } from "../context/AuthContext"
+import { React, useEffect, useState } from "react"
+import { useParams, useNavigate, useLocation } from "react-router-dom"
+import {  convertPetStatus } from '../Utils'
+import { Button, ButtonGroup, Form, Modal, Spinner } from "react-bootstrap"
+import PetForm from "../components/PetForm"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 function PetPage() {
   const {
-    getPet,
-    pet,
     savePet,
     savedPet,
     removePet,
     removedPet,
     adoptOrFoster,
     returnPet,
+    returnedPet,
     updatedPet,
   } = usePetsContext();
-  const { token, loggedUser, isAdmin, showSpinner, savedPets, savedPetsData } = useAuthContext();
-  
-  const currentStatus = pet.adoptionStatus;
-  const userId = loggedUser.userId;
+  const { token, loggedUser, isAdmin, showSpinner, savedPetsData } = useAuthContext();
+
+  const location = useLocation();
+  const { pet } = location.state;
+  const userId = loggedUser._id;
   const petOwner = pet.ownerId;
   const navigate = useNavigate();
   const param = useParams();
   const petId = param.petId;
+  const currentStatus = pet.adoptionStatus;
   const [isChecked, setIsChecked] = useState(false);
   const [lgShow, setLgShow] = useState(false);
-
   const petType = pet.type === "1" ? "Cat" : "Dog";
 
   const titleForPet = (type) => {
@@ -120,35 +121,32 @@ function PetPage() {
     </div>
   );
 
-  const handleClick = (e) => {
+  const handleClick = async(e) => {
     const userPetAction = {
       petId: petId,
       action: e.target.innerText,
     };
     if (e.target.innerText === "Return") {
-      const ownerDecision = (response) => {
+      const ownerDecision = async(response) => {
         if (response === "yes") {
-          returnPet(petId);
-          toast.success("Return request will be proccessed within a few days", {
-            position: "top-center",
-            autoClose: 7000,
-            onClose: () => window.location.reload(),
-          });
+          await returnPet(petId);
+          if (returnedPet) {
+            toast.success("Return request will be proccessed within a few days", {
+              position: "top-center",
+              autoClose: "delay",
+              onClose: () => navigate("/FindPet")
+            });
+          }
         } else return;
       };
-      toast.warning(<ConfirmOrCancelReturn ownerDecision={ownerDecision} />, {
-        autoClose: false,
-      });
+      toast.warning(<ConfirmOrCancelReturn ownerDecision={ownerDecision} />, {autoClose: false});
     } else {
-      adoptOrFoster(userPetAction);
+      await adoptOrFoster(userPetAction);
       toast.success(
-        `Congratulations on your choice to ${userPetAction.action.toLowerCase()} ${
-          pet.name
-        }!`,
-        {
-          position: "top-center",
-          autoClose: 7000,
-          onClose: () => window.location.reload(),
+        `Congratulations on your choice to ${userPetAction.action.toLowerCase()} ${pet.name}!`,
+        { position: "top-center",
+          autoClose: "delay",
+          onClose: () => navigate("/FindPet")
         }
       );
     }
@@ -163,10 +161,6 @@ function PetPage() {
   };
 
   useEffect(() => {
-    getPet(petId);
-  }, []);
-
-  useEffect(() => {
     const isPetOnUserList = savedPetsData.find((item) => item._id == petId);
     if (isPetOnUserList) {
       setIsChecked(true);
@@ -176,7 +170,7 @@ function PetPage() {
   useEffect(() => {
     if (updatedPet) {
       toast.success("Pet successfuly edited!", {
-        autoClose: 7000,
+        autoClose: 2000,
       });
     }
   }, [updatedPet]);
@@ -186,7 +180,7 @@ function PetPage() {
       <div className="pet-page-header d-flex justify-content-between">
         <span
           className="back-to-search mb-3 material-symbols-outlined top-25 start-0 d-flex mt-4 ms-2"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/FindPet")}
         >
           arrow_back_ios_new
         </span>
@@ -228,8 +222,8 @@ function PetPage() {
           <div className="details-and-actions d-flex sticky-sm-bottom">
             <ul className="list-group list-group-flush  mt-5 me-2 d-flex fw-semibold">
               <li className="list-group-item text-start">
-                Status: {pet.adoptionStatus}
-              </li>
+                Status: {convertPetStatus(currentStatus)}
+              </li> 
               <li className="list-group-item text-start">
                 Hypoallergenic? {pet.hypoallergnic ? "yes" : "no"}
               </li>
@@ -268,7 +262,7 @@ function PetPage() {
                 <Button
                   variant="outline-secondary"
                   className={
-                    token && currentStatus === "Available" ? "visible" : "d-none"
+                    token && currentStatus === "1" ? "visible" : "d-none"
                   }
                   onClick={handleClick}
                 >
@@ -277,7 +271,7 @@ function PetPage() {
                 <Button
                   variant="outline-secondary"
                   className={
-                    token && (currentStatus === "Available" || currentStatus === "Fostered")
+                    token && (currentStatus === "1" || currentStatus === "2")
                       ? "visible ms-2"
                       : "d-none"
                   }
@@ -300,15 +294,15 @@ function PetPage() {
         </div>
         <ToastContainer />
         <div className="img-box text-center">
-          <img
+          {<img
             src={pet.imageUrl}
             alt="pet"
             className="img-fluid mt-4 border border-2 rounded-pill"
             style={{ height: "280px", objectFit: "cover" }}
-          />
-          <div className="pets-bio mt-3 w-75 mx-auto fw-semibold p-2 rounded bg-light ">
+          />}
+          {<div className="pets-bio mt-3 w-75 mx-auto fw-semibold p-2 rounded bg-light ">
             {pet.bio}
-          </div>
+          </div>}
         </div>
       </div>
     </div>

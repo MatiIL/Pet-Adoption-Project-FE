@@ -1,3 +1,4 @@
+import AuthContextProvider from "./context/AuthContext"
 import PetsContextProvider from "./context/PetsContext"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import HomePage from "./pages/HomePage"
@@ -13,8 +14,8 @@ import AdminRoutes from "./routes/AdminRoutes"
 import UserRoutes from "./routes/UserRoutes"
 
 function App() {
-  
   return (
+    <AuthContextProvider>
       <PetsContextProvider>
         <div className="App">
           <BrowserRouter>
@@ -24,7 +25,7 @@ function App() {
                 exact
                 path="/UsersPage"
                 element={
-                  <AdminRoutes >
+                  <AdminRoutes>
                     <UsersPage />
                   </AdminRoutes>
                 }
@@ -33,7 +34,7 @@ function App() {
                 exact
                 path="ManagePets"
                 element={
-                  <AdminRoutes >
+                  <AdminRoutes>
                     <ManagePets />
                   </AdminRoutes>
                 }
@@ -45,7 +46,7 @@ function App() {
                 exact
                 path="/MyPets"
                 element={
-                  <UserRoutes >
+                  <UserRoutes>
                     <MyPets />
                   </UserRoutes>
                 }
@@ -54,7 +55,7 @@ function App() {
                 exact
                 path="/MyProfile"
                 element={
-                  <UserRoutes >
+                  <UserRoutes>
                     <MyProfile />
                   </UserRoutes>
                 }
@@ -63,6 +64,7 @@ function App() {
           </BrowserRouter>
         </div>
       </PetsContextProvider>
+    </AuthContextProvider>
   );
 }
 

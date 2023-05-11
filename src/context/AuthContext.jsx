@@ -204,6 +204,7 @@ export default function AuthContextProvider({ children }) {
         token,
         setToken,
         didUserUpdate,
+        setDidUserUpdate,
         updateUserDetails,
         updatedUser,
         emailTaken,

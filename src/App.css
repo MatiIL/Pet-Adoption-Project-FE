@@ -69,6 +69,10 @@ input#search-type.form-check-input[type="checkbox"] {
   width: 55%;
 }
 
+#see-more:link {
+  background-color: none;
+}
+
 #see-more:hover {
   background-color: #8570702a;
   border-radius: 35%;
@@ -81,6 +85,10 @@ input#search-type.form-check-input[type="checkbox"] {
 #srch-res {
   max-width: 95vw;
   overflow: hidden;
+}
+
+.pet-page {
+  background-color: #EAEAEA;
 }
 
 .back-to-search {
