@@ -35,10 +35,10 @@ function SearchForm() {
     type: type,
     adoptionStatus: numeralStatus(status),
     name: name,
-    minHeight: minHeight,
-    maxHeight: maxHeight,
-    minWeight: minWeight,
-    maxWeight: maxWeight,
+    minHeightParam: minHeight,
+    maxHeightParam: maxHeight,
+    minWeightParam: minWeight,
+    maxWeightParam: maxWeight,
   };
 
   const searchPets = async () => {
