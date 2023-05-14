@@ -209,7 +209,7 @@ function PetPage() {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <PetForm petId={petId} handleClose={closeModal} />
+            <PetForm pet={pet} handleClose={closeModal} />
           </Modal.Body>
         </Modal>
         {showSpinner ? <Spinner animation="grow" className="mt-3 ms-5" /> : ""}

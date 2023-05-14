@@ -53,7 +53,7 @@ function NavBar() {
     <Navbar collapseOnSelect expand="md" variant="light" className="navbar">
       {adminMenu ? <AdminMenu /> : ""}
       <Container>
-        <Nav className="">
+        <Nav>
           <div className="log-buttons d-flex">
             {token ? (
               <Button
@@ -82,7 +82,10 @@ function NavBar() {
               to="/FindPet"
               className={isActive ? "nav-link" : "unselected-link"}
             >
-              <div id="find-pets">Find Me a Pet</div>
+              <span 
+              id="find-pets" 
+              className={token ? "mt-2" : ""}
+              >Find Me a Pet</span>
             </Link>
             <NavDropdown
               title="My Profile"

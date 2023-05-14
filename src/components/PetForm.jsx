@@ -1,13 +1,13 @@
-import { usePetsContext } from "../context/PetsContext"
-import { useAuthContext } from "../context/AuthContext"
-import { capFirstLetters } from "../Utils"
-import React, { useState, useEffect } from "react"
-import { Form, FloatingLabel, Button, Spinner } from "react-bootstrap"
-import { Tooltip } from "react-tooltip"
+import { usePetsContext } from "../context/PetsContext";
+import { useAuthContext } from "../context/AuthContext";
+import { capFirstLetters } from "../Utils";
+import React, { useState, useEffect } from "react";
+import { Form, FloatingLabel, Button, Spinner } from "react-bootstrap";
+import { Tooltip } from "react-tooltip";
 
 function PetForm(props) {
-  const { petId, handleClose } = props;
-  const { addNewPet, updatePet, getPet, pet, showSpinner } = usePetsContext();
+  const { pet, handleClose } = props;
+  const { addNewPet, updatePet, showSpinner } = usePetsContext();
   const { isAdmin, loggedUser } = useAuthContext();
   const { userId } = loggedUser;
   const [type, setType] = useState("");
@@ -21,7 +21,7 @@ function PetForm(props) {
   const [color, setColor] = useState("");
   const [isHypo, setIsHypo] = useState("");
   const [petBio, setPetBio] = useState("");
-  
+
   const [validInputs, setValidInputs] = useState({
     validType: false,
     validName: false,
@@ -48,148 +48,159 @@ function PetForm(props) {
     invalidColor: false,
     invalidIsHypo: false,
     invalidBio: false,
-  })
+  });
 
   const handleFormChange = (e) => {
     switch (e.target.name) {
       case "pet-type":
         setType(e.target.value);
         if (e.target.value === "1" || e.target.value === "2") {
-          setInvalidInputs({...invalidInputs, invalidType: false});
-          setValidInputs({...validInputs, validType: true});
+          setInvalidInputs({ ...invalidInputs, invalidType: false });
+          setValidInputs({ ...validInputs, validType: true });
         } else {
-          setValidInputs({...validInputs, validType: false});
-          setInvalidInputs({...invalidInputs, invalidType: true});
+          setValidInputs({ ...validInputs, validType: false });
+          setInvalidInputs({ ...invalidInputs, invalidType: true });
         }
         break;
       case "pet-name":
         const styledName = capFirstLetters(e.target.value);
         setPetName(styledName);
         if (e.target.value.length > 1) {
-          setInvalidInputs({...invalidInputs, invalidName: false});
-          setValidInputs({...validInputs, validName: true});
+          setInvalidInputs({ ...invalidInputs, invalidName: false });
+          setValidInputs({ ...validInputs, validName: true });
         } else {
-          setValidInputs({...validInputs, validName: false});
-          setInvalidInputs({...invalidInputs, invalidName: true});
+          setValidInputs({ ...validInputs, validName: false });
+          setInvalidInputs({ ...invalidInputs, invalidName: true });
         }
         break;
       case "pet-status":
         setStatus(e.target.value);
-        if (e.target.value !== 'Status') {
-          setInvalidInputs({...invalidInputs, invalidStatus: false});
-          setValidInputs({...validInputs, validStatus: true});
+        if (e.target.value !== "Status") {
+          setInvalidInputs({ ...invalidInputs, invalidStatus: false });
+          setValidInputs({ ...validInputs, validStatus: true });
         } else {
-          setValidInputs({...validInputs, validStatus: false});
-          setInvalidInputs({...invalidInputs, invalidStatus: true});
+          setValidInputs({ ...validInputs, validStatus: false });
+          setInvalidInputs({ ...invalidInputs, invalidStatus: true });
         }
         break;
       case "pet-height":
         setHeight(e.target.value);
         if (e.target.value > 0 && e.target.value < 111) {
-          setInvalidInputs({...invalidInputs, invalidHeight: false});
-          setValidInputs({...validInputs, validHeight: true});
+          setInvalidInputs({ ...invalidInputs, invalidHeight: false });
+          setValidInputs({ ...validInputs, validHeight: true });
         } else {
-          setValidInputs({...validInputs, validHeight: false});
-          setInvalidInputs({...invalidInputs, invalidHeight: true});
+          setValidInputs({ ...validInputs, validHeight: false });
+          setInvalidInputs({ ...invalidInputs, invalidHeight: true });
         }
         break;
-        case "pet-weight":
-          setWeight(e.target.value);
-          if (e.target.value > 0 && e.target.value < 128) {
-            setInvalidInputs({...invalidInputs, invalidWeight: false});
-            setValidInputs({...validInputs, validWeight: true});
-          } else {
-            setValidInputs({...validInputs, validWeight: false});
-            setInvalidInputs({...invalidInputs, invalidWeight: true});
-          }
-          break;
-        case "pet-pic":
-          setPetImage(e.target.files[0]);
-          setInvalidInputs({...invalidInputs, invalidImage: false});
-          setValidInputs({...validInputs, validImage: true});
-          break;
-        case "pet-diet":
-          setDiet(e.target.value);
-          if (e.target.value.length > 2) {
-            setInvalidInputs({...invalidInputs, invalidDiet: false});
-            setValidInputs({...validInputs, validDiet: true});
-          } else {
-            setValidInputs({...validInputs, validDiet: false});
-            setInvalidInputs({...invalidInputs, invalidDiet: true});
-          }
-          break;
-        case "pet-breed":
-          const styledBreed = capFirstLetters(e.target.value)
-          setBreed(styledBreed);
-          if (e.target.value.length > 3) {
-            setInvalidInputs({...invalidInputs, invalidBreed: false});
-            setValidInputs({...validInputs, validBreed: true});
-          } else {
-            setValidInputs({...validInputs, validBreed: false});
-            setInvalidInputs({...invalidInputs, invalidBreed: true});
-          }
-          break;
-        case "pet-color":
-          setColor(e.target.value);
-          if (e.target.value.length > 2) {
-            setInvalidInputs({...invalidInputs, invalidColor: false});
-            setValidInputs({...validInputs, validColor: true});
-          } else {
-            setValidInputs({...validInputs, validColor: false});
-            setInvalidInputs({...invalidInputs, invalidColor: true});
-          }
-          break;
-        case "pet-hypo":
-          setIsHypo(e.target.value);
-          if (e.target.value === "1" || e.target.value === "2") {
-            setInvalidInputs({...invalidInputs, invalidIsHypo: false});
-            setValidInputs({...validInputs, validIsHypo: true});
-          } else {
-            setValidInputs({...validInputs, validIsHypo: false});
-            setInvalidInputs({...invalidInputs, invalidIsHypo: true});
-          }
-          break;
-        case "pet-bio":
-          setPetBio(e.target.value);
-          if (e.target.value.length > 9) {
-          setInvalidInputs({...invalidInputs, invalidBio: false});
-          setValidInputs({...validInputs, validBio: true});
-          } else {
-            setValidInputs({...validInputs, validBio: false});
-            setInvalidInputs({...invalidInputs, invalidBio: true});
-          }
-          break;
+      case "pet-weight":
+        setWeight(e.target.value);
+        if (e.target.value > 0 && e.target.value < 128) {
+          setInvalidInputs({ ...invalidInputs, invalidWeight: false });
+          setValidInputs({ ...validInputs, validWeight: true });
+        } else {
+          setValidInputs({ ...validInputs, validWeight: false });
+          setInvalidInputs({ ...invalidInputs, invalidWeight: true });
+        }
+        break;
+      case "pet-pic":
+        setPetImage(e.target.files[0]);
+        setInvalidInputs({ ...invalidInputs, invalidImage: false });
+        setValidInputs({ ...validInputs, validImage: true });
+        break;
+      case "pet-diet":
+        setDiet(e.target.value);
+        if (e.target.value.length > 2) {
+          setInvalidInputs({ ...invalidInputs, invalidDiet: false });
+          setValidInputs({ ...validInputs, validDiet: true });
+        } else {
+          setValidInputs({ ...validInputs, validDiet: false });
+          setInvalidInputs({ ...invalidInputs, invalidDiet: true });
+        }
+        break;
+      case "pet-breed":
+        const styledBreed = capFirstLetters(e.target.value);
+        setBreed(styledBreed);
+        if (e.target.value.length > 3) {
+          setInvalidInputs({ ...invalidInputs, invalidBreed: false });
+          setValidInputs({ ...validInputs, validBreed: true });
+        } else {
+          setValidInputs({ ...validInputs, validBreed: false });
+          setInvalidInputs({ ...invalidInputs, invalidBreed: true });
+        }
+        break;
+      case "pet-color":
+        setColor(e.target.value);
+        if (e.target.value.length > 2) {
+          setInvalidInputs({ ...invalidInputs, invalidColor: false });
+          setValidInputs({ ...validInputs, validColor: true });
+        } else {
+          setValidInputs({ ...validInputs, validColor: false });
+          setInvalidInputs({ ...invalidInputs, invalidColor: true });
+        }
+        break;
+      case "pet-hypo":
+        setIsHypo(e.target.value);
+        if (e.target.value === "1" || e.target.value === "2") {
+          setInvalidInputs({ ...invalidInputs, invalidIsHypo: false });
+          setValidInputs({ ...validInputs, validIsHypo: true });
+        } else {
+          setValidInputs({ ...validInputs, validIsHypo: false });
+          setInvalidInputs({ ...invalidInputs, invalidIsHypo: true });
+        }
+        break;
+      case "pet-bio":
+        setPetBio(e.target.value);
+        if (e.target.value.length > 9) {
+          setInvalidInputs({ ...invalidInputs, invalidBio: false });
+          setValidInputs({ ...validInputs, validBio: true });
+        } else {
+          setValidInputs({ ...validInputs, validBio: false });
+          setInvalidInputs({ ...invalidInputs, invalidBio: true });
+        }
+        break;
     }
   };
 
   useEffect(() => {
-    getPet(petId);
-    if (pet) {
-      setType(pet.type);
-      setPetName(pet.name);
-      setStatus(pet.adoptionStatus);
-      setHeight(pet.height);
-      setWeight(pet.weight);
-      setDiet(pet.dietary);
-      setBreed(pet.breed);
-      setColor(pet.color);
-      setIsHypo(pet.hypoallergenic);
-      setPetBio(pet.bio);
-    }
-  }, []);
+      if (pet) {
+        console.log(pet)
+        setType(pet.type);
+        setPetName(pet.name);
+        setStatus(pet.adoptionStatus);
+        setHeight(pet.height);
+        setWeight(pet.weight);
+        setDiet(pet.dietary);
+        setBreed(pet.breed);
+        setColor(pet.color);
+        setIsHypo(pet.hypoallergenic);
+        setPetBio(pet.bio);
+      }
+  }, [pet]);
 
   const handleUndefined = () => {
-    if (petImage === undefined) setInvalidInputs({...invalidInputs, invalidImage: true});
-    if (petBio === undefined) setInvalidInputs({...invalidInputs, invalidBio: true});
-    if (color === undefined) setInvalidInputs({...invalidInputs, invalidColor: true});
-    if (breed === undefined) setInvalidInputs({...invalidInputs, invalidBreed: true});
-    if (diet === undefined) setInvalidInputs({...invalidInputs, invalidDiet: true});
-    if (isHypo === undefined) setInvalidInputs({...invalidInputs, invalidIsHypo: true});
-    if (weight === undefined) setInvalidInputs({...invalidInputs, invalidWeight: true});
-    if (height === undefined) setInvalidInputs({...invalidInputs, invalidHeight: true});
-    if (status === undefined) setInvalidInputs({...invalidInputs, invalidStatus: true});
-    if (petName === undefined) setInvalidInputs({...invalidInputs, invalidName: true});
-    if (type === undefined) setInvalidInputs({...invalidInputs, invalidType: true});
+    if (petImage === undefined)
+      setInvalidInputs({ ...invalidInputs, invalidImage: true });
+    if (petBio === undefined)
+      setInvalidInputs({ ...invalidInputs, invalidBio: true });
+    if (color === undefined)
+      setInvalidInputs({ ...invalidInputs, invalidColor: true });
+    if (breed === undefined)
+      setInvalidInputs({ ...invalidInputs, invalidBreed: true });
+    if (diet === undefined)
+      setInvalidInputs({ ...invalidInputs, invalidDiet: true });
+    if (isHypo === undefined)
+      setInvalidInputs({ ...invalidInputs, invalidIsHypo: true });
+    if (weight === undefined)
+      setInvalidInputs({ ...invalidInputs, invalidWeight: true });
+    if (height === undefined)
+      setInvalidInputs({ ...invalidInputs, invalidHeight: true });
+    if (status === undefined)
+      setInvalidInputs({ ...invalidInputs, invalidStatus: true });
+    if (petName === undefined)
+      setInvalidInputs({ ...invalidInputs, invalidName: true });
+    if (type === undefined)
+      setInvalidInputs({ ...invalidInputs, invalidType: true });
   };
 
   const handleSubmit = async (e) => {
@@ -208,9 +219,9 @@ function PetForm(props) {
     };
     const inputsArray = Object.values(newPet);
     if (inputsArray.includes(undefined) || petImage === undefined) {
-        handleUndefined();
-        return;
-      }
+      handleUndefined();
+      return;
+    }
     const petData = new FormData();
     for (let key in newPet) {
       petData.append(key, newPet[key]);
@@ -240,9 +251,9 @@ function PetForm(props) {
     };
     const inputsArray = Object.values(editedPet);
     if (inputsArray.includes(undefined) || petImage === undefined) {
-        handleUndefined();
-        return;
-      }
+      handleUndefined();
+      return;
+    }
     const petData = new FormData();
     for (let key in editedPet) {
       petData.append(key, editedPet[key]);
@@ -250,7 +261,7 @@ function PetForm(props) {
     petData.append("picture", petImage);
 
     try {
-      await updatePet(userId, petId, petData);
+      await updatePet(userId, pet._id, petData);
       handleClose();
     } catch (err) {
       console.log(err);
@@ -342,21 +353,20 @@ function PetForm(props) {
           </FloatingLabel>
         </div>
         <div className="add-pet-hypo d-flex flex-column mt-2">
-            <Form.Select
-              name="pet-hypo"
-              aria-label="Hypoallergenic"
-              className="hypo"
-              value={isHypo || false}
-              onChange={(e) => handleFormChange(e)}
-              isValid={validInputs.validIsHypo}
-              isInvalid={invalidInputs.invalidIsHypo}
-            >
-              <option>Hypoallergenic?</option>
-              <option value="1">No</option>
-              <option value="2">Yes</option>
-            </Form.Select>
-          </div>
-        
+          <Form.Select
+            name="pet-hypo"
+            aria-label="Hypoallergenic"
+            className="hypo"
+            value={isHypo || false}
+            onChange={(e) => handleFormChange(e)}
+            isValid={validInputs.validIsHypo}
+            isInvalid={invalidInputs.invalidIsHypo}
+          >
+            <option>Hypoallergenic?</option>
+            <option value="1">No</option>
+            <option value="2">Yes</option>
+          </Form.Select>
+        </div>
       </div>
       <div className="pet-details-right w-50">
         <FloatingLabel
@@ -411,7 +421,6 @@ function PetForm(props) {
               />
             </FloatingLabel>
           </div>
-          
         </div>
         <FloatingLabel
           controlId="floatingTextarea2"
@@ -432,16 +441,16 @@ function PetForm(props) {
         </FloatingLabel>
         <Form.Group controlId="formFile" className="mt-2 mb-3 w-75">
           <Form.Label
-          id="pic-anchor"
-          data-tooltip-content="Sorry for the inconvenience, but you must upload a pet's picture on each form submission"
-          data-tooltip-place="top"
+            id="pic-anchor"
+            data-tooltip-content="Sorry for the inconvenience, but you must upload a pet's picture on each form submission"
+            data-tooltip-place="top"
           >
             <Tooltip
-            anchorId="pic-anchor"
-            isOpen={invalidInputs.invalidImage? true : false}
+              anchorId="pic-anchor"
+              isOpen={invalidInputs.invalidImage ? true : false}
             />
             <span className="text-danger">*</span>{" "}
-            {isAdmin && petId ? "Re-upload Picture:" : "Upload Picture:"}
+            {isAdmin && pet ? "Re-upload Picture:" : "Upload Picture:"}
           </Form.Label>
           <Form.Control
             name="pet-pic"
@@ -465,9 +474,9 @@ function PetForm(props) {
         <Button
           variant="success"
           className="position-absolute bottom-0 end-0 me-4 mb-3"
-          onClick={isAdmin && petId ? handleUpdate : handleSubmit}
+          onClick={isAdmin && pet ? handleUpdate : handleSubmit}
         >
-          {isAdmin && petId ? "Update Pet" : "Add Pet"}
+          {isAdmin && pet ? "Update Pet" : "Add Pet"}
         </Button>
       </div>
     </Form>

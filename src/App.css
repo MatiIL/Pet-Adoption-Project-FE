@@ -38,7 +38,8 @@ body {
 #find-pets {
   display: flex;
   flex-wrap: nowrap;
-  margin-top: 3px;
+  /* position: relative;
+  margin-top: 6px; */
 }
 
 #hmpg-txt {
