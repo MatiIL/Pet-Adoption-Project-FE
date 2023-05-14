@@ -164,7 +164,6 @@ function PetForm(props) {
 
   useEffect(() => {
       if (pet) {
-        console.log(pet)
         setType(pet.type);
         setPetName(pet.name);
         setStatus(pet.adoptionStatus);

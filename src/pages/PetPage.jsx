@@ -18,6 +18,7 @@ function PetPage() {
     returnPet,
     returnedPet,
     updatedPet,
+    setUpdatedPet
   } = usePetsContext();
   const { token, loggedUser, isAdmin, showSpinner, savedPetsData } = useAuthContext();
 
@@ -171,7 +172,9 @@ function PetPage() {
     if (updatedPet) {
       toast.success("Pet successfuly edited!", {
         autoClose: 2000,
+        onClose: () => navigate('/FindPet')
       });
+      setUpdatedPet(false);
     }
   }, [updatedPet]);
 
