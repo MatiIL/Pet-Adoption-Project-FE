@@ -201,7 +201,7 @@ function SignupForm(props) {
       if (registeredUser) {
         closeSignup();
         signupAttempt(1);
-      } else {
+      } else if (signupError) {
         signupAttempt(0);
       }
     } catch (err) {
