@@ -9,6 +9,7 @@ function LoginModal() {
     loginUser, 
     showSpinner, 
     loginError, 
+    setLoginError,
     wrongPass,
     setWrongPass,
     showTooltip, 
@@ -19,7 +20,10 @@ function LoginModal() {
   
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setLoginError("");
+  } 
 
   const handleShow = () => setShow(true);
 

@@ -196,6 +196,7 @@ export default function AuthContextProvider({ children }) {
         ownedPets,
         setOwnedPets,
         loginError,
+        setLoginError,
         wrongPass,
         setWrongPass,
         showTooltip,
